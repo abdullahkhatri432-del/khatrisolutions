@@ -222,14 +222,25 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 
 - Per-page titles, descriptions, canonical URL and Open Graph tags via `useSeo`.
 - `public/robots.txt` and `public/sitemap.xml`, both pointing at
-  `https://khatrisolutions.netlify.app`.
+  `https://khatrisolutions.netlify.app` — the current live URL.
 - `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`).
-- After deploying, replace `https://khatrisolutions.netlify.app` in `robots.txt` and `sitemap.xml`
-  with the real domain, and update the sitemap when routes change.
+- If a custom domain is added, replace `https://khatrisolutions.netlify.app` in `robots.txt` and
+  `sitemap.xml`, and update the sitemap when routes change.
 
 No fake structured data is included.
 
 ## Deploy (free hosting that works in India)
+
+**Live:** <https://khatrisolutions.netlify.app>
+
+The site is hosted on Netlify (team *Khatrisolution*) and linked to
+<https://github.com/abdullahkhatri432-del/khatrisolutions>. Pushing to `main` runs `npm run build`
+and publishes automatically — no workflow file and no local deploy command needed.
+
+The link is a Netlify deploy key plus a GitHub push webhook pointing at Netlify's GitHub hook, which
+is the same mechanism `netlify init` creates. `netlify.toml` remains the source of truth for the
+build command, `dist` as the publish folder, the SPA rewrite and asset caching. To deploy by hand,
+run `netlify deploy --dir=dist --prod` from this folder.
 
 Cloudflare Pages is not usable here: `pages.dev` domains are blocked or unreliable on several
 Indian ISPs, and account verification often fails.
@@ -237,11 +248,13 @@ Indian ISPs, and account verification often fails.
 Two good free options remain: Netlify (no Git needed) and Render (Git-based). Both include free
 HTTPS and a custom domain. Vercel Hobby is not suitable because it is explicitly non-commercial.
 
-**Which one:** choose Render if you deploy from GitHub and want predictable build/bandwidth limits;
-choose Netlify if you want to drag a folder onto a page. Both are fine for this site at its current
-size.
+**Which one:** Netlify is the current host and is already wired to GitHub. Render remains a
+documented fallback if Netlify's credit model becomes a problem.
 
-### Netlify — simplest
+### Netlify — current host
+
+Already connected: the site at <https://khatrisolutions.netlify.app> builds from `main` on every
+push. To reproduce it from scratch:
 
 1. Run `npm run build`.
 2. Drag the `dist` folder onto https://app.netlify.com/drop, or connect the GitHub repo.
