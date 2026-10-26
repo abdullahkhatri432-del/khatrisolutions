@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#f4efe5" />
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#ded4c4" />
+  <g transform="translate(80 78)">
+    <rect x="0" y="0" width="34" height="34" rx="2" fill="none" stroke="#1d1915" stroke-opacity="0.3" />
+    <path d="M11 9v16" stroke="#1d1915" stroke-opacity="0.55" stroke-width="2.2" stroke-linecap="round" />
+    <path d="M23 9l-7 8 7 8" stroke="#1d1915" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    <text x="52" y="24" font-family="Manrope, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="6" fill="#1d1915">KHATRI SOLUTIONS</text>
+  </g>
+  <text x="80" y="253" font-family="Georgia, serif" font-size="78" fill="#1d1915">Websites that help</text>
+  <text x="80" y="343" font-family="Georgia, serif" font-style="italic" font-size="78" fill="#7c2c17">your business grow.</text>
+  <line x1="80" y1="404" x2="1120" y2="404" stroke="#ded4c4" />
+  <text x="80" y="455" font-family="Manrope, Arial, sans-serif" font-size="24" fill="#675d51">Websites · Online stores · Web apps · AI automation</text>
+  <text x="80" y="524" font-family="Manrope, Arial, sans-serif" font-size="19" fill="#675d51">Independent web studio · India · Working worldwide</text>
+  <text x="1120" y="524" text-anchor="end" font-family="Manrope, Arial, sans-serif" font-size="19" fill="#7c2c17">Built for small businesses</text>
+</svg>
