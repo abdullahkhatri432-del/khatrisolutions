@@ -42,7 +42,10 @@ Everything lives in [`src/config/site.js`](src/config/site.js):
     `https://github.com/abdullahkhatri432-del`.
   - Per-project `repoUrl` values stay `null` while the portfolio is demo-only, so no case study
     links to a repository that is not public yet.
-- **`site.formEndpoint`** — optional form service. Read from `VITE_FORM_ENDPOINT`.
+- **`site.formEndpoint`** — optional third-party form service. Read from `VITE_FORM_ENDPOINT`; takes
+  precedence over Netlify Forms when set.
+- **`site.netlifyForms`** — `true` in Netlify builds (`VITE_NETLIFY_FORMS`), switches the form to
+  Netlify Forms. `site.formProvider` supplies the name used in the privacy notice.
 - **`site.founder`** — name and initials used by the team configuration.
 - **`team`** — the two collaborators and their responsibilities. See “Edit the team” below.
 - **`collaboration`** — the “How we work together” copy, role split and four stages.
@@ -176,30 +179,50 @@ to the first step containing an error on final submit.
   requires an email address.
 - **Consent:** required before submission, with a link to the privacy notice.
 
-- **No `VITE_FORM_ENDPOINT` set** (default): the form validates the input, then opens
-  WhatsApp or the visitor's email app with a prefilled message. Nothing is stored on the
-  website, and the result panel says explicitly that nothing has been sent until the visitor
-  presses send in that app. “Edit my details” preserves every answer.
-- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint and only shows the
-  “Enquiry sent” confirmation when the request succeeds. A failed request shows an error and
-  keeps the answers so the visitor can retry or email directly.
+- **Netlify build** (current live setup): the form POSTs URL-encoded data to the site itself and
+  Netlify Forms stores the submission, then emails a copy to `site.contact.email`. The enquiry is
+  also visible under **Forms** in the Netlify dashboard. The “Enquiry sent” confirmation only
+  appears after a real 200 response.
+- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint instead, taking precedence over
+  Netlify Forms. Only shows “Enquiry sent” when the request succeeds.
+- **Neither configured** (local `npm run dev`): the form validates the input, then opens WhatsApp or
+  the visitor's email app with a prefilled message. Nothing is stored on the website, and the result
+  panel says explicitly that nothing has been sent until the visitor presses send in that app.
+  “Edit my details” preserves every answer.
+
+A failed request shows an error and keeps the answers so the visitor can retry or email directly.
 
 The review form has its own `reviewProjectTypes` list, separate from inquiry services, so editing
 one does not silently change the other.
 
-To connect a form service:
+### How Netlify Forms is wired
+
+- `netlify.toml` sets `VITE_NETLIFY_FORMS=true`, so only the Netlify build enables remote
+  submission. Local development keeps the WhatsApp / email handoff.
+- `index.html` contains two `hidden` static forms (`project-inquiry`, `client-review`). Netlify
+  detects forms by scanning built HTML, so these mirrors exist for field detection only. They render
+  at zero height and stay out of the accessibility tree. Keep their field names in sync with
+  `src/lib/inquiry.js`.
+- `src/lib/inquiry.js` posts `application/x-www-form-urlencoded` to `/` with the matching
+  `form-name`; Netlify Forms does not accept JSON.
+- Form detection must stay enabled: **Forms → Form detection**.
+- One email notification exists for `submission_created` → `khatrisolutions01@gmail.com`. Notifications
+  come from `formresponses@netlify.com`, and replies go to the visitor because the inquiry form sends
+  an `email` field.
+
+To use a different provider instead:
 
 1. Create a form at your provider and copy the endpoint.
-2. Add it locally in `.env`:
+2. Add it locally in `.env` and in Netlify's environment variables:
    ```
    VITE_FORM_ENDPOINT=https://formspree.io/f/your-id
    ```
-3. Add the same variable in Vercel → Project → Settings → Environment Variables, then redeploy.
+3. Redeploy. The endpoint takes precedence over Netlify Forms.
 
 Protection included: honeypot field, per-step and final validation, disabled buttons while sending,
-duplicate-submit guard, and no success message without a real result. Add rate limiting or a captcha
-at the endpoint provider for public traffic. Never put an API secret in client-side code — only a
-public form endpoint belongs in `VITE_FORM_ENDPOINT`.
+duplicate-submit guard, and no success message without a real result. Netlify additionally filters
+obvious spam and drops submissions from headless browsers. Never put an API secret in client-side
+code — only a public form endpoint belongs in `VITE_FORM_ENDPOINT`.
 
 WhatsApp is configured, so the floating button, footer link, contact card and form handoff all open
 a chat at `wa.me/919875009874` with the message prefilled. The form still says nothing has been sent
