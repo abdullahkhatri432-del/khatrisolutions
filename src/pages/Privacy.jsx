@@ -52,11 +52,17 @@ export default function Privacy() {
 
           <h2>How the forms actually work</h2>
           {endpointConfigured ? (
-            <p>
-              Form submissions are sent to the form endpoint configured for this site, which forwards them to the studio
-              inbox. If that endpoint is a third-party form service, it processes the submission on our behalf. We keep
-              enquiries only as long as needed to respond and manage the project.
-            </p>
+            <>
+              <p>
+                When you press the send button, your answers are submitted to this website and delivered to the studio
+                inbox by {site.formProvider || 'the form service configured for this site'}, which stores the submission
+                on our behalf so we can reply. We keep enquiries only as long as needed to respond and manage the project.
+              </p>
+              <p>
+                The form service also records the page you submitted from and basic request information for spam
+                protection. It does not receive anything beyond what you type into the form.
+              </p>
+            </>
           ) : (
             <p>
               This version of the site has no backend or database. When you press the submit button, your answers are prepared

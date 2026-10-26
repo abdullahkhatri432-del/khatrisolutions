@@ -41,6 +41,15 @@ export const site = {
   /** Optional form endpoint (Formspree, Basin, Getform, your own API). */
   formEndpoint: import.meta.env.VITE_FORM_ENDPOINT || '',
 
+  /**
+   * Netlify Forms receives submissions when the site is built by Netlify
+   * (netlify.toml sets VITE_NETLIFY_FORMS=true). Submissions are stored in the
+   * Netlify dashboard and emailed to contact.email via a submission notification.
+   * `formEndpoint` takes precedence if both are set.
+   */
+  netlifyForms: import.meta.env.VITE_NETLIFY_FORMS === 'true',
+  formProvider: import.meta.env.VITE_NETLIFY_FORMS === 'true' ? 'Netlify Forms' : '',
+
   /** Correct. We are a new, independent studio. Don't change this to a fake claim. */
   disclosure:
     'Khatri Solutions is a new, independent studio. Projects shown as demos or concepts were built to demonstrate our work, not for paying clients.',

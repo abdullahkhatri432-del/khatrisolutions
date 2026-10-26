@@ -2,6 +2,11 @@
   command = "npm run build"
   publish = "dist"
 
+# Enables Netlify Forms in the production build only. Local dev keeps the
+# WhatsApp / email handoff, since Vite does not read this file.
+[build.environment]
+  VITE_NETLIFY_FORMS = "true"
+
 # React Router uses real URLs, so every unknown path must load the app shell.
 # Netlify checks real files first, so /assets/* still serves normally.
 [[redirects]]

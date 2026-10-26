@@ -1,7 +1,7 @@
 import { site } from '../config/site'
 import { mailtoLink, whatsappLink } from './contact'
 
-export const endpointConfigured = Boolean(site.formEndpoint)
+export const endpointConfigured = Boolean(site.formEndpoint) || site.netlifyForms
 
 const DETAIL_SECTIONS = {
   website: {
@@ -117,6 +117,36 @@ async function postToEndpoint(payload) {
   }
 }
 
+/** Form names must match the hidden static forms in index.html. */
+const NETLIFY_FORM_NAMES = {
+  'project-inquiry': 'project-inquiry',
+  review: 'client-review',
+}
+
+/**
+ * Netlify Forms requires URL-encoded bodies, not JSON. The hidden static
+ * forms in index.html exist so Netlify detects the fields at build time.
+ */
+async function postToNetlifyForms(kind, payload) {
+  const body = new URLSearchParams()
+  body.set('form-name', NETLIFY_FORM_NAMES[kind] || NETLIFY_FORM_NAMES['project-inquiry'])
+
+  for (const [key, value] of Object.entries(payload)) {
+    if (value === undefined || value === null) continue
+    body.set(key, String(value))
+  }
+
+  const response = await fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  })
+
+  if (!response.ok) {
+    throw new Error(`The form service responded with ${response.status}.`)
+  }
+}
+
 /**
  * Sends a message through the configured endpoint, or hands it to the
  * visitor's WhatsApp / email client when no backend is configured.
@@ -136,6 +166,22 @@ export async function sendMessage({ kind, values, text, subject, spam }) {
         _subject: subject,
         source: typeof window !== 'undefined' ? window.location.href : '',
         _gotcha: '',
+      })
+      return { ok: true, mode: 'endpoint' }
+    } catch (error) {
+      return { ok: false, mode: 'endpoint', error: error.message }
+    }
+  }
+
+  if (site.netlifyForms) {
+    try {
+      await postToNetlifyForms(kind, {
+        kind,
+        ...values,
+        subject,
+        message: text,
+        website: values?.website || '',
+        source: typeof window !== 'undefined' ? window.location.href : '',
       })
       return { ok: true, mode: 'endpoint' }
     } catch (error) {
