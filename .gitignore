@@ -8,7 +8,6 @@ pnpm-debug.log*
 
 node_modules
 dist
-dist-ssr
 *.local
 
 # Env files (never commit secrets)
@@ -23,6 +22,3 @@ dist-ssr
 .DS_Store
 *.suo
 *.sw?
-
-# Local Netlify folder
-.netlify

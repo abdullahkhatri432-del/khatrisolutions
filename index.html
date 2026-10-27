@@ -27,55 +27,6 @@
   <body>
     <div id="root"></div>
 
-    <!--
-      Netlify Forms: detection happens by scanning built HTML, so these hidden
-      mirrors exist only to register the field names. The React forms post to
-      these same names via fetch. Keep fields in sync with src/lib/inquiry.js.
-    -->
-    <form name="project-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="website" hidden>
-      <input type="text" name="website" />
-      <input type="text" name="kind" />
-      <input type="text" name="name" />
-      <input type="text" name="business" />
-      <input type="email" name="email" />
-      <input type="tel" name="phone" />
-      <input type="text" name="service" />
-      <input type="text" name="budget" />
-      <input type="text" name="timeline" />
-      <input type="text" name="contactMethod" />
-      <textarea name="description"></textarea>
-      <textarea name="message"></textarea>
-      <input type="text" name="subject" />
-      <input type="text" name="source" />
-      <input type="text" name="businessType" />
-      <input type="text" name="pages" />
-      <input type="text" name="existingWebsite" />
-      <input type="text" name="productCount" />
-      <textarea name="commerceNeeds"></textarea>
-      <textarea name="appProblem"></textarea>
-      <input type="text" name="userRoles" />
-      <textarea name="appFeatures"></textarea>
-      <textarea name="automationTask"></textarea>
-      <input type="text" name="currentTools" />
-      <input type="text" name="currentWebsite" />
-      <textarea name="improvements"></textarea>
-      <textarea name="primaryGoal"></textarea>
-    </form>
-
-    <form name="client-review" method="POST" data-netlify="true" data-netlify-honeypot="website" hidden>
-      <input type="text" name="website" />
-      <input type="text" name="kind" />
-      <input type="text" name="name" />
-      <input type="text" name="business" />
-      <input type="text" name="projectType" />
-      <input type="text" name="rating" />
-      <textarea name="quote"></textarea>
-      <input type="text" name="permission" />
-      <textarea name="message"></textarea>
-      <input type="text" name="subject" />
-      <input type="text" name="source" />
-    </form>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

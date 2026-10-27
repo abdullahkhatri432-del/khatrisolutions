@@ -42,10 +42,9 @@ Everything lives in [`src/config/site.js`](src/config/site.js):
     `https://github.com/abdullahkhatri432-del`.
   - Per-project `repoUrl` values stay `null` while the portfolio is demo-only, so no case study
     links to a repository that is not public yet.
-- **`site.formEndpoint`** — optional third-party form service. Read from `VITE_FORM_ENDPOINT`; takes
-  precedence over Netlify Forms when set.
-- **`site.netlifyForms`** — `true` in Netlify builds (`VITE_NETLIFY_FORMS`), switches the form to
-  Netlify Forms. `site.formProvider` supplies the name used in the privacy notice.
+- **`site.formEndpoint`** — the live form endpoint (Google Apps Script), read from
+  `VITE_FORM_ENDPOINT` or taken from the default in `site.js`. `site.formProvider` is the name shown
+  in the privacy notice.
 - **`site.founder`** — name and initials used by the team configuration.
 - **`team`** — the two collaborators and their responsibilities. See “Edit the team” below.
 - **`collaboration`** — the “How we work together” copy, role split and four stages.
@@ -179,45 +178,20 @@ to the first step containing an error on final submit.
   requires an email address.
 - **Consent:** required before submission, with a link to the privacy notice.
 
-- **Render static site** (current live setup): there is no server, so unless a form endpoint is
-  configured the form validates the input, then opens WhatsApp or the visitor's email app with a
-  prefilled message. Nothing is stored, and the result panel says so explicitly until the visitor
-  presses send in that app. “Edit my details” preserves every answer.
-- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint and shows “Enquiry sent” only
-  after a successful response. This is how to get real email delivery on Render.
-- **Netlify-hosted build** (opt-in, not used on Render): with `VITE_NETLIFY_FORMS=true` the form
-  posts URL-encoded data to the site itself and Netlify stores and emails the submission.
+- **Render static site** (current live setup): there is no server. The form posts to the Apps Script
+  endpoint configured in `site.formEndpoint`, which emails the enquiry. Without an endpoint it would
+  only validate the input and hand the message to WhatsApp or the visitor's email app.
+- **`VITE_FORM_ENDPOINT` set**: overrides the default endpoint. The form posts URL-encoded `payload`
+  JSON and shows “Enquiry sent” only after the endpoint replies `{"ok":true}`.
 
 A failed request shows an error and keeps the answers so the visitor can retry or email directly.
 
 The review form has its own `reviewProjectTypes` list, separate from inquiry services, so editing
 one does not silently change the other.
 
-### Optional: Netlify Forms (not active on Render)
-
-The support still exists but is disabled by default, because Render cannot process the POST.
-
-- Set `VITE_NETLIFY_FORMS=true` in a build that actually runs on Netlify.
-- `index.html` contains two `hidden` static forms (`project-inquiry`, `client-review`) used only for
-  Netlify's build-time field detection. They render at zero height and stay out of the accessibility
-  tree. Keep their field names in sync with `src/lib/inquiry.js`.
-- `src/lib/inquiry.js` posts `application/x-www-form-urlencoded` to `/` with the matching
-  `form-name`; Netlify Forms does not accept JSON.
-- On Netlify, form detection must be enabled and a `submission_created` email notification created.
-
-To use a form provider on Render:
-
-1. Create a form at your provider and copy the endpoint.
-2. Add it locally in `.env` and in Render's environment variables:
-   ```
-   VITE_FORM_ENDPOINT=https://formspree.io/f/your-id
-   ```
-3. Redeploy. The endpoint takes precedence over everything else.
-
 Protection included: honeypot field, per-step and final validation, disabled buttons while sending,
-duplicate-submit guard, and no success message without a real result. When Netlify Forms is enabled,
-Netlify additionally filters obvious spam and drops submissions from headless browsers. Never put an
-API secret in client-side code — only a public form endpoint belongs in `VITE_FORM_ENDPOINT`.
+duplicate-submit guard, and no success message without a real result. Never put an API secret in
+client-side code — only a public form endpoint belongs in `VITE_FORM_ENDPOINT`.
 
 WhatsApp is configured, so the floating button, footer link, contact card and form handoff all open
 a chat at `wa.me/919875009874` with the message prefilled. The form still says nothing has been sent
@@ -280,9 +254,8 @@ explicitly non-commercial.
 5. Free limits: **5 GB outbound bandwidth** and **500 build minutes** per month. At the current
    page weight (~270 KB per first visit), 5 GB is roughly 15,000–18,000 visits; repeat visits are
    cheaper because fonts and assets are cached.
-6. Static hosting cannot store form submissions. Set `VITE_FORM_ENDPOINT` under **Environment**
-   (Formspree, Basin, Getform) to deliver enquiries, or the form keeps the WhatsApp / email draft
-   handoff.
+6. Static hosting cannot store form submissions, so the form posts to the Google Apps Script endpoint in
+   `src/config/site.js`. Set `VITE_FORM_ENDPOINT` under **Environment** only if you replace that script.
 7. Test the `*.onrender.com` URL on Jio and Airtel before pointing a custom domain at it. There are
    no widespread reports of `onrender.com` being blocked in India, but ISP-level filtering varies.
 8. If the domain changes, update `robots.txt` and `sitemap.xml`.
@@ -295,8 +268,6 @@ explicit non-commercial clause. If this becomes the studio's main site, Render P
 
 ### Other free options
 
-- **Vercel** — `vercel.json` is already correct. Note that the Hobby plan is for personal,
-  non-commercial projects; a commercial studio site is expected to use Pro.
 - **Firebase Hosting** — generous free Spark plan, good performance in India. Needs
   `firebase.json` with a `"rewrites": [{ "source": "**", "destination": "/index.html" }]` rule.
 - **GitHub Pages** — free and stable, but SPA routing needs a `404.html` copy of `index.html`, and
