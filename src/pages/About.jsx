@@ -1,4 +1,4 @@
-import { ArrowRight, Check, CircleAlert, Clock, Info, MapPin, ShieldCheck, Users } from 'lucide-react'
+import { ArrowRight, Check, Clock, Info, MapPin, ShieldCheck, Users } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import SectionHeading from '../components/SectionHeading'
@@ -95,15 +95,6 @@ export default function About() {
                   </li>
                 </ul>
               </div>
-
-              <div className="notice">
-                <CircleAlert size={15} aria-hidden="true" />
-                <span>
-                  <strong>Being honest about being new:</strong> Khatri Solutions was founded in {site.established}. It is a two-person
-                  collaboration, not a registered company or an agency with employees. The portfolio labels demos and concepts
-                  as exactly that.
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -118,14 +109,6 @@ export default function About() {
               <TeamCard key={member.id} member={member} />
             ))}
           </div>
-
-          <p className="notice" style={{ marginTop: '1.5rem' }}>
-            <ShieldCheck size={15} aria-hidden="true" />
-            <span>
-              These profiles describe the work each person actually does. No invented qualifications, employers or client
-              claims are used.
-            </span>
-          </p>
         </div>
       </section>
 

@@ -726,8 +726,8 @@ export const productCountOptions = [
  * If you add a photo, place it in `src/assets/images/` and import it here,
  * or use a full URL. Leave `photo: null` to show a monogram instead.
  *
- * Khatri Solutions is not a registered company. Do not add legal titles (CEO,
- * Director, Pvt Ltd) or employment claims unless they are genuinely true.
+ * Do not add legal titles (CEO, Director, Pvt Ltd) or employment claims unless
+ * they are genuinely true.
  */
 export const team = {
   eyebrow: 'Meet the team',
@@ -827,6 +827,4 @@ export const collaboration = {
       body: 'You test the work, changes inside the scope are made, and the technical lead hands over access and documentation.',
     },
   ],
-  note:
-    '“Team” here means two collaborating freelancers working under the Khatri Solutions name. Khatri Solutions is not a registered company, and these are working roles rather than legal titles. Nothing on this page claims employment, qualifications or experience beyond the work described.',
 }
