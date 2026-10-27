@@ -106,6 +106,20 @@ function statusChip(status) {
   return `<span class="chip chip--${esc(status)}">${esc(STATUS_LABELS[status] || status)}</span>`
 }
 
+function initials(value) {
+  const words = String(value || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+  if (words.length === 0) return '—'
+  if (words.length === 1) return [...words[0]].slice(0, 2).join('').toUpperCase()
+  return (words[0][0] + words[1][0]).toUpperCase()
+}
+
+function applyMobileView(view) {
+  document.body.classList.toggle('studio-detail-open', view === 'detail')
+}
+
 function editsFromDraft(draft) {
   if (!draft) return null
   return {
@@ -250,16 +264,20 @@ function renderList() {
       const active = lead.id === state.selectedId
       const drafting = state.drafting.includes(lead.id)
       return `<button type="button" class="lead-card${active ? ' is-active' : ''}" data-select="${esc(lead.id)}" ${active ? 'aria-current="true"' : ''}>
-        <span class="lead-card__top">
-          <span class="lead-card__name">${esc(lead.business || lead.name || 'Unnamed lead')}</span>
-          ${statusChip(lead.status)}
-        </span>
-        <span class="lead-card__meta">${esc([lead.name, lead.service, lead.budget].filter(Boolean).join(' · ') || 'Details pending')}</span>
-        <span class="lead-card__snippet">${esc((lead.description || 'No description supplied.').slice(0, 240))}</span>
-        <span class="lead-card__foot">
-          <span>${esc(formatDate(lead.receivedAt || lead.addedAt))}</span>
-          ${lead.isTest ? '<span class="chip chip--test">Test</span>' : ''}
-          ${drafting ? '<span class="draft-dot" aria-label="Drafting"></span>' : ''}
+        <span class="lead-card__avatar" aria-hidden="true">${esc(initials(lead.business || lead.name))}</span>
+        <span class="lead-card__body">
+          <span class="lead-card__head">
+            <span class="lead-card__name">${esc(lead.business || lead.name || 'Unnamed lead')}</span>
+            <span class="lead-card__date">${esc(formatDate(lead.receivedAt || lead.addedAt))}</span>
+          </span>
+          <span class="lead-card__meta">${esc([lead.name, lead.businessType].filter(Boolean).join(' · ') || 'Business type pending')}</span>
+          <span class="lead-card__snippet">${esc((lead.description || 'No description supplied.').slice(0, 240))}</span>
+          <span class="lead-card__foot">
+            ${statusChip(lead.status)}
+            ${lead.service ? `<span class="lead-card__tag">${esc(lead.service)}</span>` : ''}
+            ${lead.isTest ? '<span class="chip chip--test">Test</span>' : ''}
+            ${drafting ? '<span class="draft-dot" aria-label="Drafting"></span>' : ''}
+          </span>
         </span>
       </button>`
     })
@@ -436,15 +454,15 @@ function checklistRows() {
   return items
     .map(
       (item, index) => `<div class="check-row" data-check-row="${index}">
-        <input data-check-field="area" aria-label="Checklist area" value="${esc(item.area)}" placeholder="Content" />
-        <input data-check-field="item" aria-label="Checklist item" value="${esc(item.item)}" placeholder="Concrete check" />
-        <input data-check-field="why" aria-label="Why it matters" value="${esc(item.why)}" placeholder="Why it matters" />
-        <select data-check-field="priority" aria-label="Priority">
+        <label class="check-field"><span>Area</span><input data-check-field="area" aria-label="Checklist area" value="${esc(item.area)}" placeholder="Content" /></label>
+        <label class="check-field"><span>Check</span><input data-check-field="item" aria-label="Checklist item" value="${esc(item.item)}" placeholder="Concrete check" /></label>
+        <label class="check-field"><span>Why it matters</span><input data-check-field="why" aria-label="Why it matters" value="${esc(item.why)}" placeholder="Why it matters" /></label>
+        <label class="check-field check-field--priority"><span>Priority</span><select data-check-field="priority" aria-label="Priority">
           <option value="high"${item.priority === 'high' ? ' selected' : ''}>High</option>
           <option value="medium"${item.priority === 'medium' ? ' selected' : ''}>Medium</option>
           <option value="low"${item.priority === 'low' ? ' selected' : ''}>Low</option>
-        </select>
-        <button class="icon-button" type="button" data-action="remove-check" data-index="${index}" aria-label="Remove checklist item">×</button>
+        </select></label>
+        <button class="icon-button check-remove" type="button" data-action="remove-check" data-index="${index}" aria-label="Remove checklist item">×</button>
       </div>`,
     )
     .join('')
@@ -513,7 +531,8 @@ function renderReviewPanel(lead) {
     </div>
 
     <div class="review-grid">
-      <div>
+      <div class="review-card">
+        <h3>Assessment</h3>
         <label class="field">
           <span>Internal summary</span>
           <textarea class="editor editor--short" id="summary" aria-label="Internal summary">${esc(state.edits?.summary || '')}</textarea>
@@ -576,15 +595,21 @@ function renderDraft(lead) {
 
     <div class="draftbar">
       <div class="draftbar__meta">
-        <strong>${esc(draft.model || 'Model not recorded')} · generated ${esc(formatDate(draft.generatedAt, true))}</strong>
-        <span>${draft.editedAt ? `Edited ${esc(formatDate(draft.editedAt, true))} · ` : ''}${draft.reviewer ? `Reviewer: ${esc(draft.reviewer)} · ` : ''}<span id="save-state">${state.dirty ? '<span class="unsaved">Unsaved changes</span>' : 'Saved locally'}</span></span>
+        <strong>Draft ready</strong>
+        <span class="draftbar__model" title="${esc(draft.model || 'Model not recorded')}">${esc(draft.model || 'Model not recorded')}</span>
+        <span>Generated ${esc(formatDate(draft.generatedAt, true))}${draft.editedAt ? ` · Edited ${esc(formatDate(draft.editedAt, true))}` : ''}${draft.reviewer ? ` · Reviewer: ${esc(draft.reviewer)}` : ''} · <span id="save-state">${state.dirty ? '<span class="unsaved">Unsaved changes</span>' : 'Saved locally'}</span></span>
       </div>
       <div class="draftbar__actions">
         ${nextStatusButton(lead)}
         <button class="btn btn--ghost btn--small" type="button" data-action="copy">Copy proposal</button>
-        <a class="btn btn--ghost btn--small" href="/api/leads/${encodeURIComponent(lead.id)}/proposal.md" data-download>Download .md</a>
-        <a class="btn btn--ghost btn--small" href="/api/leads/${encodeURIComponent(lead.id)}/brief.md" data-download>Internal brief</a>
-        <button class="btn btn--ghost btn--small" type="button" data-action="regenerate">Regenerate</button>
+        <details class="menu">
+          <summary class="btn btn--ghost btn--small menu__toggle">More <span class="menu__caret" aria-hidden="true">▾</span></summary>
+          <div class="menu__panel">
+            <a class="menu__item" href="/api/leads/${encodeURIComponent(lead.id)}/proposal.md" data-download>Download proposal <span>.md</span></a>
+            <a class="menu__item" href="/api/leads/${encodeURIComponent(lead.id)}/brief.md" data-download>Download internal brief <span>.md</span></a>
+            <button class="menu__item" type="button" data-action="regenerate">Regenerate draft</button>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -624,7 +649,10 @@ function renderDetail() {
 
   element.innerHTML = `<article class="detail">
     <header class="detail__head">
-      <div>
+      <div class="detail__identity">
+        <button class="detail__back" type="button" data-action="back">
+          <span aria-hidden="true">←</span> All leads
+        </button>
         <p class="eyebrow">Lead ${esc(lead.id)} · ${esc(formatDate(lead.receivedAt || lead.addedAt))}</p>
         <h1>${esc(lead.business || lead.name || 'Unnamed lead')}</h1>
         <p class="detail__sub">${esc([lead.name, lead.businessType].filter(Boolean).join(' · ') || 'Business type not supplied')}</p>
@@ -669,6 +697,7 @@ function renderEmpty() {
 function renderFatal() {
   const element = $('#detail')
   if (!element) return
+  applyMobileView('detail')
   element.innerHTML = `<div class="empty">
     <div class="empty__inner">
       <p class="eyebrow">Studio Desk</p>
@@ -767,6 +796,14 @@ function selectLead(id) {
   resetEdits(lead)
   renderList()
   renderDetail()
+  const isMobile = window.matchMedia('(max-width: 900px)').matches
+  applyMobileView('detail')
+  if (isMobile) {
+    window.scrollTo(0, 0)
+    requestAnimationFrame(() => {
+      document.getElementById('main')?.focus({ preventScroll: true })
+    })
+  }
   maybeAutoDraft(lead)
 }
 
@@ -1240,6 +1277,13 @@ function renderMarkdown(markdown) {
 /* ---------- Events ---------- */
 
 document.addEventListener('click', (event) => {
+  if (!event.target.closest('details.menu')) {
+    $$('details.menu[open]').forEach((menu) => menu.removeAttribute('open'))
+  } else {
+    const menuItem = event.target.closest('.menu__item')
+    if (menuItem) menuItem.closest('details.menu')?.removeAttribute('open')
+  }
+
   const actionElement = event.target.closest('[data-action]')
   if (actionElement) {
     const action = actionElement.dataset.action
@@ -1276,6 +1320,12 @@ document.addEventListener('click', (event) => {
       renderDetail()
     } else if (action === 'reload') {
       window.location.reload()
+    } else if (action === 'back') {
+      applyMobileView('inbox')
+      window.scrollTo(0, 0)
+      requestAnimationFrame(() => {
+        document.querySelector('.lead-card.is-active')?.focus({ preventScroll: true })
+      })
     }
     return
   }
