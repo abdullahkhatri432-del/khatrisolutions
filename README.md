@@ -228,6 +228,90 @@ version). Never invent a number, and never claim that WhatsApp sent a message au
 No GitHub links are rendered while `site.contact.github` is empty and every project keeps
 `repoUrl: null`. The portfolio is therefore demo-only until a real deployment or repository exists.
 
+## Studio Desk (lead analysis and proposal drafts)
+
+`studio/` is a local-only Node tool for turning inbound enquiries into reviewable proposals. It is **not** part of the deployed marketing site and it has **no send code** — it cannot email, message or publish a proposal.
+
+```bash
+# 1. Create your local environment
+Copy-Item .env.example .env.local   # Windows PowerShell
+# cp .env.example .env.local        # macOS / Linux
+
+# 2. Add LEADS_SHEET_CSV_URL and OPENROUTER_API_KEY to .env.local
+
+# 3. Start the desk
+npm run studio
+# http://127.0.0.1:4310
+```
+
+Studio Desk has **no login**. It holds lead contact details, so it refuses to bind to a non-loopback host. Only set `STUDIO_ALLOW_REMOTE=true` if you have put it behind an authenticated proxy or private tunnel and accept the risk.
+
+### Lead source
+
+| Option | How |
+| --- | --- |
+| Google Sheet CSV | Set `LEADS_SHEET_CSV_URL` to the sheet's CSV export URL. The sheet must be readable by the link. |
+| Local CSV export | Set `LEADS_CSV_FILE=leads-export.csv` and refresh the file yourself. Best for sensitive data. |
+| Import in the UI | Press **Import CSV** and choose an export. Nothing needs to be configured first. |
+| Manual entry | Press **Add lead** and paste the brief. |
+
+The CSV mapper accepts the usual Google Forms / Apps Script headers (`Timestamp`, `Name`, `Email`, `Business`, `Business Type`, `Service`, `Budget`, `Timeline`, `Description`, conditional form answers). Rows whose `Kind` or `Form` column says `review` are skipped, so review submissions never become sales proposals. Rows with a `Lead ID` keep it; otherwise the desk derives a stable `LD-XXXXXXXX` from the name, email, date and brief.
+
+> **Privacy:** sharing a sheet as "Anyone with the link" exposes every lead in it. Use a dedicated export tab with only the fields this desk needs, or prefer `LEADS_CSV_FILE` / **Import CSV**.
+
+### Proposal generation
+
+Set `OPENROUTER_API_KEY` in `.env.local`. The key is read by the local Node server and never reaches the browser or the deployed site. `OPENROUTER_MODEL` defaults to `anthropic/claude-sonnet-4.5`; change it if you prefer another model.
+
+When a lead is pulled (or first opened for review), Studio Desk can draft automatically. Each draft contains:
+
+- a client-ready proposal in Markdown, grounded in the lead's business type, description and budget;
+- a fit judgement and internal summary;
+- an internal audit checklist with priorities and reasons;
+- open questions, risks, assumptions and one next internal action.
+
+The prompt is grounded in `studio/lib/agency.mjs` (services, published INR prices, process, exclusions). It is explicitly instructed not to invent clients, results, testimonials, metrics or discounts, and to treat the lead text as untrusted data.
+
+Only the brief fields — name, business, business type, service, budget, timeline and description — are sent to OpenRouter. **Email and phone stay in the local data file.**
+
+Auto-draft runs once per new lead. A failure is recorded on that lead and is **not retried automatically**, so an expired key or provider outage cannot spend money in a loop. Use **Generate proposal** to try again. Each generation is a paid OpenRouter request.
+
+### Human review workflow
+
+`New → Drafted → In review → Approved → Archived`
+
+- **Drafted** means a model draft exists. Nothing has been sent.
+- **In review** is an explicit human step.
+- **Approve** marks the draft locally with a reviewer and timestamp. Editing an approved draft automatically returns it to review.
+- **Copy proposal** / **Download .md** produce the client document; **Internal brief** adds the checklist, questions, risks and review notes.
+- An archived lead reopens in **Draft** if it has a draft, or as **New** if it never had one.
+- There is no email, WhatsApp or webhook integration in `studio/`. Sending is deliberately left to you.
+
+Drafts and leads live in `.studio-data/leads.json` (gitignored). Re-pulling the sheet updates source fields but never overwrites a draft, review note or status.
+
+### Commands
+
+```bash
+npm run studio        # start the local desk
+npm run studio:test   # CSV, workflow, prompt, OpenRouter, export and storage tests
+npm run lint          # checks src/ and studio/
+npm run build         # marketing site only; Studio Desk is not bundled
+```
+
+### Files
+
+| Path | Purpose |
+| --- | --- |
+| `studio/server.mjs` | Local HTTP server, API and static UI |
+| `studio/lib/csv.mjs` | CSV parser, header aliases, lead IDs |
+| `studio/lib/store.mjs` | Atomic local JSON storage |
+| `studio/lib/leads.mjs` | Status transitions, approval rules, draft history |
+| `studio/lib/prompt.mjs` | Proposal and audit-checklist prompt |
+| `studio/lib/agency.mjs` | Grounding facts; keep in sync with `src/config/site.js` |
+| `studio/lib/openrouter.mjs` | OpenRouter client, JSON parsing and error handling |
+| `studio/public/` | Local admin UI |
+| `studio/test/` | Node test suite |
+
 ## Reviews and honesty rules
 
 - No fake testimonials, ratings, logos, awards, team members or statistics.
