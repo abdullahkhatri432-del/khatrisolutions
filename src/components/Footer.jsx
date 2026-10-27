@@ -6,6 +6,7 @@ import { socialLinks, whatsappLink, DEFAULT_MESSAGE } from '../lib/contact'
 
 const pages = [
   { label: 'Services', to: '/services' },
+  { label: 'Live demos', to: '/demos' },
   { label: 'Work', to: '/work' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
