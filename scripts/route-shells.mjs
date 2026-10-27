@@ -44,5 +44,9 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
     await copyFile(shell, path.join(dir, 'index.html'))
   }
 
-  console.log(`Route shells written: ${routes.length}`)
+  // Unknown paths get this file, so a mistyped URL shows the branded
+  // "page not found" screen instead of a blank body. Render still answers 404.
+  await copyFile(shell, path.join(dist, '404.html'))
+
+  console.log(`Route shells written: ${routes.length} (+404)`)
 }
