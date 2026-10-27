@@ -261,7 +261,7 @@ The CSV mapper accepts the usual Google Forms / Apps Script headers (`Timestamp`
 
 ### Proposal generation
 
-Set `OPENROUTER_API_KEY` in `.env.local`. The key is read by the local Node server and never reaches the browser or the deployed site. `OPENROUTER_MODEL` defaults to `anthropic/claude-sonnet-4.5`; change it if you prefer another model.
+Set `OPENROUTER_API_KEY` in `.env.local`. The key is read by the local Node server and never reaches the browser or the deployed site. `OPENROUTER_MODEL` defaults to the free `nvidia/nemotron-3-ultra-550b-a55b:free`, so drafts cost nothing; change it if you prefer another model. Because it reasons before answering, `STUDIO_AI_MAX_TOKENS` is set to 16000 in the example config. Free endpoints have lower rate limits and may log prompts under OpenRouter's data policy, which is why email and phone are never included.
 
 When a lead is pulled (or first opened for review), Studio Desk can draft automatically. Each draft contains:
 

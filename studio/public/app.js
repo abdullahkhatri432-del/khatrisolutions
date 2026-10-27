@@ -1074,7 +1074,7 @@ LEADS_CSV_FILE=leads-export.csv</pre>
 
     <h3>Connect OpenRouter</h3>
     <pre>OPENROUTER_API_KEY=sk-or-v1-...
-OPENROUTER_MODEL=anthropic/claude-sonnet-4.5
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
 AUTO_DRAFT=true</pre>
     <p>The key is read by the local Node server and is never sent to the browser or committed to git.</p>
 

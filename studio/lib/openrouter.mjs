@@ -85,6 +85,19 @@ export function normalizeDraft(parsed, lead) {
   }
 
   const fit = String(parsed.fit || '').toLowerCase()
+  const risks = stringList(parsed.risks)
+  // Models occasionally leave a bracketed phrase such as "[your area]" even
+  // when told not to. Keep the client text exactly as written, but make the
+  // reviewer see it before anything is sent.
+  const placeholders = [
+    ...new Set(
+      [...proposalMarkdown.matchAll(/\[([^\]\n]{1,40})\](?!\()/g)].map((match) => match[0]),
+    ),
+  ]
+  if (placeholders.length > 0) {
+    risks.unshift(`Replace bracketed placeholders before sending: ${placeholders.join(', ')}.`)
+  }
+
   return {
     summary: String(parsed.summary || '').trim(),
     fit: ['strong', 'possible', 'poor'].includes(fit) ? fit : 'possible',
@@ -92,7 +105,7 @@ export function normalizeDraft(parsed, lead) {
     proposalMarkdown: proposalMarkdown.slice(0, 60000),
     checklist: normaliseChecklist(parsed.checklist),
     questions: stringList(parsed.questions),
-    risks: stringList(parsed.risks),
+    risks: risks.slice(0, 20),
     assumptions: stringList(parsed.assumptions),
     nextAction: String(parsed.nextAction || '').trim(),
   }

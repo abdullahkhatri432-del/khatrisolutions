@@ -78,7 +78,7 @@ export function loadConfig(overrides = {}) {
     csvFile: envValue(env, 'LEADS_CSV_FILE', ''),
 
     openrouterKey: envValue(env, 'OPENROUTER_API_KEY', ''),
-    openrouterModel: envValue(env, 'OPENROUTER_MODEL', 'anthropic/claude-sonnet-4.5'),
+    openrouterModel: envValue(env, 'OPENROUTER_MODEL', 'nvidia/nemotron-3-ultra-550b-a55b:free'),
     openrouterBaseUrl: envValue(env, 'OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1'),
     autoDraft: booleanValue(envValue(env, 'AUTO_DRAFT', 'true'), true),
     allowRemote: booleanValue(envValue(env, 'STUDIO_ALLOW_REMOTE', 'false'), false),

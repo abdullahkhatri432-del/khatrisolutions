@@ -131,6 +131,33 @@ test('rejects a proposal that is too short to review', () => {
   )
 })
 
+test('bracketed placeholders are flagged for review without changing the text', () => {
+  const draft = normalizeDraft(
+    {
+      proposalMarkdown: `# Proposal for Sharma Dental\n\n${'Detail. '.repeat(30)}Patients search for "dentist [your area]" and need a clear answer.`,
+      risks: ['Copy may arrive late.'],
+    },
+    LEAD,
+  )
+
+  assert.match(draft.proposalMarkdown, /\[your area\]/)
+  assert.match(draft.risks[0], /bracketed placeholders/i)
+  assert.match(draft.risks[0], /\[your area\]/)
+  assert.equal(draft.risks[1], 'Copy may arrive late.')
+})
+
+test('markdown links are not mistaken for placeholders', () => {
+  const draft = normalizeDraft(
+    {
+      proposalMarkdown: `# Proposal for Sharma Dental\n\n${'Detail. '.repeat(30)}See [our process](https://example.test/process) for the next step.`,
+      risks: [],
+    },
+    LEAD,
+  )
+
+  assert.deepEqual(draft.risks, [])
+})
+
 test('generates a draft through OpenRouter and withholds contact details', async () => {
   let request = null
   const fetchImpl = async (url, options) => {

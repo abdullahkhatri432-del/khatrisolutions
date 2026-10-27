@@ -28,7 +28,7 @@ PROPOSAL REQUIREMENTS
 - Timeline must be realistic. Only reuse a package timeline when the package genuinely fits; always say it starts after content and scope are confirmed.
 - Investment must name the recommended package and its published starting price (or "custom quote" for applications/automation), state that the final quote is confirmed in writing after scope, and note that taxes and external costs are separate.
 - "Next step" should invite a short discovery conversation and ask for the couple of things that genuinely unblock a quote.
-- No placeholders such as [Client Name], [Date] or TBD. Use the facts supplied or write around the gap honestly.
+- No placeholders of any kind: no [Client Name], [Date], [area], [city], TBD or {{tokens}}. Use the facts supplied, or describe the gap in plain words (for example "cake delivery in your area" rather than "cake delivery [area]").
 
 CHECKLIST REQUIREMENTS
 - 8–12 items, grouped by meaningful areas (for example Content, UX, Technical, SEO & measurement, Accessibility, Forms & delivery, Integrations, Compliance, Handover).
