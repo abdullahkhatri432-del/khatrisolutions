@@ -183,8 +183,7 @@ to the first step containing an error on final submit.
   configured the form validates the input, then opens WhatsApp or the visitor's email app with a
   prefilled message. Nothing is stored, and the result panel says so explicitly until the visitor
   presses send in that app. “Edit my details” preserves every answer.
-- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint and shows “Enquiry sent” only
-  after a successful response. This is how to get real email delivery on Render.
+- **`VITE_FORM_ENDPOINT` set**: the form posts URL-encoded `payload` JSON and shows “Enquiry sent” only after the endpoint replies `{"ok":true}`. On Render this is the Apps Script below, which saves the lead immediately and emails the sales partner a minute or two later.
 - **Netlify-hosted build** (opt-in, not used on Render): with `VITE_NETLIFY_FORMS=true` the form
   posts URL-encoded data to the site itself and Netlify stores and emails the submission.
 
@@ -312,6 +311,87 @@ npm run build         # marketing site only; Studio Desk is not bundled
 | `studio/public/` | Local admin UI |
 | `studio/test/` | Node test suite |
 
+## Apps Script automation (live enquiries)
+
+[`apps-script.js`](apps-script.js) is a standalone Google Apps Script that turns a form submission into a reviewable sales brief. It runs only inside Apps Script; it is not bundled into the marketing site and it does not replace Studio Desk.
+
+On each project enquiry it:
+
+1. validates the payload and stores the lead in a Google Sheet;
+2. asks OpenRouter (`nvidia/nemotron-3-ultra-550b-a55b:free` by default) for a client proposal and demo copy;
+3. deploys a one-page concept site to Vercel, or serves a public Apps Script backup demo if Vercel fails;
+4. emails the sales partner a high-priority HTML brief with the client details, proposal, live demo URL and a pre-filled `wa.me` link;
+5. records every status and error on the lead row for retries.
+
+Nothing is sent to the client automatically. The sales partner reviews the draft and presses send inside WhatsApp; the link opens the client's chat with the proposal already typed in. Review submissions are stored and emailed as a notification, and never trigger OpenRouter or a demo deployment.
+
+### Why processing is queued
+
+The public form aborts its request after 20 seconds. OpenRouter and Vercel routinely take longer than that, so `doPost` saves the lead and returns immediately. A one-minute trigger does the slow work and sends the email, so the partner normally receives the brief **1–3 minutes** after the enquiry. The form is never told “sent” before the lead has been saved.
+
+### Setup
+
+1. Open <https://script.google.com> and create a project. Paste in `apps-script.js`.
+2. Under **Project Settings → Script Properties**, add the properties below.
+3. Run `setup()` once from the editor and approve the permissions. It creates or connects the `Leads` sheet and installs the one-minute trigger.
+4. **Deploy → New deployment → Web app**: *Execute as* **Me**, *Who has access* **Anyone**. Copy the `/exec` URL.
+5. Put that URL in `VITE_FORM_ENDPOINT` in `.env.local` and in Render's environment variables, then redeploy the site.
+6. Submit a test enquiry. Either wait for the trigger or run `processQueue()` manually. Check the `Leads` sheet and the sales inbox.
+
+### Script Properties
+
+| Property | Required | Purpose |
+| --- | --- | --- |
+| `OPENROUTER_KEY` | Yes | OpenRouter API key. Without it, the grounded template proposal is used instead. |
+| `VERCEL_TOKEN` | Yes for Vercel demos | Vercel access token with deployment permission. Without it, the Apps Script backup demo is used. |
+| `SALES_EMAIL` | Yes | Recipient Gmail address. Comma-separated addresses are allowed. |
+| `LEADS_SHEET_ID` | Optional | Existing spreadsheet ID. If blank, `setup()` creates one and stores its ID. |
+| `VERCEL_TEAM_ID` | Optional | Team ID when the token belongs to a Vercel team. |
+| `VERCEL_PROJECT_PREFIX` | Optional | Project-name prefix. Default `khatri-demo`. |
+| `VERCEL_DEMO_TARGET` | Optional | `production` (default) or `preview`. |
+| `DEMO_LINK_MODE` | Optional | `auto` (default), `vercel` or `apps_script`. |
+| `OPENROUTER_MODEL` | Optional | Default `nvidia/nemotron-3-ultra-550b-a55b:free`. |
+| `OPENROUTER_MAX_TOKENS` | Optional | Default `8000`, clamped to 2000–16000. |
+| `AGENCY_WHATSAPP` | Optional | Digits only. Default `919875009874`. |
+| `AGENCY_EMAIL` | Optional | Default `khatrisolutions01@gmail.com`. |
+| `AGENCY_SITE` | Optional | Default `https://khatrisolutions.onrender.com`. |
+| `MAX_LEADS_PER_RUN` | Optional | Default `1`, clamped to 1–5. Long jobs are why this is kept small. |
+| `TIMEZONE` | Optional | Default `Asia/Kolkata`. |
+
+Never put these values in the browser bundle or in `src/config/site.js`. Apps Script properties are server-side.
+
+### Demo links
+
+Each lead gets a unique Vercel project, `khatri-demo-<business>-<leadid>`, and a production deployment by default. That keeps the link public and stable. Vercel's preview deployments can require a Vercel login under Deployment Protection, so only set `VERCEL_DEMO_TARGET=preview` if previews are public.
+
+If Vercel is missing, rejects the token or fails during deployment, the email falls back to a public Apps Script URL of the form `?page=demo&id=<leadId>&k=<demoKey>`. The email labels the provider honestly. Both demo pages are `noindex,nofollow` and carry a visible “Demo concept — not a live client website” notice.
+
+Demo pages are public links, so they deliberately leave out the client's phone number, email address and stated budget. They show the business name, who the concept was prepared for, and the concept copy only.
+
+Each lead creates its own Vercel project. Delete old demo projects from the Vercel dashboard periodically to stay within the account's project limit.
+
+Vercel Hobby is explicitly non-commercial. A commercial studio should use a plan that permits this use, or set `DEMO_LINK_MODE=apps_script` and rely on the backup demo.
+
+### Operations
+
+| Action | How |
+| --- | --- |
+| Health check | Open the web app URL with `?page=health`. It reports configuration flags, never secrets. |
+| Retry a full lead | Run `retryLead("LD-XXXXXXXX")` from the editor. It regenerates AI copy, the demo and the email. |
+| Re-send only the email | Run `resendLeadEmail("LD-XXXXXXXX")`. It reuses the stored content and demo URL. |
+| Reinstall the trigger | Run `installQueueTrigger()`. `removeQueueTrigger()` removes it. |
+| Check configuration | Run `healthCheck()` from the editor. |
+
+Statuses on the sheet are `queued`, `processing`, `ready`, `email_failed` and `failed`. A stale `processing` row is requeued automatically after 15 minutes. Duplicate submissions reuse the same lead ID; a retry after a timeout does not create a second row or a second email.
+
+`MailApp.sendEmail` sends from the script owner's Gmail and has daily quotas. The subject starts with `[HIGH PRIORITY]` and the HTML shows a high-priority chip. The script also attempts `X-Priority`/`Importance` headers; Gmail may ignore them, and if the send is rejected the script retries without them rather than dropping the lead.
+
+### Sheet columns
+
+The `Leads` sheet is also readable by Studio Desk's CSV import. It stores the form answers plus `Lead ID`, `Status`, `AI Status`, `AI Summary`, `Proposal Bullets`, `Recommended Package`, `Demo URL`, `Demo Provider`, `Email Status`, `Emailed At`, `Attempts`, `Last Error` and `Content JSON`.
+
+Lead text is written with a leading apostrophe when it starts with `=`, `+`, `-` or `@` to prevent spreadsheet formula injection.
+
 ## Reviews and honesty rules
 
 - No fake testimonials, ratings, logos, awards, team members or statistics.
@@ -390,6 +470,9 @@ explicit non-commercial clause. If this becomes the studio's main site, Render P
 
 - `npm run lint` (`npx oxlint src`) — 0 warnings, 0 errors.
 - `npm run build` — production build succeeds.
+- `node --check apps-script.js` — the Apps Script parses cleanly. A Node VM harness exercised payload parsing,
+  validation, deduplication, queue processing, AI and Vercel fallbacks, demo access keys, email re-send,
+  the Vercel request shape and email/WhatsApp content (14 checks).
 - All 9 routes render with no console errors or failed requests.
 - 0 axe-core WCAG 2.1 A/AA violations on all routes, plus inquiry steps 2 and 3.
 - 0 horizontal overflow at 320, 360, 390, 768, 1024 and 1440 px across all routes and all
