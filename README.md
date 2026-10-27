@@ -335,8 +335,11 @@ The public form aborts its request after 20 seconds. OpenRouter and Vercel routi
 2. Under **Project Settings → Script Properties**, add the properties below.
 3. Run `setup()` once from the editor and approve the permissions. It creates or connects the `Leads` sheet and installs the one-minute trigger.
 4. **Deploy → New deployment → Web app**: *Execute as* **Me**, *Who has access* **Anyone**. Copy the `/exec` URL.
-5. Put that URL in `VITE_FORM_ENDPOINT` in `.env.local` and in Render's environment variables, then redeploy the site.
-6. Submit a test enquiry. Either wait for the trigger or run `processQueue()` manually. Check the `Leads` sheet and the sales inbox.
+5. Put that URL in `FORM_ENDPOINT_DEFAULT` in `src/config/site.js`, or set `VITE_FORM_ENDPOINT` in `.env.local` and in Render's environment variables. Then redeploy the site.
+6. Open `<the /exec URL>?page=health`. It must return JSON with `"ok": true` and the current `version`. If you get an HTML page instead, the deployment is still running older code.
+7. Submit a test enquiry. Either wait for the trigger or run `processQueue()` manually. Check the `Leads` sheet and the sales inbox.
+
+The `/exec` URL checked into `src/config/site.js` belongs to an earlier deployment. A new version of the script is not live until you deploy it and update that URL: Apps Script serves the last deployed version to the web, not the copy saved in the editor.
 
 ### Script Properties
 
