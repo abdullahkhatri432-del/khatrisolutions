@@ -42,9 +42,10 @@ export const site = {
   formEndpoint: import.meta.env.VITE_FORM_ENDPOINT || '',
 
   /**
-   * Netlify Forms receives submissions when the site is built by Netlify
-   * (netlify.toml sets VITE_NETLIFY_FORMS=true). Submissions are stored in the
-   * Netlify dashboard and emailed to contact.email via a submission notification.
+   * Netlify Forms (opt-in). Only enable by setting VITE_NETLIFY_FORMS=true in a
+   * build that runs on Netlify, which handles the POST server-side. Render and
+   * other static hosts cannot store submissions, so leave it unset there and
+   * use `formEndpoint` (Formspree, Basin, Getform) or the WhatsApp/email handoff.
    * `formEndpoint` takes precedence if both are set.
    */
   netlifyForms: import.meta.env.VITE_NETLIFY_FORMS === 'true',

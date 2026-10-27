@@ -179,50 +179,45 @@ to the first step containing an error on final submit.
   requires an email address.
 - **Consent:** required before submission, with a link to the privacy notice.
 
-- **Netlify build** (current live setup): the form POSTs URL-encoded data to the site itself and
-  Netlify Forms stores the submission, then emails a copy to `site.contact.email`. The enquiry is
-  also visible under **Forms** in the Netlify dashboard. The “Enquiry sent” confirmation only
-  appears after a real 200 response.
-- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint instead, taking precedence over
-  Netlify Forms. Only shows “Enquiry sent” when the request succeeds.
-- **Neither configured** (local `npm run dev`): the form validates the input, then opens WhatsApp or
-  the visitor's email app with a prefilled message. Nothing is stored on the website, and the result
-  panel says explicitly that nothing has been sent until the visitor presses send in that app.
-  “Edit my details” preserves every answer.
+- **Render static site** (current live setup): there is no server, so unless a form endpoint is
+  configured the form validates the input, then opens WhatsApp or the visitor's email app with a
+  prefilled message. Nothing is stored, and the result panel says so explicitly until the visitor
+  presses send in that app. “Edit my details” preserves every answer.
+- **`VITE_FORM_ENDPOINT` set**: the form POSTs JSON to that endpoint and shows “Enquiry sent” only
+  after a successful response. This is how to get real email delivery on Render.
+- **Netlify-hosted build** (opt-in, not used on Render): with `VITE_NETLIFY_FORMS=true` the form
+  posts URL-encoded data to the site itself and Netlify stores and emails the submission.
 
 A failed request shows an error and keeps the answers so the visitor can retry or email directly.
 
 The review form has its own `reviewProjectTypes` list, separate from inquiry services, so editing
 one does not silently change the other.
 
-### How Netlify Forms is wired
+### Optional: Netlify Forms (not active on Render)
 
-- `netlify.toml` sets `VITE_NETLIFY_FORMS=true`, so only the Netlify build enables remote
-  submission. Local development keeps the WhatsApp / email handoff.
-- `index.html` contains two `hidden` static forms (`project-inquiry`, `client-review`). Netlify
-  detects forms by scanning built HTML, so these mirrors exist for field detection only. They render
-  at zero height and stay out of the accessibility tree. Keep their field names in sync with
-  `src/lib/inquiry.js`.
+The support still exists but is disabled by default, because Render cannot process the POST.
+
+- Set `VITE_NETLIFY_FORMS=true` in a build that actually runs on Netlify.
+- `index.html` contains two `hidden` static forms (`project-inquiry`, `client-review`) used only for
+  Netlify's build-time field detection. They render at zero height and stay out of the accessibility
+  tree. Keep their field names in sync with `src/lib/inquiry.js`.
 - `src/lib/inquiry.js` posts `application/x-www-form-urlencoded` to `/` with the matching
   `form-name`; Netlify Forms does not accept JSON.
-- Form detection must stay enabled: **Forms → Form detection**.
-- One email notification exists for `submission_created` → `khatrisolutions01@gmail.com`. Notifications
-  come from `formresponses@netlify.com`, and replies go to the visitor because the inquiry form sends
-  an `email` field.
+- On Netlify, form detection must be enabled and a `submission_created` email notification created.
 
-To use a different provider instead:
+To use a form provider on Render:
 
 1. Create a form at your provider and copy the endpoint.
-2. Add it locally in `.env` and in Netlify's environment variables:
+2. Add it locally in `.env` and in Render's environment variables:
    ```
    VITE_FORM_ENDPOINT=https://formspree.io/f/your-id
    ```
-3. Redeploy. The endpoint takes precedence over Netlify Forms.
+3. Redeploy. The endpoint takes precedence over everything else.
 
 Protection included: honeypot field, per-step and final validation, disabled buttons while sending,
-duplicate-submit guard, and no success message without a real result. Netlify additionally filters
-obvious spam and drops submissions from headless browsers. Never put an API secret in client-side
-code — only a public form endpoint belongs in `VITE_FORM_ENDPOINT`.
+duplicate-submit guard, and no success message without a real result. When Netlify Forms is enabled,
+Netlify additionally filters obvious spam and drops submissions from headless browsers. Never put an
+API secret in client-side code — only a public form endpoint belongs in `VITE_FORM_ENDPOINT`.
 
 WhatsApp is configured, so the floating button, footer link, contact card and form handoff all open
 a chat at `wa.me/919875009874` with the message prefilled. The form still says nothing has been sent
@@ -245,54 +240,35 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 
 - Per-page titles, descriptions, canonical URL and Open Graph tags via `useSeo`.
 - `public/robots.txt` and `public/sitemap.xml`, both pointing at
-  `https://khatrisolutions.netlify.app` — the current live URL.
+  `https://khatrisolutions.onrender.com` — the current live URL.
 - `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`).
-- If a custom domain is added, replace `https://khatrisolutions.netlify.app` in `robots.txt` and
-  `sitemap.xml`, and update the sitemap when routes change.
+- If the Render subdomain or a custom domain changes, replace
+  `https://khatrisolutions.onrender.com` in `robots.txt` and `sitemap.xml`, and update the sitemap
+  when routes change.
 
 No fake structured data is included.
 
 ## Deploy (free hosting that works in India)
 
-**Live:** <https://khatrisolutions.netlify.app>
+**Live:** <https://khatrisolutions.onrender.com>
 
-The site is hosted on Netlify (team *Khatrisolution*) and linked to
-<https://github.com/abdullahkhatri432-del/khatrisolutions>. Pushing to `main` runs `npm run build`
-and publishes automatically — no workflow file and no local deploy command needed.
+The site runs on Render as a **static site** in the free Hobby workspace, linked to
+<https://github.com/abdullahkhatri432-del/khatrisolutions>. Every push to `main` builds and
+publishes automatically — no workflow file and no manual upload step.
 
-The link is a Netlify deploy key plus a GitHub push webhook pointing at Netlify's GitHub hook, which
-is the same mechanism `netlify init` creates. `netlify.toml` remains the source of truth for the
-build command, `dist` as the publish folder, the SPA rewrite and asset caching. To deploy by hand,
-run `netlify deploy --dir=dist --prod` from this folder.
+`render.yaml` in the repo root holds the build command (`npm run build`), the publish folder
+(`./dist`), the SPA rewrite and the asset cache headers.
+
+> **Required Render setting.** If the service was created by hand instead of from the Blueprint,
+> add the SPA rewrite once in the Render Dashboard under **Settings → Redirects/Rewrites**:
+> source `/*`, destination `/index.html`, action **Rewrite**. Without it, `/pricing`,
+> `/contact` and other deep links return 404 while in-app navigation still works.
 
 Cloudflare Pages is not usable here: `pages.dev` domains are blocked or unreliable on several
-Indian ISPs, and account verification often fails.
+Indian ISPs, and account verification often fails. Vercel Hobby is not suitable because it is
+explicitly non-commercial.
 
-Two good free options remain: Netlify (no Git needed) and Render (Git-based). Both include free
-HTTPS and a custom domain. Vercel Hobby is not suitable because it is explicitly non-commercial.
-
-**Which one:** Netlify is the current host and is already wired to GitHub. Render remains a
-documented fallback if Netlify's credit model becomes a problem.
-
-### Netlify — current host
-
-Already connected: the site at <https://khatrisolutions.netlify.app> builds from `main` on every
-push. To reproduce it from scratch:
-
-1. Run `npm run build`.
-2. Drag the `dist` folder onto https://app.netlify.com/drop, or connect the GitHub repo.
-3. Claim the site to keep the free `*.netlify.app` address.
-4. `netlify.toml` already sets the build command, `dist` as the publish folder, the SPA rewrite so
-   `/work/wellness-physiotherapy` survives a refresh, and long-term caching for hashed assets.
-5. Add `VITE_FORM_ENDPOINT` under **Site configuration → Environment variables** if you use a form
-   service, then redeploy.
-6. Update `robots.txt` and `sitemap.xml` with the final domain.
-
-Netlify's free plan is credit-based (300 credits/month). Bandwidth uses 20 credits per GB,
-production deploys 15 credits each, so the free allowance covers a small studio site but not a
-traffic spike.
-
-### Render — good if you deploy from GitHub
+### Render — current host
 
 1. Push this folder to a GitHub repository.
 2. In Render: **New → Blueprint** and connect the repo. (To create it by hand instead, choose
@@ -304,17 +280,18 @@ traffic spike.
 5. Free limits: **5 GB outbound bandwidth** and **500 build minutes** per month. At the current
    page weight (~270 KB per first visit), 5 GB is roughly 15,000–18,000 visits; repeat visits are
    cheaper because fonts and assets are cached.
-6. Add `VITE_FORM_ENDPOINT` under **Environment** if you use a form service, then redeploy.
+6. Static hosting cannot store form submissions. Set `VITE_FORM_ENDPOINT` under **Environment**
+   (Formspree, Basin, Getform) to deliver enquiries, or the form keeps the WhatsApp / email draft
+   handoff.
 7. Test the `*.onrender.com` URL on Jio and Airtel before pointing a custom domain at it. There are
    no widespread reports of `onrender.com` being blocked in India, but ISP-level filtering varies.
-8. Update `robots.txt` and `sitemap.xml` with the final domain.
+8. If the domain changes, update `robots.txt` and `sitemap.xml`.
 
 If you exceed 5 GB without a payment method on file, Render suspends the site until the next
 month. With a payment method, extra bandwidth is billed at $0.15/GB.
 
 Render describes Hobby as being for personal projects, although its terms do not include Vercel's
-explicit non-commercial clause. If this becomes the studio's main site, Render Pro is $25/month;
-Netlify Personal is $9/month.
+explicit non-commercial clause. If this becomes the studio's main site, Render Pro is $25/month.
 
 ### Other free options
 
