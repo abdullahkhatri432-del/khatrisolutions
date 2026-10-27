@@ -105,15 +105,58 @@ export function buildReviewText(values) {
     .join('\n')
 }
 
+/**
+ * Google Apps Script Web Apps only accept "simple" CORS requests, so the body
+ * is URL-encoded with a single `payload` field holding the JSON string. Sending
+ * application/json would trigger a preflight the script does not answer.
+ *
+ * The script replies with JSON, e.g. {"ok":true,"lead_id":"..."} or
+ * {"ok":false,"error":"..."}. Success is only reported when ok is true.
+ */
 async function postToEndpoint(payload) {
-  const response = await fetch(site.formEndpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify(payload),
-  })
+  const body = new URLSearchParams()
+  body.set('payload', JSON.stringify(payload))
 
-  if (!response.ok) {
-    throw new Error(`The form service responded with ${response.status}.`)
+  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null
+  const timer = controller ? setTimeout(() => controller.abort(), 20000) : null
+
+  try {
+    const response = await fetch(site.formEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: body.toString(),
+      signal: controller ? controller.signal : undefined,
+    })
+
+    if (!response.ok) {
+      throw new Error(`The form service responded with ${response.status}.`)
+    }
+
+    const raw = await response.text()
+    let result = null
+    try {
+      result = raw ? JSON.parse(raw) : null
+    } catch {
+      throw new Error('The form service sent an unexpected response. Please try again or use WhatsApp or email.')
+    }
+
+    if (!result || result.ok !== true) {
+      const reason = typeof result?.error === 'string' ? result.error.trim() : ''
+      throw new Error(
+        reason
+          ? `The form service rejected the message: ${reason}`
+          : 'The form service did not confirm the message was saved. Please try again or use WhatsApp or email.',
+      )
+    }
+
+    return result
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      throw new Error('The form service took too long to respond. Please try again or use WhatsApp or email.')
+    }
+    throw error
+  } finally {
+    if (timer) clearTimeout(timer)
   }
 }
 
@@ -159,14 +202,22 @@ export async function sendMessage({ kind, values, text, subject, spam }) {
 
   if (site.formEndpoint) {
     try {
-      await postToEndpoint({
+      const payload = {
         kind,
         ...values,
         message: text,
         _subject: subject,
         source: typeof window !== 'undefined' ? window.location.href : '',
         _gotcha: '',
-      })
+      }
+
+      // The Apps Script requires a `service`. Reviews record the reviewer's
+      // chosen project type instead, so map it rather than sending a blank.
+      if (!payload.service && payload.projectType) {
+        payload.service = payload.projectType
+      }
+
+      await postToEndpoint(payload)
       return { ok: true, mode: 'endpoint' }
     } catch (error) {
       return { ok: false, mode: 'endpoint', error: error.message }

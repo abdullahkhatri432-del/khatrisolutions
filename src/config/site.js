@@ -13,6 +13,11 @@
  *   hides the live-demo button automatically while it is empty.
  */
 
+const FORM_ENDPOINT_DEFAULT =
+  'https://script.google.com/macros/s/AKfycbxo1MH6bdnGLihIQD6sg88xLLqQlMrd-aOajoGXMZAR87V5Sz1JDyppR0rJoMjHfdg/exec'
+
+const formEndpoint = import.meta.env.VITE_FORM_ENDPOINT || FORM_ENDPOINT_DEFAULT
+
 export const site = {
   name: 'Khatri Solutions',
   tagline: 'Digital Experiences. Smarter Business.',
@@ -38,18 +43,28 @@ export const site = {
   currency: '₹',
   established: 2026,
 
-  /** Optional form endpoint (Formspree, Basin, Getform, your own API). */
-  formEndpoint: import.meta.env.VITE_FORM_ENDPOINT || '',
+  /**
+   * Live form endpoint. This is a Google Apps Script Web App that accepts a
+   * form-encoded `payload` field and forwards the enquiry by email.
+   * Override with VITE_FORM_ENDPOINT only if you replace the Apps Script.
+   */
+  formEndpoint,
 
   /**
    * Netlify Forms (opt-in). Only enable by setting VITE_NETLIFY_FORMS=true in a
    * build that runs on Netlify, which handles the POST server-side. Render and
    * other static hosts cannot store submissions, so leave it unset there and
-   * use `formEndpoint` (Formspree, Basin, Getform) or the WhatsApp/email handoff.
+   * use `formEndpoint` (Google Apps Script) or the WhatsApp/email handoff.
    * `formEndpoint` takes precedence if both are set.
    */
   netlifyForms: import.meta.env.VITE_NETLIFY_FORMS === 'true',
-  formProvider: import.meta.env.VITE_NETLIFY_FORMS === 'true' ? 'Netlify Forms' : '',
+  formProvider: formEndpoint
+    ? formEndpoint === FORM_ENDPOINT_DEFAULT
+      ? 'Google Apps Script'
+      : ''
+    : import.meta.env.VITE_NETLIFY_FORMS === 'true'
+      ? 'Netlify Forms'
+      : '',
 
   /** Correct. We are a new, independent studio. Don't change this to a fake claim. */
   disclosure:
