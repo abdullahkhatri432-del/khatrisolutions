@@ -1,9 +1,13 @@
-import { ArrowRight, Check, CircleAlert, Info } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, Check, CircleAlert, Info, MonitorPlay } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
 import { services, pricingNote, pricingNotes } from '../config/site'
+import { demoSites } from '../demos/demoSites'
+
+const demosFor = (slug) => demoSites.filter((demo) => demo.serviceSlug === slug)
 
 export default function Services() {
   useSeo({
@@ -57,6 +61,17 @@ export default function Services() {
                   <div>
                     <h2>{service.title}</h2>
                     <p className="service-block__summary">{service.summary}</p>
+                    {demosFor(service.slug).length > 0 ? (
+                      <p className="service-demo">
+                        <MonitorPlay size={14} aria-hidden="true" />
+                        <span>Live demo:</span>
+                        {demosFor(service.slug).map((demo) => (
+                          <Link key={demo.slug} to={`/demos/${demo.slug}`}>
+                            {demo.name}
+                          </Link>
+                        ))}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
                 <div className="service-block__panel" style={{ marginTop: '1.25rem' }}>

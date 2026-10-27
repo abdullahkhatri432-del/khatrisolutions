@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ExternalLink, Check } from 'lucide-react'
 import ProjectPreview from './ProjectPreview'
-
 const TYPE_CLASS = {
   'Client project': 'pill--success',
   'Demo project': 'pill--accent',
@@ -51,10 +50,22 @@ export default function ProjectCard({ project, row = false, headingLevel: Headin
           </span>
           <span className="project-card__links">
             {project.demoUrl ? (
-              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="link-arrow">
-                Live demo
-                <ExternalLink size={13} aria-hidden="true" />
-              </a>
+              project.demoUrl.startsWith('http') ? (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-arrow project-card__demo"
+                >
+                  Live demo
+                  <ExternalLink size={13} aria-hidden="true" />
+                </a>
+              ) : (
+                <Link to={project.demoUrl} className="link-arrow project-card__demo">
+                  Open live demo
+                  <ExternalLink size={13} aria-hidden="true" />
+                </Link>
+              )
             ) : (
               <span className="tiny muted">Live demo not published yet</span>
             )}

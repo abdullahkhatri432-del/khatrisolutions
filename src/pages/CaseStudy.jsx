@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, Check, ChevronRight, ExternalLink, Github, Info, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, ExternalLink, Github, Info, ShieldCheck } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import ProjectPreview from '../components/ProjectPreview'
@@ -33,6 +33,11 @@ export default function CaseStudy() {
   }
 
   const study = project.caseStudy
+  const demoLink = project.demoUrl
+    ? project.demoUrl.startsWith('http')
+      ? { href: project.demoUrl }
+      : { to: project.demoUrl }
+    : null
 
   return (
     <>
@@ -57,7 +62,7 @@ export default function CaseStudy() {
 
           <div className="btn-row" style={{ marginTop: '1.6rem' }}>
             {project.demoUrl ? (
-              <Button href={project.demoUrl} variant="primary" iconRight={ExternalLink}>
+              <Button {...demoLink} variant="primary" iconRight={ExternalLink}>
                 Open live demo
               </Button>
             ) : (
@@ -82,7 +87,9 @@ export default function CaseStudy() {
               <ProjectPreview project={project} large />
               <p className="tiny muted" style={{ marginTop: '0.6rem' }}>
                 <Info size={13} aria-hidden="true" style={{ display: 'inline', marginRight: '0.35rem' }} />
-                Design preview generated from the project’s layout — not a screenshot of a deployed site.
+                {project.demoUrl
+                  ? 'Design preview of the layout. The live demo above is the actual working site — click through it.'
+                  : 'Design preview generated from the project’s layout — not a screenshot of a deployed site.'}
               </p>
             </div>
 
@@ -127,6 +134,14 @@ export default function CaseStudy() {
                 <ShieldCheck size={15} aria-hidden="true" />
                 <span>{study.status}</span>
               </div>
+              {project.demoUrl ? (
+                <p className="case__demo">
+                  <Link to={project.demoUrl} className="link-arrow">
+                    Open the working demo
+                    <ArrowUpRight size={13} aria-hidden="true" />
+                  </Link>
+                </p>
+              ) : null}
             </div>
 
             <div className="btn-row">

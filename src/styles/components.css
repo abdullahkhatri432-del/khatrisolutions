@@ -1934,3 +1934,9 @@
 .prose a.btn--primary {
   color: #fff;
 }
+
+/* Live demo links must sit above the card's title-link overlay. */
+.project-card__demo {
+  position: relative;
+  z-index: 2;
+}

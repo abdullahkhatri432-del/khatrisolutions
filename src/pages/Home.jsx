@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, ArrowUpRight, Check, ShieldCheck, Star } from 'lucide-react'
 import Button from '../components/Button'
+import DemoCard from '../components/DemoCard'
 import ProjectCard from '../components/ProjectCard'
 import ProjectPreview from '../components/ProjectPreview'
 import ProcessList from '../components/ProcessList'
@@ -10,6 +11,11 @@ import SectionHeading from '../components/SectionHeading'
 import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
 import { site, hero, stats, services, process, principles, faqs, projects } from '../config/site'
+import { demoSites } from '../demos/demoSites'
+
+const featuredDemos = demoSites.filter((demo) =>
+  ['atelier-nine', 'northline-store', 'enquiry-triage'].includes(demo.slug),
+)
 
 export default function Home() {
   useSeo({ path: '/', description: site.description })
@@ -58,10 +64,16 @@ export default function Home() {
               </div>
               <div className="hero__caption">
                 <span>Demo build — not a client project</span>
-                <Link to="/work/wellness-physiotherapy" className="link-arrow">
-                  View case study
-                  <ArrowUpRight size={14} aria-hidden="true" />
-                </Link>
+                <span className="hero__captionlinks">
+                  <Link to="/demos/wellness-physiotherapy" className="link-arrow">
+                    Open live demo
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </Link>
+                  <Link to="/work/wellness-physiotherapy" className="link-arrow">
+                    Case study
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </Link>
+                </span>
               </div>
             </div>
           </div>
@@ -155,6 +167,31 @@ export default function Home() {
               built.
             </span>
           </p>
+        </div>
+      </section>
+
+      <section className="section" id="demos">
+        <div className="container">
+          <div className="section-head__row">
+            <SectionHeading
+              eyebrow="Live demos"
+              title={
+                <>
+                  Do not take our word for it — <span className="accent">use the work</span>
+                </>
+              }
+              intro="Six working demo sites, one per service. Filter a gallery, add something to a cart, sort an enquiry, open a dashboard. Every business inside them is fictional, and every demo says so."
+            />
+            <Button to="/demos" variant="outline" size="sm" iconRight={ArrowRight}>
+              All six demos
+            </Button>
+          </div>
+
+          <div className="demo-grid">
+            {featuredDemos.map((demo) => (
+              <DemoCard key={demo.slug} demo={demo} headingLevel={3} />
+            ))}
+          </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@
  * This is deliberately not a screenshot — no fake browser screenshots of
  * websites that do not exist.
  */
-export default function ProjectPreview({ project, large = false, className = '' }) {
+export default function ProjectPreview({ project, large = false, className = '', badge = 'Design preview' }) {
   const preview = project.preview || {}
 
   return (
@@ -32,7 +32,7 @@ export default function ProjectPreview({ project, large = false, className = '' 
           </div>
         </div>
       </div>
-      <span className="preview__badge">Design preview</span>
+      <span className="preview__badge">{badge}</span>
     </div>
   )
 }

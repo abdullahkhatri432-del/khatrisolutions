@@ -66,6 +66,7 @@ export const site = {
 export const nav = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
+  { label: 'Demos', to: '/demos' },
   { label: 'Work', to: '/work' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
@@ -88,7 +89,7 @@ export const hero = {
 }
 
 export const stats = [
-  { value: '5', label: 'Demo and concept builds in the portfolio' },
+  { value: '6', label: 'Demo and concept builds in the portfolio' },
   { value: '5–14 days', label: 'Typical delivery for a starter or business website' },
   { value: '₹3,999+', label: 'Starting price for a compact website' },
 ]
@@ -426,7 +427,7 @@ export const projects = [
       'Image-light, type-led layout for fast loading',
     ],
     stack: ['React', 'Vite', 'CSS'],
-    demoUrl: null,
+    demoUrl: '/demos/atelier-nine',
     repoUrl: null,
     caseStudy: {
       overview:
@@ -462,7 +463,7 @@ export const projects = [
       'Patient-focused copy and responsive layout',
     ],
     stack: ['React', 'Vite', 'CSS'],
-    demoUrl: null,
+    demoUrl: '/demos/wellness-physiotherapy',
     repoUrl: null,
     caseStudy: {
       overview:
@@ -498,7 +499,7 @@ export const projects = [
       'Directions, call and WhatsApp shortcuts',
     ],
     stack: ['React', 'Vite', 'CSS'],
-    demoUrl: null,
+    demoUrl: '/demos/saffron-table',
     repoUrl: null,
     caseStudy: {
       overview:
@@ -534,7 +535,7 @@ export const projects = [
       'Checkout form with inline validation',
     ],
     stack: ['React', 'Vite', 'CSS', 'Context API'],
-    demoUrl: null,
+    demoUrl: '/demos/northline-store',
     repoUrl: null,
     caseStudy: {
       overview:
@@ -570,7 +571,7 @@ export const projects = [
       'Printable daily schedule',
     ],
     stack: ['React', 'Vite', 'CSS', 'Local mock data'],
-    demoUrl: null,
+    demoUrl: '/demos/clinic-ops',
     repoUrl: null,
     caseStudy: {
       overview:
@@ -589,6 +590,42 @@ export const projects = [
     },
     preview: { headline: 'Today at a glance.', sub: 'Front desk · 18 appointments', cta: 'Open schedule' },
   },
+  {
+    slug: 'enquiry-triage',
+    title: 'Enquiry Triage',
+    category: 'AI automation',
+    type: 'Demo project',
+    year: 2026,
+    accent: '#4b3f8f',
+    thumbIcon: 'Sparkles',
+    summary:
+      'A working simulation that sorts an incoming enquiry, sets a priority and drafts a first reply for a human to review.',
+    features: [
+      'Intent and priority detection from the message text',
+      'Draft reply a person can edit before sending',
+      'Clear signals showing why a message was sorted that way',
+      'Runs entirely in the browser — no message leaves the page',
+    ],
+    stack: ['React', 'Vite', 'CSS', 'Keyword rules'],
+    demoUrl: '/demos/enquiry-triage',
+    repoUrl: null,
+    caseStudy: {
+      overview:
+        'A demonstration of assisted enquiry handling for a small studio. It shows the workflow a business would use to sort incoming messages and answer the urgent ones first, without pretending a chatbot is doing the thinking.',
+      problem:
+        'Enquiries arrive across email, WhatsApp and website forms. The important ones — a complaint, a broken form, a ready-to-buy client — sit in the same list as tyre-kickers, so replies go out late or never.',
+      solution:
+        'Each message is classified by intent, given a priority, and paired with a draft reply written in the studio’s tone. A person reviews and sends. The demo uses transparent keyword rules so nothing about the result is a black box.',
+      highlights: [
+        'Priority and intent are shown with the words that triggered them',
+        'The draft is editable, not auto-sent',
+        'Urgent and complaint messages surface first',
+        'No AI API key, account or cost is required for the demo',
+      ],
+      status: 'Demo build — browser-based keyword rules, not a live AI service.',
+    },
+    preview: { headline: 'Every enquiry, sorted.', sub: 'Assisted triage · demo', cta: 'Sort an enquiry' },
+  },
 ]
 
 export const projectCategories = [
@@ -598,6 +635,7 @@ export const projectCategories = [
   'Restaurants',
   'E-commerce',
   'Web applications',
+  'AI automation',
 ]
 
 /**
