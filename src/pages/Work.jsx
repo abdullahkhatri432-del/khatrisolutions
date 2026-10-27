@@ -61,7 +61,7 @@ export default function Work() {
           {visible.length > 0 ? (
             <div className="project-list">
               {visible.map((project) => (
-                <ProjectCard key={project.slug} project={project} row />
+                <ProjectCard key={project.slug} project={project} row headingLevel="h2" />
               ))}
             </div>
           ) : (

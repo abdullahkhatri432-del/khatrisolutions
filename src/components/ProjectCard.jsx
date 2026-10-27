@@ -8,7 +8,7 @@ const TYPE_CLASS = {
   'Concept project': 'pill',
 }
 
-export default function ProjectCard({ project, row = false }) {
+export default function ProjectCard({ project, row = false, headingLevel: Heading = 'h3' }) {
   return (
     <article className={`project-card ${row ? 'project-card--row' : ''}`.trim()}>
       <div className="project-card__media">
@@ -25,9 +25,9 @@ export default function ProjectCard({ project, row = false }) {
         </div>
 
         <div className="project-card__title">
-          <h3>
+          <Heading>
             <Link to={`/work/${project.slug}`}>{project.title}</Link>
-          </h3>
+          </Heading>
           <span className="project-card__year">{project.year}</span>
         </div>
 

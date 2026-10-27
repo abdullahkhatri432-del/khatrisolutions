@@ -578,7 +578,7 @@
   gap: 0.75rem;
 }
 
-.project-card__title h3 {
+.project-card__title :is(h2, h3) {
   font-family: var(--font-serif);
   font-size: clamp(1.35rem, 2.1vw, 1.6rem);
   font-weight: 500;
