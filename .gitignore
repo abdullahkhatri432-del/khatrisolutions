@@ -15,6 +15,9 @@ dist
 .env.*
 !.env.example
 
+# Vercel CLI
+.vercel
+
 # Editors
 .vscode/*
 !.vscode/extensions.json
