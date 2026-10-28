@@ -85,7 +85,8 @@ export default function WellnessPhysio() {
               <a href="#book" className="d-btn">
                 Request an appointment
               </a>
-              <a href="tel:+919875009874" className="d-btn d-btn--ghost">
+              {/* Fictional number: Indian mobile numbers start 6–9, so this can never ring anyone. */}
+              <a href="tel:+910000000000" className="d-btn d-btn--ghost">
                 <Phone size={15} aria-hidden="true" />
                 Call the clinic
               </a>
@@ -186,7 +187,7 @@ export default function WellnessPhysio() {
               </p>
               <p>
                 <Phone size={15} aria-hidden="true" />
-                +91 98750 09874
+                +91 00000 00000
               </p>
             </div>
           </div>

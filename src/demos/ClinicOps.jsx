@@ -150,25 +150,25 @@ export default function ClinicOps() {
           ) : null}
 
           <div className="co-tablewrap">
-            <table className="co-table">
+            <table className="co-table" role="table">
               <caption className="sr-only">Appointments for 27 October 2026</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Time</th>
-                  <th scope="col">Patient</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Clinician</th>
-                  <th scope="col">Status</th>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th scope="col" role="columnheader">Time</th>
+                  <th scope="col" role="columnheader">Patient</th>
+                  <th scope="col" role="columnheader">Type</th>
+                  <th scope="col" role="columnheader">Clinician</th>
+                  <th scope="col" role="columnheader">Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody role="rowgroup">
                 {rows.map((row) => (
-                  <tr key={row.id}>
-                    <td className="co-time">{row.time}</td>
-                    <td>{row.patient}</td>
-                    <td className="co-muted">{row.type}</td>
-                    <td className="co-muted">{row.clinician}</td>
-                    <td>
+                  <tr key={row.id} role="row">
+                    <td className="co-time" role="cell">{row.time}</td>
+                    <td role="cell">{row.patient}</td>
+                    <td className="co-muted" role="cell">{row.type}</td>
+                    <td className="co-muted" role="cell">{row.clinician}</td>
+                    <td role="cell">
                       <span className={`co-badge co-badge--${row.status.toLowerCase()}`}>
                         <CircleDot size={11} aria-hidden="true" />
                         {row.status}
