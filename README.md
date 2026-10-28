@@ -178,7 +178,7 @@ to the first step containing an error on final submit.
   requires an email address.
 - **Consent:** required before submission, with a link to the privacy notice.
 
-- **Render static site** (current live setup): there is no server. The form posts to the Apps Script
+- **Vercel static hosting** (current live setup): there is no server. The form posts to the Apps Script
   endpoint configured in `site.formEndpoint`, which emails the enquiry. Without an endpoint it would
   only validate the input and hand the message to WhatsApp or the visitor's email app.
 - **`VITE_FORM_ENDPOINT` set**: overrides the default endpoint. The form posts URL-encoded `payload`
@@ -214,59 +214,41 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 
 - Per-page titles, descriptions, canonical URL and Open Graph tags via `useSeo`.
 - `public/robots.txt` and `public/sitemap.xml`, both pointing at
-  `https://khatrisolutions.onrender.com` — the current live URL.
+  `https://khatrisolutions.vercel.app` — the current live URL.
 - `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`).
-- If the Render subdomain or a custom domain changes, replace
-  `https://khatrisolutions.onrender.com` in `robots.txt` and `sitemap.xml`, and update the sitemap
+- If the Vercel subdomain or a custom domain changes, replace
+  `https://khatrisolutions.vercel.app` in `robots.txt` and `sitemap.xml`, and update the sitemap
   when routes change.
 
 No fake structured data is included.
 
-## Deploy (free hosting that works in India)
+## Deploy (Vercel)
 
-**Live:** <https://khatrisolutions.onrender.com>
+**Live:** <https://khatrisolutions.vercel.app>
 
-The site runs on Render as a **static site** in the free Hobby workspace, linked to
+The site runs on Vercel as a static Vite build, linked to
 <https://github.com/abdullahkhatri432-del/khatrisolutions>. Every push to `main` builds and
 publishes automatically — no workflow file and no manual upload step.
 
-`render.yaml` in the repo root holds the build command (`npm run build`), the publish folder
-(`./dist`), the SPA rewrite and the asset cache headers.
+`vercel.json` in the repo root holds the framework preset, the build command (`npm run build`), the
+output folder (`dist`) and the cache headers for hashed assets.
 
-> **Required Render setting.** If the service was created by hand instead of from the Blueprint,
-> add the SPA rewrite once in the Render Dashboard under **Settings → Redirects/Rewrites**:
-> source `/*`, destination `/index.html`, action **Rewrite**. Without it, `/pricing`,
-> `/contact` and other deep links return 404 while in-app navigation still works.
+There is deliberately **no catch-all rewrite**. The build writes a copy of the app shell to
+`dist/<route>/index.html` for every real route (see `scripts/route-shells.mjs`) plus `dist/404.html`,
+so Vercel serves deep links as real files and answers unknown paths with a genuine 404 status
+instead of a 200 that only looks correct.
 
-Cloudflare Pages is not usable here: `pages.dev` domains are blocked or unreliable on several
-Indian ISPs, and account verification often fails. Vercel Hobby is not suitable because it is
-explicitly non-commercial.
+> **Plan note.** Vercel's free Hobby plan is limited by their Fair Use Policy to personal,
+> non-commercial projects. This is the studio's business site, so it is running on Hobby knowingly;
+> if that becomes a concern, Vercel Pro is $20/month.
 
-### Render — current host
+### Render — retired
 
-1. Push this folder to a GitHub repository.
-2. In Render: **New → Blueprint** and connect the repo. (To create it by hand instead, choose
-   **New → Static Site** and copy the same build settings.)
-3. Render reads `render.yaml` in the repo root: build `npm run build`, publish `./dist`, rewrite
-   every unknown path to `index.html`, and cache hashed assets for a year.
-4. Choose the free **Hobby** workspace. Static sites do **not** spin down on idle — that limitation
-   only applies to free web services.
-5. Free limits: **5 GB outbound bandwidth** and **500 build minutes** per month. At the current
-   page weight (~270 KB per first visit), 5 GB is roughly 15,000–18,000 visits; repeat visits are
-   cheaper because fonts and assets are cached.
-6. Static hosting cannot store form submissions, so the form posts to the Google Apps Script endpoint in
-   `src/config/site.js`. Set `VITE_FORM_ENDPOINT` under **Environment** only if you replace that script.
-7. Test the `*.onrender.com` URL on Jio and Airtel before pointing a custom domain at it. There are
-   no widespread reports of `onrender.com` being blocked in India, but ISP-level filtering varies.
-8. If the domain changes, update `robots.txt` and `sitemap.xml`.
+The site was previously served from <https://khatrisolutions.onrender.com>. That service is no
+longer the live site: `render.yaml` has been removed, and the Render service should be deleted in
+the dashboard so the old URL does not serve a stale copy.
 
-If you exceed 5 GB without a payment method on file, Render suspends the site until the next
-month. With a payment method, extra bandwidth is billed at $0.15/GB.
-
-Render describes Hobby as being for personal projects, although its terms do not include Vercel's
-explicit non-commercial clause. If this becomes the studio's main site, Render Pro is $25/month.
-
-### Other free options
+### Other hosts that also work
 
 - **Firebase Hosting** — generous free Spark plan, good performance in India. Needs
   `firebase.json` with a `"rewrites": [{ "source": "**", "destination": "/index.html" }]` rule.

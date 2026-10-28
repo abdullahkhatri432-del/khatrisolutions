@@ -5,7 +5,7 @@ import { writeRouteShells } from './scripts/route-shells.mjs'
 /**
  * Emits an app-shell copy for every real route (see scripts/route-shells.mjs).
  * Doing this inside the Vite build keeps deep links working on static hosts
- * such as Render, even when the build command is a bare `vite build`.
+ * such as Vercel, even when the build command is a bare `vite build`.
  */
 function routeShells() {
   return {

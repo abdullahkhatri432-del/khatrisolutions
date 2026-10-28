@@ -2,9 +2,9 @@ import { copyFile, mkdir, readdir } from 'node:fs/promises'
 import path from 'node:path'
 
 /**
- * Render serves a file when one exists at the request path and only falls back
- * to redirect/rewrite rules otherwise. Static hosting has no SPA fallback by
- * default, so deep links like /pricing would 404 on a refresh.
+ * Static hosts (Vercel included) serve a file when one exists at the request
+ * path and only fall back to redirect/rewrite rules otherwise. Without an SPA
+ * fallback, deep links like /pricing would 404 on a refresh.
  *
  * Writing a copy of the app shell to <route>/index.html makes each real route
  * resolve to the shell, so React Router can take over on a cold load. Unknown
@@ -53,7 +53,7 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
   }
 
   // Unknown paths get this file, so a mistyped URL shows the branded
-  // "page not found" screen instead of a blank body. Render still answers 404.
+  // "page not found" screen instead of a blank body. The host still answers 404.
   await copyFile(shell, path.join(dist, '404.html'))
 
   console.log(`Route shells written: ${routes.length} (+404)`)

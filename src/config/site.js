@@ -46,8 +46,9 @@ export const site = {
   /**
    * Live form endpoint. This is a Google Apps Script Web App that accepts a
    * form-encoded `payload` field and forwards the enquiry by email. It is the
-   * only backend: Render serves static files and cannot store submissions.
-   * Override with VITE_FORM_ENDPOINT only if you replace the Apps Script.
+   * only backend: the site is static hosting, so the page cannot store
+   * submissions itself. Override with VITE_FORM_ENDPOINT only if you replace
+   * the Apps Script.
    */
   formEndpoint,
 

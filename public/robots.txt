@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://khatrisolutions.onrender.com/sitemap.xml
+Sitemap: https://khatrisolutions.vercel.app/sitemap.xml
