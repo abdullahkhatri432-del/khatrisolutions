@@ -17,6 +17,7 @@
   letter-spacing: 0.01em;
   line-height: 1.2;
   text-align: center;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color 0.2s var(--ease),
@@ -253,6 +254,14 @@
   }
 }
 
+/* 1024–1151px is the tightest the full nav gets. Trim the link spacing so the
+   call-to-action stays on one line next to a scrollbar-reduced viewport. */
+@media (min-width: 64rem) and (max-width: 71.99rem) {
+  .nav__link {
+    margin-inline: 0.5rem;
+  }
+}
+
 .nav__panel {
   border-top: 1px solid var(--line);
   background: var(--paper);
@@ -265,7 +274,7 @@
   margin-bottom: 1.25rem;
 }
 
-.nav__panel a {
+.nav__panel ul a {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -277,7 +286,7 @@
   font-weight: 500;
 }
 
-.nav__panel a[aria-current='page'] {
+.nav__panel ul a[aria-current='page'] {
   color: var(--accent-strong);
 }
 

@@ -664,9 +664,19 @@
 }
 
 @media (max-width: 620px) {
-  .demo-bar__brandtext span,
-  .demo-bar__link {
-    display: none;
+  /* Keep the agency name in the accessibility tree but show only the mark, so
+     the "All demos" back-link fits next to the call to action. */
+  .demo-bar__brandtext {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 
   .at-header__inner {
