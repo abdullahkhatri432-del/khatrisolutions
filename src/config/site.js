@@ -16,14 +16,20 @@
 const FORM_ENDPOINT_DEFAULT =
   'https://script.google.com/macros/s/AKfycbxo1MH6bdnGLihIQD6sg88xLLqQlMrd-aOajoGXMZAR87V5Sz1JDyppR0rJoMjHfdg/exec'
 
-const formEndpoint = import.meta.env.VITE_FORM_ENDPOINT || FORM_ENDPOINT_DEFAULT
+const formEndpoint = import.meta.env?.VITE_FORM_ENDPOINT || FORM_ENDPOINT_DEFAULT
 
 export const site = {
   name: 'Khatri Solutions',
   tagline: 'Digital Experiences. Smarter Business.',
   positioning: 'Websites and AI-powered solutions for growing businesses.',
+  /**
+   * Canonical origin used for the static SEO tags that the build writes into
+   * each route shell (canonical link, og:url, og:image, sitemap.xml, robots.txt).
+   * Change this if a custom domain replaces the Vercel URL.
+   */
+  url: 'https://khatrisolutions.vercel.app',
   description:
-    'Khatri Solutions is an independent studio building professional websites, online stores, web applications and practical AI automation for small businesses and startups.',
+    'Khatri Solutions builds professional websites, online stores, web applications and practical AI automation for small businesses and startups.',
 
   /**
    * Contact details.

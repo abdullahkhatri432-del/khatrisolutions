@@ -24,7 +24,7 @@ export function useSeo({ title, description, path = '/', image = '/og-image.png'
   useEffect(() => {
     const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Websites & AI Automation`
     const desc = description || site.description
-    const origin = window.location.origin
+    const origin = site.url || window.location.origin
     const url = `${origin}${path}`
 
     document.title = fullTitle
@@ -41,6 +41,11 @@ export function useSeo({ title, description, path = '/', image = '/og-image.png'
     upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: fullTitle })
     upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: desc })
 
-    upsertLink('canonical', url)
+    // Error pages stay out of the index and carry no canonical.
+    if (noindex) {
+      document.head.querySelector('link[rel="canonical"]')?.remove()
+    } else {
+      upsertLink('canonical', url)
+    }
   }, [title, description, path, image, noindex])
 }

@@ -1,42 +1,112 @@
-import { copyFile, mkdir, readdir } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
+import { mkdir, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { projects, site } from '../src/config/site.js'
+import { caseStudyMeta, demoMeta, fullTitle, pageSeo } from '../src/config/seo.js'
+import { demoSites } from '../src/demos/demoSites.js'
 
 /**
- * Static hosts (Vercel included) serve a file when one exists at the request
- * path and only fall back to redirect/rewrite rules otherwise. Without an SPA
- * fallback, deep links like /pricing would 404 on a refresh.
- *
- * Writing a copy of the app shell to <route>/index.html makes each real route
- * resolve to the shell, so React Router can take over on a cold load. Unknown
- * paths still 404, which is the correct signal for crawlers.
- *
- * This runs from the Vite build (see vite.config.js), not a postbuild script,
- * so it also applies when a host runs `vite build` directly.
- *
- * Keep this list in sync with src/App.jsx and public/sitemap.xml.
+ * Every real route, with the head metadata its page uses. The same values feed
+ * the static HTML written below and the sitemap, so routes, titles and
+ * descriptions cannot drift apart.
  */
-export const routes = [
-  'services',
-  'demos',
-  'demos/atelier-nine',
-  'demos/wellness-physiotherapy',
-  'demos/saffron-table',
-  'demos/northline-store',
-  'demos/clinic-ops',
-  'demos/enquiry-triage',
-  'work',
-  'work/atelier-nine',
-  'work/wellness-physiotherapy',
-  'work/saffron-table-restaurant',
-  'work/northline-store',
-  'work/clinic-ops-dashboard',
-  'work/enquiry-triage',
-  'pricing',
-  'about',
-  'reviews',
-  'contact',
-  'privacy',
-]
+export function routeEntries() {
+  const entries = [
+    { path: '/', title: null, description: site.description },
+    ...Object.entries(pageSeo).map(([route, meta]) => ({ path: route, ...meta })),
+    ...projects.map((project) => ({ ...caseStudyMeta(project) })),
+    ...demoSites.map((demo) => ({ ...demoMeta(demo) })),
+  ]
+
+  return entries.map((entry) => ({ ...entry, title: fullTitle(entry.title) }))
+}
+
+const escapeHtml = (value = '') =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+
+/** Absolute URL for a route, always without a trailing slash except the root. */
+const absoluteUrl = (routePath) => `${site.url}${routePath}`
+
+function headTags(meta) {
+  const url = absoluteUrl(meta.path)
+  const image = `${site.url}/og-image.png`
+  const robots = meta.noindex ? 'noindex, nofollow' : 'index, follow'
+  const title = escapeHtml(meta.title)
+  const description = escapeHtml(meta.description)
+
+  return [
+    `    <title>${title}</title>`,
+    `    <meta name="description" content="${description}" />`,
+    `    <meta name="robots" content="${robots}" />`,
+    ...(meta.noindex ? [] : [`    <link rel="canonical" href="${url}" />`]),
+    `    <meta property="og:site_name" content="${escapeHtml(site.name)}" />`,
+    `    <meta property="og:type" content="website" />`,
+    `    <meta property="og:locale" content="en_IN" />`,
+    `    <meta property="og:title" content="${title}" />`,
+    `    <meta property="og:description" content="${description}" />`,
+    `    <meta property="og:url" content="${url}" />`,
+    `    <meta property="og:image" content="${image}" />`,
+    `    <meta property="og:image:width" content="1200" />`,
+    `    <meta property="og:image:height" content="630" />`,
+    `    <meta property="og:image:alt" content="${escapeHtml(`${site.name} — websites and AI automation`)}" />`,
+    `    <meta name="twitter:card" content="summary_large_image" />`,
+    `    <meta name="twitter:title" content="${title}" />`,
+    `    <meta name="twitter:description" content="${description}" />`,
+    `    <meta name="twitter:image" content="${image}" />`,
+  ].join('\n')
+}
+
+/** Replace the marked head block in the app shell with route-specific tags. */
+function withHead(shell, meta) {
+  const pattern = /(<!-- seo:start -->)[\s\S]*?(<!-- seo:end -->)/
+  if (!pattern.test(shell)) {
+    throw new Error('dist/index.html is missing the <!-- seo:start --> ... <!-- seo:end --> block.')
+  }
+
+  return shell.replace(pattern, `$1\n${headTags(meta)}\n    $2`)
+}
+
+const sitemapPriorities = {
+  '/': '1.0',
+  '/services': '0.8',
+  '/work': '0.9',
+  '/pricing': '0.9',
+  '/about': '0.7',
+  '/reviews': '0.7',
+  '/contact': '0.9',
+  '/privacy': '0.3',
+  '/demos': '0.9',
+}
+
+const priorityFor = (routePath) =>
+  sitemapPriorities[routePath] ?? (routePath.startsWith('/work/') ? '0.6' : '0.7')
+
+function sitemap(entries) {
+  const urls = entries
+    .map(
+      (entry) =>
+        `  <url><loc>${absoluteUrl(entry.path)}</loc><priority>${priorityFor(entry.path)}</priority></url>`,
+    )
+    .join('\n')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated by scripts/route-shells.mjs during the build. Edit src/config/seo.js (titles and
+     descriptions) or src/config/site.js (hostname) instead of changing this file. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`
+}
+
+const robots = `User-agent: *
+Allow: /
+
+Sitemap: ${site.url}/sitemap.xml
+`
 
 export async function writeRouteShells(dist = path.resolve('dist')) {
   const entries = await readdir(dist)
@@ -44,17 +114,35 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
     throw new Error('dist/index.html is missing — run the build first.')
   }
 
-  const shell = path.join(dist, 'index.html')
+  const shellPath = path.join(dist, 'index.html')
+  const shell = readFileSync(shellPath, 'utf8')
+  const routes = routeEntries()
 
-  for (const route of routes) {
-    const dir = path.join(dist, ...route.split('/'))
+  for (const meta of routes) {
+    const html = withHead(shell, meta)
+    if (meta.path === '/') {
+      await writeFile(shellPath, html, 'utf8')
+      continue
+    }
+
+    const dir = path.join(dist, ...meta.path.split('/').filter(Boolean))
     await mkdir(dir, { recursive: true })
-    await copyFile(shell, path.join(dir, 'index.html'))
+    await writeFile(path.join(dir, 'index.html'), html, 'utf8')
   }
 
   // Unknown paths get this file, so a mistyped URL shows the branded
   // "page not found" screen instead of a blank body. The host still answers 404.
-  await copyFile(shell, path.join(dist, '404.html'))
+  const notFound = withHead(shell, {
+    path: '/',
+    title: fullTitle('Page not found'),
+    description:
+      'The page you requested does not exist. Browse the Khatri Solutions portfolio, services and pricing instead.',
+    noindex: true,
+  })
+  await writeFile(path.join(dist, '404.html'), notFound, 'utf8')
 
-  console.log(`Route shells written: ${routes.length} (+404)`)
+  await writeFile(path.join(dist, 'sitemap.xml'), sitemap(routes), 'utf8')
+  await writeFile(path.join(dist, 'robots.txt'), robots, 'utf8')
+
+  console.log(`Route shells written: ${routes.length} (+404, sitemap, robots)`)
 }

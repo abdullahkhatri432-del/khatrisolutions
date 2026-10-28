@@ -5,17 +5,13 @@ import CTASection from '../components/CTASection'
 import ProjectCard from '../components/ProjectCard'
 import EmptyState from '../components/EmptyState'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { projectCategories, projects } from '../config/site'
 
 export default function Work() {
   const [filter, setFilter] = useState(projectCategories[0])
 
-  useSeo({
-    title: 'Work & portfolio',
-    path: '/work',
-    description:
-      'Demo and concept projects by Khatri Solutions: clinic, restaurant, e-commerce and business websites, plus a web app prototype. Every entry is labelled honestly.',
-  })
+  useSeo(pageSeo['/work'])
 
   const visible = useMemo(
     () => (filter === projectCategories[0] ? projects : projects.filter((project) => project.category === filter)),

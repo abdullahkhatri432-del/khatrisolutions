@@ -3,6 +3,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import DemoChrome from '../demos/DemoChrome'
 import { getDemo } from '../demos/demoSites'
 import { useSeo } from '../hooks/useSeo'
+import { demoMeta } from '../config/seo'
 
 const demoComponents = {
   'atelier-nine': lazy(() => import('../demos/AtelierNine')),
@@ -18,13 +19,7 @@ export default function DemoSite() {
   const demo = getDemo(slug)
   const Demo = demoComponents[slug]
 
-  useSeo({
-    title: demo ? `${demo.name} — live demo` : 'Demo not found',
-    description: demo
-      ? `${demo.name} is a ${demo.kind.toLowerCase()} demo site built by Khatri Solutions to demonstrate ${demo.service.toLowerCase()}.`
-      : undefined,
-    path: `/demos/${slug}`,
-  })
+  useSeo(demo ? demoMeta(demo) : { title: 'Demo not found', path: `/demos/${slug}` })
 
   useEffect(() => {
     window.scrollTo(0, 0)

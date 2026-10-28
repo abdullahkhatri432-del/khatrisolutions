@@ -5,6 +5,7 @@ import WhatsAppIcon from '../components/icons/WhatsAppIcon'
 import FAQ from '../components/FAQ'
 import SectionHeading from '../components/SectionHeading'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { site, faqs, inquiryServiceOptions, serviceAliases } from '../config/site'
 import { whatsappLink } from '../lib/contact'
 
@@ -16,12 +17,7 @@ export default function Contact() {
     : serviceAliases[requested] || ''
   const whatsapp = whatsappLink()
 
-  useSeo({
-    title: 'Contact & project inquiry',
-    path: '/contact',
-    description:
-      'Tell Khatri Solutions about your website, online store, custom application or automation project. Three short steps, then a written scope and quote before work begins.',
-  })
+  useSeo(pageSeo['/contact'])
 
   return (
     <>

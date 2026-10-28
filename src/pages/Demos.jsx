@@ -5,6 +5,7 @@ import CTASection from '../components/CTASection'
 import DemoCard from '../components/DemoCard'
 import SectionHeading from '../components/SectionHeading'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { demoSites } from '../demos/demoSites'
 
 const serviceFilters = ['All demos', ...new Set(demoSites.map((demo) => demo.service))]
@@ -12,12 +13,7 @@ const serviceFilters = ['All demos', ...new Set(demoSites.map((demo) => demo.ser
 export default function Demos() {
   const [filter, setFilter] = useState(serviceFilters[0])
 
-  useSeo({
-    title: 'Live demos',
-    path: '/demos',
-    description:
-      'Click through live demo websites built by Khatri Solutions: a design studio, a clinic, a restaurant, an online store, a dashboard and an AI enquiry workflow. Every demo is interactive and clearly labelled.',
-  })
+  useSeo(pageSeo['/demos'])
 
   const visible = useMemo(
     () => (filter === serviceFilters[0] ? demoSites : demoSites.filter((demo) => demo.service === filter)),

@@ -10,6 +10,7 @@ import CTASection from '../components/CTASection'
 import SectionHeading from '../components/SectionHeading'
 import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
+import { homeSeo } from '../config/seo'
 import { site, hero, stats, services, process, principles, faqs, projects } from '../config/site'
 import { demoSites } from '../demos/demoSites'
 
@@ -18,7 +19,7 @@ const featuredDemos = demoSites.filter((demo) =>
 )
 
 export default function Home() {
-  useSeo({ path: '/', description: site.description })
+  useSeo(homeSeo)
 
   return (
     <>

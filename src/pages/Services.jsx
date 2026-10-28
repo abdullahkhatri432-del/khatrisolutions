@@ -4,18 +4,14 @@ import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { services, pricingNote, pricingNotes } from '../config/site'
 import { demoSites } from '../demos/demoSites'
 
 const demosFor = (slug) => demoSites.filter((demo) => demo.serviceSlug === slug)
 
 export default function Services() {
-  useSeo({
-    title: 'Services',
-    path: '/services',
-    description:
-      'Four service categories: website development, e-commerce, custom web applications and AI business automation — with clear scope and honest pricing.',
-  })
+  useSeo(pageSeo['/services'])
 
   return (
     <>

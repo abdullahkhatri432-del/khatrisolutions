@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://khatrisolutions.vercel.app/sitemap.xml

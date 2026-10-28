@@ -4,6 +4,7 @@ import CTASection from '../components/CTASection'
 import SectionHeading from '../components/SectionHeading'
 import TeamCard from '../components/TeamCard'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { collaboration, principles, site, team } from '../config/site'
 
 const expectations = [
@@ -21,12 +22,7 @@ const approach = [
 ]
 
 export default function About() {
-  useSeo({
-    title: 'About & team',
-    path: '/about',
-    description:
-      'Meet the two collaborators behind Khatri Solutions: a technical lead and a client relations partner. Honest roles, no invented credentials.',
-  })
+  useSeo(pageSeo['/about'])
 
   return (
     <>

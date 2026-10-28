@@ -1,16 +1,12 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { site } from '../config/site'
 import { endpointConfigured } from '../lib/inquiry'
 
 export default function Privacy() {
-  useSeo({
-    title: 'Privacy notice',
-    path: '/privacy',
-    description:
-      'How Khatri Solutions handles the information you submit through the project inquiry and review forms, and the choices you have.',
-  })
+  useSeo(pageSeo['/privacy'])
 
   return (
     <>

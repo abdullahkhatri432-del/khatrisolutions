@@ -4,17 +4,13 @@ import CTASection from '../components/CTASection'
 import FAQ from '../components/FAQ'
 import SectionHeading from '../components/SectionHeading'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { packages, pricingNote, pricingNotes, faqs } from '../config/site'
 
 const serviceLink = (service) => `/contact?service=${encodeURIComponent(service)}`
 
 export default function Pricing() {
-  useSeo({
-    title: 'Pricing',
-    path: '/pricing',
-    description:
-      'Starting prices for websites, e-commerce, custom web applications and AI automation. INR packages from ₹3,999, with scope and exclusions stated up front.',
-  })
+  useSeo(pageSeo['/pricing'])
 
   return (
     <>

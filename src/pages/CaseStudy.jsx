@@ -4,18 +4,18 @@ import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import ProjectPreview from '../components/ProjectPreview'
 import { useSeo } from '../hooks/useSeo'
+import { caseStudyMeta } from '../config/seo'
 import { projects } from '../config/site'
 
 export default function CaseStudy() {
   const { slug } = useParams()
   const project = projects.find((item) => item.slug === slug)
 
-  useSeo({
-    title: project ? `${project.title} case study` : 'Project not found',
-    path: `/work/${slug || ''}`,
-    description: project?.summary,
-    noindex: !project,
-  })
+  useSeo(
+    project
+      ? caseStudyMeta(project)
+      : { title: 'Project not found', path: `/work/${slug || ''}`, noindex: true },
+  )
 
   if (!project) {
     return (

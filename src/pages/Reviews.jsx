@@ -5,17 +5,13 @@ import ReviewCard from '../components/ReviewCard'
 import ReviewForm from '../components/ReviewForm'
 import SectionHeading from '../components/SectionHeading'
 import { useSeo } from '../hooks/useSeo'
+import { pageSeo } from '../config/seo'
 import { reviews, site } from '../config/site'
 import { endpointConfigured } from '../lib/inquiry'
 import { channelName } from '../lib/contact'
 
 export default function Reviews() {
-  useSeo({
-    title: 'Reviews',
-    path: '/reviews',
-    description:
-      'Genuine, verified client reviews of Khatri Solutions projects. This is a new studio, so the page starts empty rather than with invented testimonials.',
-  })
+  useSeo(pageSeo['/reviews'])
 
   const verified = reviews.filter((review) => review.verified)
   const average =

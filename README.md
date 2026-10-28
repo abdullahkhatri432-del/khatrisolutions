@@ -31,7 +31,14 @@ Node 18+ recommended (built and tested on Node 24).
 
 ## One place to edit content
 
-Everything lives in [`src/config/site.js`](src/config/site.js):
+Everything lives in [`src/config/site.js`](src/config/site.js), except page titles and meta
+descriptions, which live in [`src/config/seo.js`](src/config/seo.js):
+
+- **`seo.js`** — the `<title>` and meta description for each static page, plus the helpers that
+  build the same tags for case studies and demos from the project data. The build reuses them for
+  the static HTML and the sitemap, so there is no second copy to keep in sync.
+- **`site.url`** — the canonical hostname used in `canonical`, `og:url`, `sitemap.xml` and
+  `robots.txt`.
 
 - **`site.contact`** — email, WhatsApp number, social links.
   - Current values: `khatrisolutions01@gmail.com` and `whatsappNumber: '919875009874'`
@@ -212,13 +219,19 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 
 ## SEO
 
-- Per-page titles, descriptions, canonical URL and Open Graph tags via `useSeo`.
-- `public/robots.txt` and `public/sitemap.xml`, both pointing at
-  `https://khatrisolutions.vercel.app` — the current live URL.
-- `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`).
-- If the Vercel subdomain or a custom domain changes, replace
-  `https://khatrisolutions.vercel.app` in `robots.txt` and `sitemap.xml`, and update the sitemap
-  when routes change.
+- Every route gets its own `<title>`, meta description, canonical URL and Open Graph/Twitter tags.
+  The strings live in [`src/config/seo.js`](src/config/seo.js) for static pages and are derived from
+  the data for case studies and demos, so there is one copy of each.
+- `useSeo` applies the same values in the browser, so client navigation and the static HTML agree.
+- The build writes real `<title>`/`<meta>`/`<link rel="canonical">` tags into every route shell
+  (`dist/<route>/index.html`), which is what crawlers and chat-app link previews read before any
+  JavaScript runs. The 404 shell is `noindex, nofollow`.
+- `dist/sitemap.xml` (all 21 routes) and `dist/robots.txt` are generated at build time from the same
+  route list, so they cannot fall out of sync with the pages.
+- `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`), referenced
+  absolutely in every page's `og:image`.
+- The canonical host comes from `site.url` in [`src/config/site.js`](src/config/site.js). Change it
+  there when a custom domain replaces the Vercel URL; nothing else needs editing.
 
 No fake structured data is included.
 
