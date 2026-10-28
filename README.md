@@ -27,6 +27,8 @@ Node 18+ recommended (built and tested on Node 24).
 | `/reviews` | Published reviews, empty state, moderated review form |
 | `/contact` | Three-step conditional inquiry form + direct contact options |
 | `/privacy` | Privacy notice matching what the site actually does |
+| `/demos` | Index of six interactive demo sites |
+| `/demos/:slug` | A self-contained demo site, clearly labelled as a demo |
 | any other | Custom 404 (noindex) |
 
 ## One place to edit content
@@ -185,9 +187,10 @@ to the first step containing an error on final submit.
   requires an email address.
 - **Consent:** required before submission, with a link to the privacy notice.
 
-- **Vercel static hosting** (current live setup): there is no server. The form posts to the Apps Script
-  endpoint configured in `site.formEndpoint`, which emails the enquiry. Without an endpoint it would
-  only validate the input and hand the message to WhatsApp or the visitor's email app.
+- **Static hosting** (Vercel, plus the Render mirror): there is no server. The form posts to the
+  Apps Script endpoint configured in `site.formEndpoint`, which emails the enquiry. Without an
+  endpoint it would only validate the input and hand the message to WhatsApp or the visitor's email
+  app.
 - **`VITE_FORM_ENDPOINT` set**: overrides the default endpoint. The form posts URL-encoded `payload`
   JSON and shows “Enquiry sent” only after the endpoint replies `{"ok":true}`.
 
@@ -235,9 +238,21 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 
 No fake structured data is included.
 
-## Deploy (Vercel)
+## Deploy
 
 **Live:** <https://khatrisolutions.vercel.app>
+
+Two hosts run the same build from `main`:
+
+| Host | Role |
+| --- | --- |
+| <https://khatrisolutions.vercel.app> | Primary site. Canonical host for SEO. |
+| <https://khatrisolutions.onrender.com> | Live mirror, kept because clients already share this link. |
+
+Every page on both hosts carries a `canonical` link to the Vercel URL, so the mirror does not
+compete with the primary site in search results.
+
+### Vercel (primary)
 
 The site runs on Vercel as a static Vite build, linked to
 <https://github.com/abdullahkhatri432-del/khatrisolutions>. Every push to `main` builds and
@@ -255,11 +270,17 @@ instead of a 200 that only looks correct.
 > non-commercial projects. This is the studio's business site, so it is running on Hobby knowingly;
 > if that becomes a concern, Vercel Pro is $20/month.
 
-### Render — retired
+### Render (mirror)
 
-The site was previously served from <https://khatrisolutions.onrender.com>. That service is no
-longer the live site: `render.yaml` has been removed, and the Render service should be deleted in
-the dashboard so the old URL does not serve a stale copy.
+<https://khatrisolutions.onrender.com> runs the same repository and the same `npm run build`, and
+deploys automatically on every push to `main`. `render.yaml` in the repo root describes the service:
+static runtime, `dist` as the publish path, long-lived caching for `/assets/*`, and a catch-all
+rewrite so unknown paths get the app shell.
+
+The mirror exists because clients already have the old link; it is not a second site to maintain.
+Each push deploys to both hosts independently, so the mirror goes live once its own build finishes.
+If the mirror is ever retired, delete the service in the Render dashboard and the URL will stop
+resolving.
 
 ### Other hosts that also work
 
@@ -272,7 +293,10 @@ the dashboard so the old URL does not serve a stale copy.
 
 - `npm run lint` (`npx oxlint src`) — 0 warnings, 0 errors.
 - `npm run build` — production build succeeds.
-- All 9 routes render with no console errors or failed requests.
+- All 21 routes render with no console errors or failed requests, on both hosts.
+- Static HTML (no JavaScript) matches the rendered head on every route: title, description,
+  canonical, `og:url`, `og:image` and robots all agree, and unknown paths answer 404 with
+  `noindex, nofollow` and no canonical.
 - 0 axe-core WCAG 2.1 A/AA violations on all routes, plus inquiry steps 2 and 3.
 - 0 horizontal overflow at 320, 360, 390, 768, 1024 and 1440 px across all routes and all
   inquiry steps, including the confirmation panel.

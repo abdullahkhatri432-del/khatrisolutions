@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: khatrisolutions
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+
+    # Live mirror of the Vercel site, kept for clients who already have this
+    # link. Every page canonicalises to the Vercel host, so search engines
+    # credit one copy.
+    #
+    # The build writes a real index.html for every route, and Render serves a
+    # file before it applies a rewrite, so deep links resolve to their own
+    # shell. This rewrite only catches genuinely unknown paths, which get the
+    # app shell instead of Render's generic error page.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
