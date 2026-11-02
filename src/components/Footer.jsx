@@ -6,8 +6,7 @@ import { socialLinks, whatsappLink, DEFAULT_MESSAGE } from '../lib/contact'
 
 const pages = [
   { label: 'Services', to: '/services' },
-  { label: 'Live demos', to: '/demos' },
-  { label: 'Work', to: '/work' },
+  { label: 'Portfolio', to: '/portfolio' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
   { label: 'Reviews', to: '/reviews' },
@@ -76,7 +75,7 @@ export default function Footer() {
           </span>
           <span style={{ display: 'flex', gap: '1.25rem' }}>
             <Link to="/privacy">Privacy notice</Link>
-            <Link to="/work">Portfolio</Link>
+            <Link to="/portfolio">Portfolio</Link>
           </span>
         </div>
       </div>

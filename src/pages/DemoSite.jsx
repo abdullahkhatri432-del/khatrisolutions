@@ -29,7 +29,7 @@ export default function DemoSite() {
     window.scrollTo(0, 0)
   }, [slug])
 
-  if (!demo || !Demo) return <Navigate to="/demos" replace />
+  if (!demo || !Demo) return <Navigate to="/portfolio" replace />
 
   return (
     <DemoChrome demo={demo}>

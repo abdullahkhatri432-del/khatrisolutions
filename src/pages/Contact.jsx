@@ -106,7 +106,7 @@ export default function Contact() {
             <div className="notice notice--accent">
               <Sparkles size={15} aria-hidden="true" />
               <span>
-                Prefer to look around first? Browse the <Link to="/work" style={{ textDecoration: 'underline' }}>portfolio</Link> or
+                Prefer to look around first? Browse the <Link to="/portfolio" style={{ textDecoration: 'underline' }}>portfolio</Link> or
                 check <Link to="/pricing" style={{ textDecoration: 'underline' }}>starting prices</Link>.
               </span>
             </div>

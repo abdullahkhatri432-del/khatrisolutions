@@ -25,7 +25,7 @@ export default function ProjectCard({ project, row = false, headingLevel: Headin
 
         <div className="project-card__title">
           <Heading>
-            <Link to={`/work/${project.slug}`}>{project.title}</Link>
+            <Link to={`/portfolio/${project.slug}`}>{project.title}</Link>
           </Heading>
           <span className="project-card__year">{project.year}</span>
         </div>

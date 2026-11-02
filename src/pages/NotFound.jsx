@@ -27,7 +27,7 @@ export default function NotFound() {
           <Button to="/" variant="primary" icon={Home}>
             Back home
           </Button>
-          <Button to="/work" variant="outline" icon={Search}>
+          <Button to="/portfolio" variant="outline" icon={Search}>
             Browse the work
           </Button>
         </div>

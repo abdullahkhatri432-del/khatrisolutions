@@ -181,8 +181,8 @@ export default function About() {
                 <Button to="/contact" variant="primary" iconRight={ArrowRight}>
                   Start a conversation
                 </Button>
-                <Button to="/work" variant="outline">
-                  See the work
+                <Button to="/portfolio" variant="outline">
+                  See the portfolio
                 </Button>
               </div>
             </div>

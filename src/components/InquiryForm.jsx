@@ -278,8 +278,8 @@ export default function InquiryForm({ initialService = '' }) {
           <Button type="button" variant="outline" onClick={resetForm} iconRight={ArrowRight}>
             Send another enquiry
           </Button>
-          <Button to="/work" variant="outline">
-            See the work
+          <Button to="/portfolio" variant="outline">
+            See the portfolio
           </Button>
         </div>
       </div>

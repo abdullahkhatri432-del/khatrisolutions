@@ -3,6 +3,11 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/work", "destination": "/portfolio", "permanent": true },
+    { "source": "/work/:slug", "destination": "/portfolio/:slug", "permanent": true },
+    { "source": "/demos", "destination": "/portfolio", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

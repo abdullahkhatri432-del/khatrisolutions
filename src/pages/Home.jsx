@@ -23,20 +23,20 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero" style={{ background: '#f5f4ee', borderBottom: '4px solid #000' }}>
+      <section className="hero">
         <div className="container">
-          <div className="hero__grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 0.9fr', gap: '2rem', alignItems: 'start' }}>
-            <div style={{ padding: '1.5rem 0' }}>
-              <p className="hero__eyebrow" style={{ color: '#000', fontWeight: 650, letterSpacing: '0.14em', textTransform: 'uppercase', fontSize: '0.75rem' }}>
+          <div className="hero__grid">
+            <div>
+              <p className="hero__eyebrow">
                 <span className="dot" aria-hidden="true" />
                 {hero.eyebrow}
               </p>
-              <h1 style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', lineHeight: 1.05, letterSpacing: '-0.05em', fontWeight: 800, color: '#000', marginTop: '1rem' }}>
-                {hero.headline} <span className="accent" style={{ color: '#ff0000', fontWeight: 800 }}>{hero.headlineAccent}</span>
+              <h1>
+                {hero.headline} <span className="accent">{hero.headlineAccent}</span>
               </h1>
-              <p className="hero__support" style={{ color: '#333', fontSize: '1.15rem', marginTop: '1.25rem', lineHeight: 1.55, maxWidth: '36ch' }}>{hero.supporting}</p>
+              <p className="hero__support">{hero.supporting}</p>
 
-              <div className="btn-row" style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <div className="btn-row">
                 <Button to={hero.primaryCta.to} variant="primary" iconRight={ArrowRight}>
                   {hero.primaryCta.label}
                 </Button>
@@ -45,9 +45,9 @@ export default function Home() {
                 </Button>
               </div>
 
-              <div className="hero__points" style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '4px solid #000', color: '#333', fontSize: '0.82rem', display: 'flex', flexWrap: 'wrap', gap: '0.5rem 1.5rem' }}>
+              <div className="hero__points">
                 {hero.honestPoints.map((point) => (
-                  <span key={point} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                  <span key={point}>
                     <Check size={14} strokeWidth={2.6} aria-hidden="true" />
                     {point}
                   </span>
@@ -55,28 +55,27 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero__visual" style={{ background: '#ff0000', padding: '2rem', border: '4px solid #000', borderRadius: 0 }}>
-              <p className="hero__visual-head" style={{ color: '#fff', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between' }}>
+            <div className="hero__visual">
+              <p className="hero__visual-head">
                 <span>Selected demo</span>
                 <span>01 / Healthcare</span>
               </p>
-              <div className="hero__frame" style={{ border: '4px solid #000', padding: '0.4rem', background: '#fff', borderRadius: 0 }}>
+              <div className="hero__frame">
                 <ProjectPreview project={projects.find((project) => project.slug === 'wellness-physiotherapy') || projects[0]} large />
               </div>
-              <div className="hero__caption" style={{ marginTop: '1rem', color: '#fff', fontSize: '0.78rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '0.5rem' }}>
+              <div className="hero__caption">
                 <span>Demo build — not a client project</span>
-                <span className="hero__captionlinks" style={{ display: 'flex', gap: '0.75rem' }}>
-                  <Link to="/demos/wellness-physiotherapy" className="link-arrow" style={{ color: '#fff', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                    Open live demo <ArrowUpRight size={14} aria-hidden="true" />
+                <span className="hero__captionlinks">
+                  <Link to="/demos/wellness-physiotherapy" className="link-arrow">
+                    Open live demo
+                    <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>
-                  <Link to="/work/wellness-physiotherapy" className="link-arrow" style={{ color: '#fff', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: '2px' }}>
-                    Case study <ArrowUpRight size={14} aria-hidden="true" />
+                  <Link to="/portfolio/wellness-physiotherapy" className="link-arrow">
+                    Case study
+                    <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>
                 </span>
               </div>
-              <a href="#services" className="bauhaus-circle bauhaus-circle--red" aria-label="Start project" style={{ marginTop: '1.5rem', textDecoration: 'none', fontSize: '1.1rem', letterSpacing: '-0.02em', lineHeight: 1.15, width: '9rem', height: '9rem' }}>
-                Start<br/>project →
-              </a>
             </div>
           </div>
         </div>
@@ -151,8 +150,8 @@ export default function Home() {
               }
               intro="A small, growing portfolio. Every entry states honestly whether it was a paid project, a demo or a concept."
             />
-            <Button to="/work" variant="outline" size="sm" iconRight={ArrowRight}>
-              View all work
+            <Button to="/portfolio" variant="outline" size="sm" iconRight={ArrowRight}>
+              View portfolio
             </Button>
           </div>
 
@@ -184,8 +183,8 @@ export default function Home() {
               }
               intro={`${demoSites.length} working demo sites across our services. Filter a gallery, add something to a cart, sort an enquiry, open a dashboard. Every business inside them is fictional, and every demo says so.`}
             />
-            <Button to="/demos" variant="outline" size="sm" iconRight={ArrowRight}>
-              All {demoSites.length} demos
+            <Button to="/portfolio#demos" variant="outline" size="sm" iconRight={ArrowRight}>
+              See all portfolio
             </Button>
           </div>
 

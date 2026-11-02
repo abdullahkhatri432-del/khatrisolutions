@@ -45,7 +45,7 @@ export default function Reviews() {
                 icon={MessageSquarePlus}
                 title="We’re building our portfolio."
                 action={
-                  <Button to="/work" variant="outline" size="sm">
+                   <Button to="/portfolio" variant="outline" size="sm">
                     Explore the work
                   </Button>
                 }

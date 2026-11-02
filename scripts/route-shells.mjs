@@ -77,17 +77,16 @@ function withHead(shell, meta) {
 const sitemapPriorities = {
   '/': '1.0',
   '/services': '0.8',
-  '/work': '0.9',
+  '/portfolio': '0.9',
   '/pricing': '0.9',
   '/about': '0.7',
   '/reviews': '0.7',
   '/contact': '0.9',
   '/privacy': '0.3',
-  '/demos': '0.9',
 }
 
 const priorityFor = (routePath) =>
-  sitemapPriorities[routePath] ?? (routePath.startsWith('/work/') ? '0.6' : '0.7')
+  sitemapPriorities[routePath] ?? (routePath.startsWith('/portfolio/') ? '0.6' : '0.7')
 
 function sitemap(entries) {
   const urls = entries

@@ -41,7 +41,7 @@ export default function DemoCard({ demo, headingLevel = 2 }) {
             Open live demo
           </Button>
           {caseStudy ? (
-            <Link to={`/work/${caseStudy.slug}`} className="link-arrow">
+            <Link to={`/portfolio/${caseStudy.slug}`} className="link-arrow">
               Case study
               <ArrowRight size={13} aria-hidden="true" />
             </Link>

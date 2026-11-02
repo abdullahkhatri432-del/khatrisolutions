@@ -27,9 +27,9 @@ export default function DemoChrome({ demo, children }) {
           </p>
 
           <div className="demo-bar__actions">
-            <Link to="/demos" className="demo-bar__link">
+            <Link to="/portfolio" className="demo-bar__link">
               <ArrowLeft size={14} aria-hidden="true" />
-              All demos
+              Portfolio
             </Link>
             <Link to="/contact" className="demo-bar__cta">
               Build one like this

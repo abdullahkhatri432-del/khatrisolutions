@@ -14,7 +14,7 @@ export default function CaseStudy() {
   useSeo(
     project
       ? caseStudyMeta(project)
-      : { title: 'Project not found', path: `/work/${slug || ''}`, noindex: true },
+      : { title: 'Project not found', path: `/portfolio/${slug || ''}`, noindex: true },
   )
 
   if (!project) {
@@ -24,7 +24,7 @@ export default function CaseStudy() {
           <p className="notfound__code">404</p>
           <h1>This project does not exist</h1>
           <p>The link may be outdated. Browse the portfolio to see the work that is published.</p>
-          <Button to="/work" variant="primary" icon={ArrowLeft}>
+          <Button to="/portfolio" variant="primary" icon={ArrowLeft}>
             Back to portfolio
           </Button>
         </div>
@@ -46,7 +46,7 @@ export default function CaseStudy() {
           <nav className="breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
             <ChevronRight size={12} aria-hidden="true" />
-            <Link to="/work">Work</Link>
+            <Link to="/portfolio">Portfolio</Link>
             <ChevronRight size={12} aria-hidden="true" />
             <span aria-current="page">{project.title}</span>
           </nav>
@@ -145,7 +145,7 @@ export default function CaseStudy() {
             </div>
 
             <div className="btn-row">
-              <Button to="/work" variant="outline" icon={ArrowLeft}>
+                <Button to="/portfolio" variant="outline" icon={ArrowLeft}>
                 All work
               </Button>
               <Button to="/contact" variant="primary" iconRight={ArrowRight}>

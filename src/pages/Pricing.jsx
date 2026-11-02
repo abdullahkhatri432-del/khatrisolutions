@@ -28,8 +28,8 @@ export default function Pricing() {
             <Button to="/contact" variant="primary" iconRight={ArrowRight}>
               Request a quote
             </Button>
-            <Button to="/work" variant="outline">
-              See the work first
+             <Button to="/portfolio" variant="outline">
+               See the portfolio first
             </Button>
           </div>
         </div>

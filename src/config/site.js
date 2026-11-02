@@ -75,8 +75,7 @@ export const site = {
 export const nav = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
-  { label: 'Demos', to: '/demos' },
-  { label: 'Work', to: '/work' },
+  { label: 'Portfolio', to: '/portfolio' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
   { label: 'Reviews', to: '/reviews' },
@@ -89,7 +88,7 @@ export const hero = {
   supporting:
     'We build professional websites, online stores, custom web applications, and practical AI automation solutions tailored to your business.',
   primaryCta: { label: 'Discuss your project', to: '/contact' },
-  secondaryCta: { label: 'Explore our work', to: '/work' },
+  secondaryCta: { label: 'Explore our portfolio', to: '/portfolio' },
   honestPoints: [
     'Fixed-scope quotes before work begins',
     'Mobile-first, fast-loading builds',

@@ -14,11 +14,11 @@ export const pageSeo = {
     description:
       'Website development, e-commerce, custom web applications and practical AI automation for small businesses in India and remote teams worldwide.',
   },
-  '/work': {
-    path: '/work',
-    title: 'Web design portfolio & live demos',
+  '/portfolio': {
+    path: '/portfolio',
+    title: 'Portfolio of websites, apps & live demos',
     description:
-      'Explore Khatri Solutions demo and concept projects for clinics, restaurants, e-commerce, business websites and workflow automation.',
+      'Explore Khatri Solutions websites, web application concepts and interactive demos for clinics, restaurants, e-commerce and business workflows.',
   },
   '/pricing': {
     path: '/pricing',
@@ -52,12 +52,6 @@ export const pageSeo = {
     description:
       'How Khatri Solutions handles information submitted through project inquiry and review forms, and the choices you have.',
   },
-  '/demos': {
-    path: '/demos',
-    title: 'Interactive website demos',
-    description:
-      'Use interactive Khatri Solutions demos for business websites, clinics, restaurants, online stores, dashboards and AI workflows.',
-  },
 }
 
 /** The home page uses the studio description and the default title. */
@@ -68,7 +62,7 @@ export function caseStudyMeta(project) {
   return {
     title: `${project.title} case study`,
     description: project.summary,
-    path: `/work/${project.slug}`,
+    path: `/portfolio/${project.slug}`,
     project,
   }
 }
@@ -134,7 +128,7 @@ function organizationSchema() {
 function pageType(path) {
   if (path === '/contact') return 'ContactPage'
   if (path === '/about') return 'AboutPage'
-  if (['/services', '/work', '/pricing', '/reviews', '/demos'].includes(path)) return 'CollectionPage'
+  if (['/services', '/portfolio', '/pricing', '/reviews'].includes(path)) return 'CollectionPage'
   return 'WebPage'
 }
 
@@ -149,8 +143,8 @@ function breadcrumbSchema(meta) {
     const isLast = index === segments.length - 1
     const name = isLast
       ? meta.project?.title || meta.demo?.name || meta.title
-      : segment === 'work'
-        ? 'Work'
+        : segment === 'portfolio'
+          ? 'Portfolio'
         : segment === 'demos'
           ? 'Demos'
           : segment.charAt(0).toUpperCase() + segment.slice(1)
