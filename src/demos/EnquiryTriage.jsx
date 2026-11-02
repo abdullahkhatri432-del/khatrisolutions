@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowRight, Copy, Sparkles, Wand2 } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const examples = [
   'Hi, I need a website for my dental clinic. What would it cost and how soon can you start?',
@@ -259,6 +260,13 @@ export default function EnquiryTriage() {
           </ul>
         </div>
       </section>
+
+      <DemoAutomation
+        problem="Important enquiries sit in the same inbox as routine questions, so response time depends on luck."
+        automation="Classify intent, set priority and draft a reply for human review using the message itself."
+        outcome="The right enquiry reaches the right next action faster without sending an unchecked AI reply."
+        steps={['Message is read for intent and urgency', 'Priority and next action are suggested', 'A human reviews and sends the edited reply']}
+      />
     </>
   )
 }

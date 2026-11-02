@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { ArrowRight, MapPin, Ruler, Sparkles } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const filters = ['All', 'Residential', 'Retail', 'Hospitality']
 
@@ -236,6 +237,13 @@ export default function AtelierNine() {
           </div>
         </div>
       </section>
+
+      <DemoAutomation
+        problem="Good work is buried in a gallery, so the right visitor never takes the next step."
+        automation="Filter the portfolio, qualify the project type and route a consultation request with the useful context attached."
+        outcome="The studio spends less time sorting vague enquiries and more time on projects that fit."
+        steps={['Visitor selects a project type', 'A focused brief is captured', 'The studio receives a consultation-ready request']}
+      />
     </>
   )
 }

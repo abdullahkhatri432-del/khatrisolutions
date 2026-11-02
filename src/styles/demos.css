@@ -211,6 +211,189 @@
   outline-offset: 3px;
 }
 
+/* ---------- Shared problem-to-outcome workflow panel ---------- */
+
+.demo-automation {
+  padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+  background: color-mix(in srgb, var(--dbg, #f4efe5) 82%, #fff);
+  border-top: 1px solid color-mix(in srgb, var(--dtext, #2a2620) 14%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--dtext, #2a2620) 14%, transparent);
+}
+
+.demo-automation__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-automation__head h2 {
+  max-width: 28ch;
+  margin: 0;
+  font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.demo-automation__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: none;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--daccent, #74532b) 35%, transparent);
+  border-radius: 999px;
+  color: var(--daccent, #74532b);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.demo-automation__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.demo-automation__card {
+  min-height: 9rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--dtext, #2a2620) 15%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--dbg, #f4efe5) 55%, #fff);
+}
+
+.demo-automation__card--accent {
+  border-color: color-mix(in srgb, var(--daccent, #74532b) 40%, transparent);
+  background: color-mix(in srgb, var(--daccent, #74532b) 9%, #fff);
+}
+
+.demo-automation__number {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--daccent, #74532b);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.demo-automation__label {
+  margin: 0 0 0.35rem;
+  color: var(--dmuted, #5f5749);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.demo-automation__card h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  font-weight: 650;
+}
+
+.demo-automation__run {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--daccent, #74532b) 28%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--daccent, #74532b) 7%, #fff);
+}
+
+.demo-automation__run.is-complete {
+  background: color-mix(in srgb, #2f8061 12%, #fff);
+  border-color: color-mix(in srgb, #2f8061 35%, transparent);
+}
+
+.demo-automation__run-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  color: var(--daccent, #74532b);
+}
+
+.demo-automation__run-copy > svg {
+  flex: none;
+  margin-top: 0.15rem;
+}
+
+.demo-automation__run-copy strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.demo-automation__run-copy p {
+  margin-top: 0.25rem;
+  color: var(--dmuted, #5f5749);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.demo-automation__button {
+  flex: none;
+  padding: 0.62rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+}
+
+.demo-automation__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.8rem;
+  counter-reset: workflow;
+}
+
+.demo-automation__steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  color: var(--dmuted, #5f5749);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.demo-automation__steps li > span {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: none;
+  border: 1px solid color-mix(in srgb, var(--dtext, #2a2620) 20%, transparent);
+  border-radius: 50%;
+  color: var(--daccent, #74532b);
+  font-size: 0.67rem;
+  font-weight: 800;
+}
+
+.demo-automation__steps li.is-done > span {
+  border-color: #2f8061;
+  background: #2f8061;
+  color: #fff;
+}
+
+@media (max-width: 720px) {
+  .demo-automation__head,
+  .demo-automation__run {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .demo-automation__grid,
+  .demo-automation__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-automation__card {
+    min-height: auto;
+  }
+}
+
 /* ============================================================
    Atelier Nine — interior design studio
    ============================================================ */
@@ -2191,6 +2374,66 @@
   font-size: 0.72rem;
   line-height: 1.5;
   color: var(--dmuted);
+}
+
+.nl-checkout {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--dline);
+}
+
+.nl-checkout h4 {
+  margin: 0 0 0.25rem;
+  font-size: 0.92rem;
+}
+
+.nl-checkout label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--dmuted);
+}
+
+.nl-checkout input,
+.nl-checkout textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--dline);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--dtext);
+  font: inherit;
+  font-size: 0.8rem;
+}
+
+.nl-checkout textarea {
+  resize: vertical;
+}
+
+.nl-checkout-confirm {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--dline);
+  color: #2f8061;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.nl-checkout-confirm p {
+  margin-top: 0.35rem;
+  color: var(--dmuted);
+}
+
+.nl-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--daccent);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 @media (max-width: 1000px) {

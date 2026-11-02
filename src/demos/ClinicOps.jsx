@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Activity, CalendarDays, CircleDot, LayoutGrid, Search, Users } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const appointments = [
   { id: 1, time: '09:15', patient: 'Meera Shah', type: 'Follow-up', clinician: 'Dr. Desai', status: 'Completed' },
@@ -40,8 +41,9 @@ export default function ClinicOps() {
   const completed = appointments.filter((row) => row.status === 'Completed').length
 
   return (
-    <div className="co-app">
-      <aside className="co-side">
+    <>
+      <div className="co-app">
+        <aside className="co-side">
         <div className="co-brand">
           <span className="co-brand__mark" aria-hidden="true">
             C
@@ -75,7 +77,7 @@ export default function ClinicOps() {
           <p>Demo data</p>
           <span>27 Oct 2026</span>
         </div>
-      </aside>
+        </aside>
 
       <div className="co-main">
         <header className="co-top">
@@ -186,7 +188,14 @@ export default function ClinicOps() {
             Showing {rows.length} of {appointments.length} appointments
           </p>
         </section>
+        </div>
       </div>
-    </div>
+      <DemoAutomation
+        problem="A busy clinic cannot see who is waiting, who is next and which appointments need attention."
+        automation="Search and filter the live appointment queue instead of checking multiple sheets or chat threads."
+        outcome="Reception can prioritise the next action from one operational view."
+        steps={['Appointments arrive in one queue', 'Filters surface the urgent status', 'The team acts from the current view']}
+      />
+    </>
   )
 }

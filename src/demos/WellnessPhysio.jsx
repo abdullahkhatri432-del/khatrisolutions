@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Check, Clock, MapPin, Phone, Stethoscope } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const services = [
   {
@@ -305,6 +306,13 @@ export default function WellnessPhysio() {
           )}
         </div>
       </section>
+
+      <DemoAutomation
+        problem="Patients call during busy treatment hours and staff lose the details needed to schedule them."
+        automation="Collect the complaint, preferred time and contact details in one guided appointment request."
+        outcome="The clinic receives a clean request to confirm instead of a missed call or incomplete message."
+        steps={['Patient selects the treatment and time window', 'The request is validated before hand-off', 'Staff confirm the appointment by phone']}
+      />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Clock, MapPin, UtensilsCrossed } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const menu = {
   Starters: [
@@ -212,6 +213,13 @@ export default function SaffronTable() {
           )}
         </div>
       </section>
+
+      <DemoAutomation
+        problem="Guests ask about menus and tables through scattered messages while the team is serving dinner."
+        automation="Show the menu by category, collect party details and create a confirmation-ready reservation request."
+        outcome="The front of house gets one structured request and guests know exactly what happens next."
+        steps={['Guest checks the relevant menu section', 'Date, time and party size are captured', 'The team confirms availability without guessing']}
+      />
     </>
   )
 }

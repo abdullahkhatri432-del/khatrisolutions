@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
+import DemoAutomation from './DemoAutomation'
 
 const products = [
   { id: 'lamp', name: 'Pleated paper lamp', category: 'Lighting', price: 2450, art: 'nl-art--1' },
@@ -19,6 +20,9 @@ export default function NorthlineStore() {
   const [category, setCategory] = useState('All')
   const [cart, setCart] = useState([])
   const [notice, setNotice] = useState('')
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [checkout, setCheckout] = useState({ name: '', email: '', address: '' })
 
   const visible = useMemo(
     () => (category === 'All' ? products : products.filter((product) => product.category === category)),
@@ -46,6 +50,12 @@ export default function NorthlineStore() {
         .map((line) => (line.id === id ? { ...line, qty: line.qty + delta } : line))
         .filter((line) => line.qty > 0),
     )
+  }
+
+  const placeOrder = (event) => {
+    event.preventDefault()
+    setOrderPlaced(true)
+    setCheckoutOpen(false)
   }
 
   return (
@@ -242,17 +252,48 @@ export default function NorthlineStore() {
                   <span>Total</span>
                   <span>{format(subtotal + (subtotal >= 2000 ? 0 : 120))}</span>
                 </div>
-                <button type="button" className="d-btn" disabled aria-describedby="nl-checkout-note">
-                  Checkout
-                </button>
-                <p className="nl-summary__note" id="nl-checkout-note">
-                  Demo checkout is disabled — no payment is taken and no order is placed.
-                </p>
+                {orderPlaced ? (
+                  <div className="nl-checkout-confirm" role="status">
+                    <strong>Order captured — demo only</strong>
+                    <p>In a live store, this would create the order and send a confirmation to {checkout.email}. No payment was taken.</p>
+                    <button type="button" className="nl-link-button" onClick={() => setOrderPlaced(false)}>
+                      Start another checkout
+                    </button>
+                  </div>
+                ) : checkoutOpen ? (
+                  <form className="nl-checkout" onSubmit={placeOrder}>
+                    <h4>Checkout preview</h4>
+                    <label htmlFor="nl-name">Name</label>
+                    <input id="nl-name" value={checkout.name} onChange={(event) => setCheckout({ ...checkout, name: event.target.value })} required />
+                    <label htmlFor="nl-email">Email</label>
+                    <input id="nl-email" type="email" value={checkout.email} onChange={(event) => setCheckout({ ...checkout, email: event.target.value })} required />
+                    <label htmlFor="nl-address">Delivery address</label>
+                    <textarea id="nl-address" rows={2} value={checkout.address} onChange={(event) => setCheckout({ ...checkout, address: event.target.value })} required />
+                    <button type="submit" className="d-btn">Place demo order</button>
+                    <button type="button" className="nl-link-button" onClick={() => setCheckoutOpen(false)}>Back to summary</button>
+                  </form>
+                ) : (
+                  <>
+                    <button type="button" className="d-btn" onClick={() => setCheckoutOpen(true)}>
+                      Checkout
+                    </button>
+                    <p className="nl-summary__note" id="nl-checkout-note">
+                      Checkout previews the hand-off; no payment is taken and no order is sent.
+                    </p>
+                  </>
+                )}
               </aside>
             </div>
           )}
         </div>
       </section>
+
+      <DemoAutomation
+        problem="Customers browse products but abandon the purchase when stock, delivery and totals are unclear."
+        automation="Filter the collection, keep a live cart and calculate delivery rules before checkout."
+        outcome="The customer sees a confident order total and the store receives fewer avoidable questions."
+        steps={['Customer finds the right product', 'Cart applies quantity and delivery rules', 'A clear order summary is ready for hand-off']}
+      />
     </>
   )
 }
