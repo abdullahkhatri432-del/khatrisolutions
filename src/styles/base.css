@@ -64,7 +64,7 @@ main {
 .section--paper,
 .section--raised,
 .section--sunk {
-  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-top: var(--dp-border-rule) solid var(--dp-color-ink);
 }
 
 .section--tight {
@@ -84,8 +84,8 @@ main {
 }
 
 .section--dark {
-  background: var(--ink-900);
-  color: var(--text-on-dark-muted);
+  background: var(--dp-color-ink);
+  color: #f5f4ee;
 }
 
 .section--dark h1,
@@ -104,7 +104,7 @@ main {
 }
 
 .section--edge {
-  border-top: 1px solid var(--line);
+  border-top: var(--dp-border-rule) solid var(--dp-color-ink);
 }
 
 /* Subtle blueprint grid used on dark surfaces */
@@ -132,12 +132,20 @@ main {
   align-items: center;
   gap: 0.7rem;
   margin: 0 0 1rem;
-  color: var(--accent-strong);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  color: var(--dp-color-accent);
+  font-size: 0.75rem;
+  font-weight: var(--dp-typography-weight-label);
+  letter-spacing: 0.15em;
   line-height: 1.2;
   text-transform: uppercase;
+  font-family: var(--dp-typography-face);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 2rem;
+  height: var(--dp-border-rule-compact);
+  background: var(--dp-color-ink);
 }
 
 .eyebrow::before {
@@ -149,12 +157,11 @@ main {
 }
 
 .accent {
-  color: var(--accent-strong);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  padding-inline: 0.04em;
+  color: var(--dp-color-accent);
+  font-family: var(--dp-typography-face);
+  font-weight: var(--dp-typography-weight-display);
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .section--dark .accent {

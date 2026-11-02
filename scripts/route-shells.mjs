@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { mkdir, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { projects, site } from '../src/config/site.js'
-import { caseStudyMeta, demoMeta, fullTitle, pageSeo } from '../src/config/seo.js'
+import { caseStudyMeta, demoMeta, fullTitle, homeSeo, pageSeo, serializeJsonLd, structuredData } from '../src/config/seo.js'
 import { demoSites } from '../src/demos/demoSites.js'
 
 /**
@@ -12,7 +12,7 @@ import { demoSites } from '../src/demos/demoSites.js'
  */
 export function routeEntries() {
   const entries = [
-    { path: '/', title: null, description: site.description },
+    { ...homeSeo },
     ...Object.entries(pageSeo).map(([route, meta]) => ({ path: route, ...meta })),
     ...projects.map((project) => ({ ...caseStudyMeta(project) })),
     ...demoSites.map((demo) => ({ ...demoMeta(demo) })),
@@ -37,10 +37,12 @@ function headTags(meta) {
   const robots = meta.noindex ? 'noindex, nofollow' : 'index, follow'
   const title = escapeHtml(meta.title)
   const description = escapeHtml(meta.description)
+  const schema = structuredData(meta)
 
   return [
     `    <title>${title}</title>`,
     `    <meta name="description" content="${description}" />`,
+    `    <meta name="author" content="${escapeHtml(site.name)}" />`,
     `    <meta name="robots" content="${robots}" />`,
     ...(meta.noindex ? [] : [`    <link rel="canonical" href="${url}" />`]),
     `    <meta property="og:site_name" content="${escapeHtml(site.name)}" />`,
@@ -57,6 +59,8 @@ function headTags(meta) {
     `    <meta name="twitter:title" content="${title}" />`,
     `    <meta name="twitter:description" content="${description}" />`,
     `    <meta name="twitter:image" content="${image}" />`,
+    `    <meta name="twitter:image:alt" content="${escapeHtml(`${site.name} — websites and AI automation`)}" />`,
+    ...(schema ? [`    <script type="application/ld+json" data-seo-schema>${serializeJsonLd(schema)}</script>`] : []),
   ].join('\n')
 }
 

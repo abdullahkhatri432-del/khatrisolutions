@@ -874,4 +874,5 @@ export const collaboration = {
       body: 'You test the work, changes inside the scope are made, and the technical lead hands over access and documentation.',
     },
   ],
+  note: 'Khatri Solutions is an independent collaboration between two freelancers, not a registered company or a large agency team.',
 }

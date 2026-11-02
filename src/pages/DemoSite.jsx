@@ -12,6 +12,10 @@ const demoComponents = {
   'northline-store': lazy(() => import('../demos/NorthlineStore')),
   'clinic-ops': lazy(() => import('../demos/ClinicOps')),
   'enquiry-triage': lazy(() => import('../demos/EnquiryTriage')),
+  'fitness-studio': lazy(() => import('../demos/FitnessStudio')),
+  'azure-guesthouse': lazy(() => import('../demos/AzureGuesthouse')),
+  'clayline-studio': lazy(() => import('../demos/ClaylineStudio')),
+  'ai-automation-flow': lazy(() => import('../demos/AIAutomationFlow')),
 }
 
 export default function DemoSite() {
@@ -19,7 +23,7 @@ export default function DemoSite() {
   const demo = getDemo(slug)
   const Demo = demoComponents[slug]
 
-  useSeo(demo ? demoMeta(demo) : { title: 'Demo not found', path: `/demos/${slug}` })
+  useSeo(demo ? demoMeta(demo) : { title: 'Demo not found', path: `/demos/${slug}`, noindex: true })
 
   useEffect(() => {
     window.scrollTo(0, 0)

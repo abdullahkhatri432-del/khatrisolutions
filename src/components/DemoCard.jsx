@@ -11,8 +11,9 @@ import { projects } from '../config/site'
  */
 export default function DemoCard({ demo, headingLevel = 2 }) {
   const Heading = `h${headingLevel}`
+  const caseStudy = projects.find((item) => item.slug === demo.projectSlug)
   const project =
-    projects.find((item) => item.slug === demo.projectSlug) || {
+    caseStudy || {
       title: demo.name,
       category: demo.service,
       accent: demo.accent,
@@ -39,10 +40,14 @@ export default function DemoCard({ demo, headingLevel = 2 }) {
           <Button to={`/demos/${demo.slug}`} size="sm" iconRight={ArrowUpRight}>
             Open live demo
           </Button>
-          <Link to={`/work/${demo.projectSlug}`} className="link-arrow">
-            Case study
-            <ArrowRight size={13} aria-hidden="true" />
-          </Link>
+          {caseStudy ? (
+            <Link to={`/work/${caseStudy.slug}`} className="link-arrow">
+              Case study
+              <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          ) : (
+            <span className="tiny muted">Demo details only</span>
+          )}
         </div>
       </div>
     </article>

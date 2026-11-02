@@ -27,7 +27,7 @@ Node 18+ recommended (built and tested on Node 24).
 | `/reviews` | Published reviews, empty state, moderated review form |
 | `/contact` | Three-step conditional inquiry form + direct contact options |
 | `/privacy` | Privacy notice matching what the site actually does |
-| `/demos` | Index of six interactive demo sites |
+| `/demos` | Index of ten interactive demo sites |
 | `/demos/:slug` | A self-contained demo site, clearly labelled as a demo |
 | any other | Custom 404 (noindex) |
 
@@ -229,10 +229,13 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 - The build writes real `<title>`/`<meta>`/`<link rel="canonical">` tags into every route shell
   (`dist/<route>/index.html`), which is what crawlers and chat-app link previews read before any
   JavaScript runs. The 404 shell is `noindex, nofollow`.
-- `dist/sitemap.xml` (all 21 routes) and `dist/robots.txt` are generated at build time from the same
+- `dist/sitemap.xml` (all 25 routes) and `dist/robots.txt` are generated at build time from the same
   route list, so they cannot fall out of sync with the pages.
 - `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`), referenced
   absolutely in every page's `og:image`.
+- Each indexable route also publishes factual JSON-LD for the studio, website, breadcrumbs and
+  page content; the home, pricing and contact FAQs are exposed as `FAQPage` data for answer
+  engines. No ratings, client results or locations are invented.
 - The canonical host comes from `site.url` in [`src/config/site.js`](src/config/site.js). Change it
   there when a custom domain replaces the Vercel URL; nothing else needs editing.
 
@@ -293,7 +296,7 @@ resolving.
 
 - `npm run lint` (`npx oxlint src`) — 0 warnings, 0 errors.
 - `npm run build` — production build succeeds.
-- All 21 routes render with no console errors or failed requests, on both hosts.
+- All 25 routes render with no console errors or failed requests, on both hosts.
 - Static HTML (no JavaScript) matches the rendered head on every route: title, description,
   canonical, `og:url`, `og:image` and robots all agree, and unknown paths answer 404 with
   `noindex, nofollow` and no canonical.
