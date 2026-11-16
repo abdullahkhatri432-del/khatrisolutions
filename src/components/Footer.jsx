@@ -8,10 +8,13 @@ const pages = [
   { label: 'Services', to: '/services' },
   { label: 'Portfolio', to: '/portfolio' },
   { label: 'Pricing', to: '/pricing' },
+  { label: 'Blog', to: '/blog' },
   { label: 'About', to: '/about' },
   { label: 'Reviews', to: '/reviews' },
   { label: 'Contact', to: '/contact' },
 ]
+
+const locations = [{ label: 'Websites for businesses in India', to: '/locations/india' }]
 
 export default function Footer() {
   const whatsapp = whatsappLink(DEFAULT_MESSAGE)
@@ -38,6 +41,19 @@ export default function Footer() {
                   {page.label}
                 </Link>
               ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="footer__heading">More</h2>
+            <div className="footer__links">
+              {locations.map((page) => (
+                <Link key={page.to} to={page.to}>
+                  {page.label}
+                </Link>
+              ))}
+              {/* Standalone static page, so this must be a real document request. */}
+              <a href="/verify/business">Business verification</a>
             </div>
           </div>
 

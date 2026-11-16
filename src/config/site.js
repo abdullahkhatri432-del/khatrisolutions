@@ -28,6 +28,8 @@ export const site = {
    * Change this if a custom domain replaces the Vercel URL.
    */
   url: 'https://khatrisolutions.vercel.app',
+  /** Search Console HTML-tag verification token (also present in index.html). */
+  googleSiteVerification: 'PF_duwiGanJudCHxoHjsg3Iazt1b_h4KsvMwKTD6agw',
   description:
     'Khatri Solutions builds professional websites, online stores, web applications and practical AI automation for small businesses and startups.',
 
@@ -74,11 +76,13 @@ export const site = {
 
 export const nav = [
   { label: 'Home', to: '/' },
-  { label: 'Services', to: '/services' },
   { label: 'Portfolio', to: '/portfolio' },
+  { label: 'Services', to: '/services' },
+  { label: 'Blog', to: '/blog' },
   { label: 'Pricing', to: '/pricing' },
   { label: 'About', to: '/about' },
   { label: 'Reviews', to: '/reviews' },
+  { label: 'Contact', to: '/contact' },
 ]
 
 export const hero = {
@@ -419,220 +423,42 @@ export const faqs = [
  */
 export const projects = [
   {
-    slug: 'atelier-nine',
-    title: 'Atelier Nine',
-    category: 'Business websites',
-    type: 'Demo project',
-    year: 2026,
-    accent: '#b08b5c',
-    thumbIcon: 'Globe',
-    summary:
-      'A portfolio-led website for an interior design studio, with project galleries, a services page and a single enquiry path.',
-    features: [
-      'Project gallery with room-by-room categories',
-      'Studio story and service descriptions',
-      'Enquiry form with project type and budget',
-      'Image-light, type-led layout for fast loading',
-    ],
-    stack: ['React', 'Vite', 'CSS'],
-    demoUrl: '/demos/atelier-nine',
-    repoUrl: null,
-    caseStudy: {
-      overview:
-        'A demonstration website for a fictional interior design studio. It shows how a small creative business can present its work without a heavy CMS or a slow gallery.',
-      problem:
-        'Independent studios often show their work only on social media, where there is no room for context, services or a serious enquiry form.',
-      solution:
-        'A visual portfolio with short project notes, a services page written for prospective clients, and one enquiry path that asks for the details needed to quote properly.',
-      highlights: [
-        'Gallery cards that stay readable without large image files',
-        'Service descriptions written in client language, not design jargon',
-        'Enquiry form with budget and timeline fields',
-        'Consistent typography across long and short project titles',
-      ],
-      status: 'Demo build — not a paying client project. Live deployment not yet published.',
-    },
-    preview: { headline: 'Rooms with a point of view.', sub: 'Interior design studio · Pune', cta: 'View projects' },
-  },
-  {
-    slug: 'wellness-physiotherapy',
-    title: 'Wellness Physiotherapy',
-    category: 'Healthcare',
-    type: 'Demo project',
-    year: 2026,
-    accent: '#3f8f7d',
-    thumbIcon: 'Stethoscope',
-    summary:
-      'A calm, appointment-focused site for a physiotherapy clinic, built around services, practitioner trust and easy enquiries.',
-    features: [
-      'Service sections for manual therapy and rehabilitation',
-      'Appointment request form with validation',
-      'Floating WhatsApp enquiry button',
-      'Patient-focused copy and responsive layout',
-    ],
-    stack: ['React', 'Vite', 'CSS'],
-    demoUrl: '/demos/wellness-physiotherapy',
-    repoUrl: null,
-    caseStudy: {
-      overview:
-        'A demonstration website for a fictional physiotherapy clinic, designed to show how a healthcare practice can present its services and take appointment requests without a heavy booking system.',
-      problem:
-        'Small clinics often rely on a social media page where timings, services and contact details are hard to find, and patients are unsure how to book.',
-      solution:
-        'A single clear path: what the clinic treats, who the practitioner is, when it is open, and one obvious way to request an appointment — with WhatsApp as the fallback for people who prefer messaging.',
-      highlights: [
-        'Sticky navigation with a single primary call to action',
-        'Appointment form that validates name, phone and preferred time',
-        'Clear wording that a request is not a confirmed booking',
-        'Reduced-motion support and keyboard-accessible sections',
-      ],
-      status: 'Demo build — not a paying client project. Live deployment not yet published.',
-    },
-    preview: { headline: 'Move better, live better.', sub: 'Physiotherapy in Ahmedabad', cta: 'Book appointment' },
-  },
-  {
-    slug: 'saffron-table-restaurant',
-    title: 'Saffron Table',
-    category: 'Restaurants',
-    type: 'Demo project',
-    year: 2026,
-    accent: '#c2703c',
-    thumbIcon: 'UtensilsCrossed',
-    summary:
-      'A restaurant concept with a scannable digital menu, dish highlights and one-tap directions, calls and table requests.',
-    features: [
-      'Categorised digital menu with prices',
-      'Chef highlights and gallery layout',
-      'Table request form with date and party size',
-      'Directions, call and WhatsApp shortcuts',
-    ],
-    stack: ['React', 'Vite', 'CSS'],
-    demoUrl: '/demos/saffron-table',
-    repoUrl: null,
-    caseStudy: {
-      overview:
-        'A concept restaurant website that treats the menu as the main event: fast to scan on a phone, easy to update, and honest about what the kitchen serves.',
-      problem:
-        'Guests often arrive from Instagram or Google Maps with the same three questions: what is on the menu, how much is it, and how do I get there.',
-      solution:
-        'The menu sits above the fold on mobile, prices are visible, and every dish category has a short description. Directions and a table request form are one tap away.',
-      highlights: [
-        'Menu categories that work without JavaScript-heavy interactions',
-        'Table request form clearly labelled as a request, not a booking',
-        'Image-light layout for fast loading on mobile data',
-        'Accessible colour contrast on accent-coloured elements',
-      ],
-      status: 'Concept build for demonstration purposes. No client engagement.',
-    },
-    preview: { headline: 'Slow food, warm rooms.', sub: 'Seasonal kitchen · Ahmedabad', cta: 'View the menu' },
-  },
-  {
-    slug: 'northline-store',
-    title: 'Northline Store',
+    slug: 'speedersmania',
+    title: 'Speeders Mania',
     category: 'E-commerce',
-    type: 'Concept project',
-    year: 2026,
-    accent: '#4b6fd6',
+    type: 'E-commerce project',
+    year: 2024,
+    accent: '#7c3aed',
     thumbIcon: 'ShoppingBag',
     summary:
-      'A small-catalogue storefront concept: clean product cards, a straightforward cart, and a checkout flow that explains every step.',
+      'A multi-vendor e-commerce platform with dedicated dashboards for admin, vendors, and customers. Handles vendor onboarding, product approval, split orders, commission management, and customer-facing marketplace.',
     features: [
-      'Product catalogue with filters and sorting',
-      'Product detail layout with size and stock states',
-      'Cart drawer with quantity controls',
-      'Checkout form with inline validation',
+      'Admin dashboard: vendors, products, orders, commissions, reports',
+      'Vendor dashboard: product management, earnings, payouts, analytics',
+      'Customer marketplace: search, filters, cart, checkout, order tracking',
+      'Commission system: percentage, fixed, tiered rules per vendor',
+      'Split fulfillment: each vendor ships their own items',
     ],
-    stack: ['React', 'Vite', 'CSS', 'Context API'],
-    demoUrl: '/demos/northline-store',
+    stack: ['Vite', 'React', 'TypeScript', 'Firebase', 'Firestore', 'Tailwind CSS'],
+    demoUrl: 'https://speedersmania.vercel.app',
+    videoUrl: '/videos/speedersmania.mp4',
     repoUrl: null,
     caseStudy: {
       overview:
-        'A storefront concept built to practise the parts of e-commerce that actually lose orders: unclear stock, surprise shipping costs and a checkout that feels unfinished.',
+        'A multi-vendor marketplace platform enabling multiple vendors to sell through a single storefront. Built with dedicated dashboards for each role — admin manages the platform, vendors manage their business, customers shop seamlessly.',
       problem:
-        'Small online sellers frequently run a catalogue through spreadsheets and DMs, which makes stock, sizing and payment status hard to track.',
+        'Building a marketplace requires solving vendor operations, not just customer shopping. Most platforms ignore the vendor side.',
       solution:
-        'A structured product model with stock states, a persistent cart and a checkout summary that shows totals before payment. Real payment gateways are intentionally not connected in this concept.',
+        'Vendor-first architecture: dedicated dashboard, real-time order notifications, transparent earnings, automated commission splits. Firebase provides real-time sync for orders and inventory across vendors.',
       highlights: [
-        'Empty, loading and out-of-stock states designed up front',
-        'Cart persisted locally so a refresh does not lose the order',
-        'Inline validation instead of one error at the top of the form',
-        'No fake payment or shipping integrations',
+        'Vendor onboarding with document upload and approval',
+        'Automated commission calculation per order',
+        'Split fulfillment: each vendor ships their items',
+        'Real-time inventory sync across vendor dashboards',
       ],
-      status: 'Concept build — payment and shipping integrations are not connected.',
+      status: 'Production codebase. Firebase backend on Vercel.',
     },
-    preview: { headline: 'Everyday goods, made well.', sub: 'Small-batch essentials', cta: 'Shop the collection' },
-  },
-  {
-    slug: 'clinic-ops-dashboard',
-    title: 'Clinic Operations Dashboard',
-    category: 'Web applications',
-    type: 'Concept project',
-    year: 2026,
-    accent: '#7057ff',
-    thumbIcon: 'LayoutDashboard',
-    summary:
-      'An internal tool concept that turns a clinic’s appointment book, patient follow-ups and daily workload into one screen.',
-    features: [
-      'Day and week appointment views',
-      'Patient follow-up queue with statuses',
-      'Simple role-based access model',
-      'Printable daily schedule',
-    ],
-    stack: ['React', 'Vite', 'CSS', 'Local mock data'],
-    demoUrl: '/demos/clinic-ops',
-    repoUrl: null,
-    caseStudy: {
-      overview:
-        'A dashboard concept for a small clinic that schedules appointments on paper and tracks follow-ups in a notebook. The demo runs on local mock data and is a design and workflow prototype, not a deployed product.',
-      problem:
-        'Front-desk staff re-enter the same information in three places, and follow-ups get missed when the book is busy.',
-      solution:
-        'One shared schedule, a follow-up queue with clear statuses, and a printable day sheet for the desk. Data is mocked in the concept; a real build would need a database and authentication.',
-      highlights: [
-        'Keyboard-friendly navigation between day and week views',
-        'Status colours paired with text labels, not colour alone',
-        'Explicit empty and no-results states',
-        'Clear separation between the prototype and any real patient data',
-      ],
-      status: 'Workflow prototype with mock data only. No patient information is stored.',
-    },
-    preview: { headline: 'Today at a glance.', sub: 'Front desk · 18 appointments', cta: 'Open schedule' },
-  },
-  {
-    slug: 'enquiry-triage',
-    title: 'Enquiry Triage',
-    category: 'AI automation',
-    type: 'Demo project',
-    year: 2026,
-    accent: '#4b3f8f',
-    thumbIcon: 'Sparkles',
-    summary:
-      'A working simulation that sorts an incoming enquiry, sets a priority and drafts a first reply for a human to review.',
-    features: [
-      'Intent and priority detection from the message text',
-      'Draft reply a person can edit before sending',
-      'Clear signals showing why a message was sorted that way',
-      'Runs entirely in the browser — no message leaves the page',
-    ],
-    stack: ['React', 'Vite', 'CSS', 'Keyword rules'],
-    demoUrl: '/demos/enquiry-triage',
-    repoUrl: null,
-    caseStudy: {
-      overview:
-        'A demonstration of assisted enquiry handling for a small studio. It shows the workflow a business would use to sort incoming messages and answer the urgent ones first, without pretending a chatbot is doing the thinking.',
-      problem:
-        'Enquiries arrive across email, WhatsApp and website forms. The important ones — a complaint, a broken form, a ready-to-buy client — sit in the same list as tyre-kickers, so replies go out late or never.',
-      solution:
-        'Each message is classified by intent, given a priority, and paired with a draft reply written in the studio’s tone. A person reviews and sends. The demo uses transparent keyword rules so nothing about the result is a black box.',
-      highlights: [
-        'Priority and intent are shown with the words that triggered them',
-        'The draft is editable, not auto-sent',
-        'Urgent and complaint messages surface first',
-        'No AI API key, account or cost is required for the demo',
-      ],
-      status: 'Demo build — browser-based keyword rules, not a live AI service.',
-    },
-    preview: { headline: 'Every enquiry, sorted.', sub: 'Assisted triage · demo', cta: 'Sort an enquiry' },
+    preview: { headline: 'Many vendors. One marketplace.', sub: 'Multi-vendor e-commerce · Vite · Firebase', cta: 'View live' },
   },
 ]
 

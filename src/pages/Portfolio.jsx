@@ -1,17 +1,20 @@
 import { useMemo, useState } from 'react'
-import { ArrowRight, ShieldCheck } from 'lucide-react'
+import { ArrowRight, MonitorPlay, ShieldCheck, Info } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import DemoCard from '../components/DemoCard'
 import EmptyState from '../components/EmptyState'
 import ProjectCard from '../components/ProjectCard'
+import RevealSection from '../components/RevealSection'
 import SectionHeading from '../components/SectionHeading'
+import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
 import { pageSeo } from '../config/seo'
-import { projectCategories, projects } from '../config/site'
-import { demoSites } from '../demos/demoSites'
+import { projectCategories, projects, services } from '../config/site'
+import { demoSites as demoSitesImport } from '../demos/demoSites'
 
-const demoFilters = ['All demos', ...new Set(demoSites.map((demo) => demo.service))]
+const demoFilters = ['All demos', ...new Set(demoSitesImport.map((demo) => demo.service))]
 
 export default function Portfolio() {
   const [projectFilter, setProjectFilter] = useState(projectCategories[0])
@@ -28,13 +31,39 @@ export default function Portfolio() {
   )
 
   const visibleDemos = useMemo(
-    () => (demoFilter === demoFilters[0] ? demoSites : demoSites.filter((demo) => demo.service === demoFilter)),
+    () => (demoFilter === demoFilters[0] ? demoSitesImport : demoSitesImport.filter((demo) => demo.service === demoFilter)),
     [demoFilter],
   )
 
+  // Map project filter category to service slug for demos
+  const demosForCategory = (category) => {
+    const categoryToServiceSlug = {
+      'Business websites': 'website-development',
+      'E-commerce': 'ecommerce',
+      'Web applications': 'custom-web-applications',
+      'AI automation': 'ai-business-automation',
+    }
+    const serviceSlug = categoryToServiceSlug[category]
+    if (!serviceSlug) return []
+    return demoSitesImport.filter((demo) => demo.serviceSlug === serviceSlug)
+  }
+
+  // Get category context from services config
+  const getCategoryContext = (category) => {
+    const categoryToServiceSlug = {
+      'Business websites': 'website-development',
+      'E-commerce': 'ecommerce',
+      'Web applications': 'custom-web-applications',
+      'AI automation': 'ai-business-automation',
+    }
+    const serviceSlug = categoryToServiceSlug[category]
+    if (!serviceSlug) return null
+    return services.find((s) => s.slug === serviceSlug)
+  }
+
   return (
     <>
-      <header className="pagehead">
+      <header className="pagehead reveal">
         <div className="container">
           <p className="eyebrow">Portfolio</p>
           <h1>
@@ -55,7 +84,7 @@ export default function Portfolio() {
         </div>
       </header>
 
-      <section className="section" id="projects">
+      <RevealSection id="projects" stagger>
         <div className="container">
           <SectionHeading
             eyebrow="Projects & case studies"
@@ -80,6 +109,44 @@ export default function Portfolio() {
               </button>
             ))}
           </div>
+
+          {/* Category context from services - shown above filtered projects */}
+          {projectFilter !== projectCategories[0] && (() => {
+            const ctx = getCategoryContext(projectFilter)
+            if (!ctx) return null
+            return (
+              <div className="category-context" style={{ marginTop: '1.5rem', marginBottom: '1.5rem', padding: '1.5rem', background: 'var(--card)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)' }}>
+                <div className="category-context__head" style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
+                  <span className="icon-box" style={{ flexShrink: 0 }}>
+                    <ServiceIcon name={ctx.icon} />
+                  </span>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{ctx.title}</h2>
+                    <p className="service-block__summary" style={{ margin: '0.5rem 0 0', color: 'var(--muted-foreground)' }}>{ctx.summary}</p>
+                  </div>
+                </div>
+                <div className="category-context__panel">
+                  <h3 style={{ margin: '0 0 0.5rem', fontSize: '0.95rem' }}>Who it suits</h3>
+                  <p className="small muted" style={{ margin: '0 0 1rem' }}>{ctx.suitableFor}</p>
+                  <p className="service-block__note" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', margin: 0 }}>
+                    <Info size={13} aria-hidden="true" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
+                    <span>{ctx.notes}</span>
+                  </p>
+                  {demosForCategory(projectFilter).length > 0 && (
+                    <p className="service-demo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1rem', fontSize: '0.9rem' }}>
+                      <MonitorPlay size={14} aria-hidden="true" />
+                      <span>Live demo:</span>
+                      {demosForCategory(projectFilter).map((demo) => (
+                        <Link key={demo.slug} to={`/demos/${demo.slug}`} style={{ marginLeft: '0.5rem' }}>
+                          {demo.name}
+                        </Link>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )
+          })()}
 
           <p className="results-line">
             <span aria-live="polite">
@@ -118,9 +185,9 @@ export default function Portfolio() {
             </span>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section section--sunk" id="demos">
+      <RevealSection id="demos" stagger className="section section--sunk">
         <div className="container">
           <SectionHeading
             eyebrow="Interactive demos"
@@ -148,12 +215,12 @@ export default function Portfolio() {
 
           <p className="results-line">
             <span aria-live="polite">
-              Showing {visibleDemos.length} of {demoSites.length} demos
+              Showing {visibleDemos.length} of {demoSitesImport.length} demos
             </span>
             <span>All demos use fictional businesses and sample data</span>
           </p>
 
-          <div className="demo-grid">
+          <div className="demo-grid reveal-child">
             {visibleDemos.map((demo) => (
               <DemoCard key={demo.slug} demo={demo} />
             ))}
@@ -167,7 +234,7 @@ export default function Portfolio() {
             </span>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       <CTASection
         eyebrow="Start a project"

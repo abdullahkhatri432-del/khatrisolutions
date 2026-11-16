@@ -2,6 +2,7 @@ import { ArrowRight, Check, CircleAlert, Info } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import FAQ from '../components/FAQ'
+import RevealSection from '../components/RevealSection'
 import SectionHeading from '../components/SectionHeading'
 import { useSeo } from '../hooks/useSeo'
 import { pageSeo } from '../config/seo'
@@ -14,7 +15,7 @@ export default function Pricing() {
 
   return (
     <>
-      <header className="pagehead">
+      <header className="pagehead reveal">
         <div className="container">
           <p className="eyebrow">Pricing</p>
           <h1>
@@ -35,7 +36,7 @@ export default function Pricing() {
         </div>
       </header>
 
-      <section className="section">
+      <RevealSection stagger>
         <div className="container">
           <div className="grid grid--3">
             {packages.map((pack) => (
@@ -96,9 +97,9 @@ export default function Pricing() {
             </p>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section section--sunk">
+      <RevealSection className="section section--sunk">
         <div className="container">
           <SectionHeading
             eyebrow="The fine print, in plain words"
@@ -139,14 +140,14 @@ export default function Pricing() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section">
+      <RevealSection className="section">
         <div className="container container--narrow">
           <SectionHeading eyebrow="Common questions" title="Pricing questions" align="center" />
           <FAQ items={faqs.slice(0, 5)} idPrefix="pricing-faq" />
         </div>
-      </section>
+      </RevealSection>
 
       <CTASection />
     </>

@@ -5,13 +5,10 @@
  * /demos/<slug>. They exist to show how a real build would look and behave;
  * every one is clearly labelled as a demo, and no demo claims a client,
  * a result or a real business.
- *
- * `projectSlug` links the demo back to its portfolio entry in site.js.
  */
 export const demoSites = [
   {
     slug: 'atelier-nine',
-    projectSlug: 'atelier-nine',
     name: 'Atelier Nine',
     kind: 'Interior design studio',
     service: 'Website Development',
@@ -22,7 +19,6 @@ export const demoSites = [
   },
   {
     slug: 'wellness-physiotherapy',
-    projectSlug: 'wellness-physiotherapy',
     name: 'Wellness Physiotherapy',
     kind: 'Physiotherapy clinic',
     service: 'Website Development',
@@ -33,7 +29,6 @@ export const demoSites = [
   },
   {
     slug: 'saffron-table',
-    projectSlug: 'saffron-table-restaurant',
     name: 'Saffron Table',
     kind: 'Restaurant',
     service: 'Website Development',
@@ -44,7 +39,6 @@ export const demoSites = [
   },
   {
     slug: 'northline-store',
-    projectSlug: 'northline-store',
     name: 'Northline',
     kind: 'Home & lifestyle store',
     service: 'E-commerce',
@@ -55,7 +49,6 @@ export const demoSites = [
   },
   {
     slug: 'clinic-ops',
-    projectSlug: 'clinic-ops-dashboard',
     name: 'Clinic Ops',
     kind: 'Practice operations dashboard',
     service: 'Custom Web Application',
@@ -66,7 +59,6 @@ export const demoSites = [
   },
   {
     slug: 'enquiry-triage',
-    projectSlug: 'enquiry-triage',
     name: 'Enquiry Triage',
     kind: 'AI-assisted enquiry handling',
     service: 'AI & Business Automation',
@@ -77,7 +69,6 @@ export const demoSites = [
   },
   {
     slug: 'fitness-studio',
-    projectSlug: 'fitness-studio',
     name: 'Form & Flow Studio',
     kind: 'Fitness & personal training',
     service: 'Website Development',
@@ -88,7 +79,6 @@ export const demoSites = [
   },
   {
     slug: 'azure-guesthouse',
-    projectSlug: 'azure-guesthouse',
     name: 'Azure Guesthouse',
     kind: 'Boutique hotel',
     service: 'Website Development',
@@ -99,7 +89,6 @@ export const demoSites = [
   },
   {
     slug: 'clayline-studio',
-    projectSlug: 'clayline-studio',
     name: 'Clayline Studio',
     kind: 'Craft design studio',
     service: 'Website Development',
@@ -110,7 +99,6 @@ export const demoSites = [
   },
   {
     slug: 'ai-automation-flow',
-    projectSlug: 'ai-automation-flow',
     name: 'Automation Flow',
     kind: 'AI workflow automation',
     service: 'AI & Business Automation',

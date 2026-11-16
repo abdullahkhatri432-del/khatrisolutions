@@ -73,6 +73,22 @@ main {
 
 .section--paper {
   background: var(--paper);
+  position: relative;
+}
+
+.section--paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--paper-texture);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section--paper > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .section--raised {
@@ -282,6 +298,69 @@ main {
   border-color: #b6e2d2;
   background: var(--success-soft);
   color: var(--success);
+}
+
+/* ---------- Scroll reveal animation ---------- */
+
+/* Base state — visible, slightly elevated. Animation enhances on scroll. */
+.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Pre-reveal state — applied via JS before observer triggers.
+   Only used when JS runs; no-JS = fully visible. */
+.reveal--pending {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Visible state — triggered by IntersectionObserver */
+.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children — each child delays slightly */
+.reveal--stagger .reveal-child {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal--stagger .reveal-child--pending {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Sections with reveal — visible by default, enhance on scroll */
+.section.reveal,
+.hero.reveal,
+.stats.reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.section.reveal--pending,
+.hero.reveal--pending,
+.stats.reveal--pending {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.section.reveal--visible,
+.hero.reveal--visible,
+.stats.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dot {

@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, ExternalLink, Github, Info, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, ExternalLink, Github, Info, ShieldCheck, Video } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
 import ProjectPreview from '../components/ProjectPreview'
@@ -68,6 +68,13 @@ export default function CaseStudy() {
             ) : (
               <span className="pill">Live demo not published yet</span>
             )}
+            {project.videoUrl ? (
+              project.videoUrl.startsWith('http') ? (
+                <Button {...{ href: project.videoUrl, target: '_blank', rel: 'noopener noreferrer' }} variant="outline" icon={Video}>
+                  Watch walkthrough
+                </Button>
+              ) : null
+            ) : null}
             {project.repoUrl ? (
               <Button href={project.repoUrl} variant="outline" icon={Github}>
                 Source on GitHub
@@ -174,6 +181,17 @@ export default function CaseStudy() {
                   <dt>Live demo</dt>
                   <dd>{project.demoUrl ? 'Available' : 'Not published'}</dd>
                 </div>
+                {project.videoUrl ? (
+                  <div>
+                    <dt>Walkthrough</dt>
+                    <dd>
+                      <a href={project.videoUrl} target="_blank" rel="noopener noreferrer" className="link-arrow">
+                        <Video size={12} aria-hidden="true" />
+                        Watch video
+                      </a>
+                    </dd>
+                  </div>
+                ) : null}
               </dl>
             </div>
 

@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
-import { ExternalLink, Check } from 'lucide-react'
+import { ExternalLink, Check, Video } from 'lucide-react'
 import ProjectPreview from './ProjectPreview'
 const TYPE_CLASS = {
   'Client project': 'pill--success',
+  'Restaurant project': 'pill--accent',
+  'E-commerce project': 'pill--accent',
   'Demo project': 'pill--accent',
   'Concept project': 'pill',
 }
@@ -69,6 +71,19 @@ export default function ProjectCard({ project, row = false, headingLevel: Headin
             ) : (
               <span className="tiny muted">Live demo not published yet</span>
             )}
+            {project.videoUrl ? (
+              project.videoUrl.startsWith('http') ? (
+                <a
+                  href={project.videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-arrow project-card__video"
+                >
+                  <Video size={13} aria-hidden="true" />
+                  Walkthrough
+                </a>
+              ) : null
+            ) : null}
           </span>
         </div>
       </div>

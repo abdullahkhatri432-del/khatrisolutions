@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Check, CircleAlert, Info, MonitorPlay } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
+import FAQ from '../components/FAQ'
+import SectionHeading from '../components/SectionHeading'
 import ServiceIcon from '../components/ServiceIcon'
 import { useSeo } from '../hooks/useSeo'
 import { pageSeo } from '../config/seo'
-import { services, pricingNote, pricingNotes } from '../config/site'
+import { faqs, services, pricingNote, pricingNotes } from '../config/site'
 import { demoSites } from '../demos/demoSites'
 
 const demosFor = (slug) => demoSites.filter((demo) => demo.serviceSlug === slug)
@@ -102,6 +104,10 @@ export default function Services() {
                     >
                       {service.cta}
                     </Button>
+                    <Link to={`/services/${service.slug}`} className="link-arrow">
+                      {service.title} in detail
+                      <ArrowRight size={13} aria-hidden="true" />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -130,6 +136,13 @@ export default function Services() {
                 </li>
               ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container container--narrow">
+          <SectionHeading eyebrow="Questions" title="Common questions" align="center" />
+          <FAQ items={faqs.slice(0, 5)} idPrefix="services-faq" />
         </div>
       </section>
 

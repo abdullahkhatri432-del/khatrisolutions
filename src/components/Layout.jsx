@@ -10,6 +10,13 @@ export default function Layout() {
   const previousPath = useRef(pathname)
 
   useEffect(() => {
+    // Disable browser scroll restoration — we handle it manually
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+  }, [])
+
+  useEffect(() => {
     const pathChanged = previousPath.current !== pathname
     previousPath.current = pathname
 
@@ -24,7 +31,10 @@ export default function Layout() {
       }
     }
 
+    // Scroll to top immediately, before paint
     window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
 
     // Only move focus on client-side route changes. On the initial load the
     // browser's natural tab order (skip link, then header) must be preserved.

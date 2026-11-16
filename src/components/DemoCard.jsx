@@ -11,7 +11,7 @@ import { projects } from '../config/site'
  */
 export default function DemoCard({ demo, headingLevel = 2 }) {
   const Heading = `h${headingLevel}`
-  const caseStudy = projects.find((item) => item.slug === demo.projectSlug)
+  const caseStudy = projects.find((item) => item.slug === demo.slug)
   const project =
     caseStudy || {
       title: demo.name,
@@ -43,6 +43,11 @@ export default function DemoCard({ demo, headingLevel = 2 }) {
           {caseStudy ? (
             <Link to={`/portfolio/${caseStudy.slug}`} className="link-arrow">
               Case study
+              <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          ) : demo.serviceSlug ? (
+            <Link to={`/services/${demo.serviceSlug}`} className="link-arrow">
+              About this service
               <ArrowRight size={13} aria-hidden="true" />
             </Link>
           ) : (

@@ -9,6 +9,8 @@ import FAQ from '../components/FAQ'
 import CTASection from '../components/CTASection'
 import SectionHeading from '../components/SectionHeading'
 import ServiceIcon from '../components/ServiceIcon'
+import AnimatedCounter from '../components/AnimatedCounter'
+import useScrollReveal from '../hooks/useScrollReveal'
 import { useSeo } from '../hooks/useSeo'
 import { homeSeo } from '../config/seo'
 import { site, hero, stats, services, process, principles, faqs, projects } from '../config/site'
@@ -20,10 +22,18 @@ const featuredDemos = demoSites.filter((demo) =>
 
 export default function Home() {
   useSeo(homeSeo)
+  const heroRef = useScrollReveal()
+  const statsRef = useScrollReveal()
+  const servicesRef = useScrollReveal()
+  const workRef = useScrollReveal()
+  const demosRef = useScrollReveal()
+  const processRef = useScrollReveal()
+  const whyRef = useScrollReveal()
+  const faqRef = useScrollReveal()
 
   return (
     <>
-      <section className="hero">
+      <section ref={heroRef} className="hero reveal">
         <div className="container">
           <div className="hero__grid">
             <div>
@@ -61,16 +71,16 @@ export default function Home() {
                 <span>01 / Healthcare</span>
               </p>
               <div className="hero__frame">
-                <ProjectPreview project={projects.find((project) => project.slug === 'wellness-physiotherapy') || projects[0]} large />
+                <ProjectPreview project={projects.find((project) => project.slug === 'speedersmania') || projects[0]} large />
               </div>
               <div className="hero__caption">
                 <span>Demo build — not a client project</span>
                 <span className="hero__captionlinks">
-                  <Link to="/demos/wellness-physiotherapy" className="link-arrow">
+                  <Link to="/portfolio/speedersmania" className="link-arrow">
                     Open live demo
                     <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>
-                  <Link to="/portfolio/wellness-physiotherapy" className="link-arrow">
+                  <Link to="/portfolio/speedersmania" className="link-arrow">
                     Case study
                     <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>
@@ -82,17 +92,19 @@ export default function Home() {
       </section>
 
       <div className="container">
-        <div className="stats">
-          {stats.map((stat) => (
+        <div ref={statsRef} className="stats reveal">
+          {stats.map((stat, i) => (
             <div className="stats__item" key={stat.label}>
-              <p className="stats__value">{stat.value}</p>
+              <p className="stats__value">
+                {i === 0 ? <AnimatedCounter value={6} /> : i === 2 ? <>₹<AnimatedCounter value={3999} />+</> : stat.value}
+              </p>
               <p className="stats__label">{stat.label}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <section className="section" id="services">
+      <section ref={servicesRef} className="section reveal" id="services">
         <div className="container">
           <div className="section-head__row">
             <SectionHeading
@@ -125,20 +137,20 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <p className="service-card__foot">
-                  <Link to={`/services#${service.slug}`} className="link-arrow">
-                    Details
+                <div className="service-card__foot">
+                  <Link to={`/services/${service.slug}`} className="link-arrow">
+                    Explore {service.title}
                     <ArrowUpRight size={13} aria-hidden="true" />
                   </Link>
-                  <span style={{ display: 'block', marginTop: '0.35rem' }}>{service.suitableFor}</span>
-                </p>
+                  <span className="service-card__suitable">{service.suitableFor}</span>
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section--sunk">
+      <section ref={workRef} className="section section--sunk reveal">
         <div className="container">
           <div className="section-head__row">
             <SectionHeading
@@ -171,7 +183,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section" id="demos">
+      <section ref={demosRef} className="section reveal" id="demos">
         <div className="container">
           <div className="section-head__row">
             <SectionHeading
@@ -196,7 +208,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section--dark section--grid" id="process">
+      <section ref={processRef} className="section section--dark section--grid reveal" id="process">
         <div className="container">
           <SectionHeading
             eyebrow="How we work"
@@ -211,7 +223,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section">
+      <section ref={whyRef} className="section reveal">
         <div className="container">
           <div className="split split--wide-left">
             <div>
@@ -256,7 +268,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section--sunk">
+      <section ref={faqRef} className="section section--sunk reveal">
         <div className="container">
           <div className="split">
             <div>

@@ -15,9 +15,20 @@
   content: '';
   position: absolute;
   inset: 0;
+  background: var(--paper-texture);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: linear-gradient(180deg, color-mix(in srgb, var(--paper-raised) 55%, transparent), transparent 55%);
   pointer-events: none;
 }
+
 
 .hero > .container {
   position: relative;
@@ -140,6 +151,11 @@
 
 .hero__frame .preview--large {
   aspect-ratio: 4 / 3;
+}
+
+/* Video in hero frame uses 16:9 aspect ratio */
+.hero__frame .preview--video-box {
+  aspect-ratio: 16 / 9;
 }
 
 .hero__caption {

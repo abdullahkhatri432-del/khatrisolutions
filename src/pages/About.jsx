@@ -1,6 +1,7 @@
 import { ArrowRight, Check, Clock, Info, MapPin, ShieldCheck, Users } from 'lucide-react'
 import Button from '../components/Button'
 import CTASection from '../components/CTASection'
+import RevealSection from '../components/RevealSection'
 import SectionHeading from '../components/SectionHeading'
 import TeamCard from '../components/TeamCard'
 import { useSeo } from '../hooks/useSeo'
@@ -26,7 +27,7 @@ export default function About() {
 
   return (
     <>
-      <header className="pagehead">
+      <header className="pagehead reveal">
         <div className="container">
           <p className="eyebrow">About</p>
           <h1>
@@ -39,7 +40,7 @@ export default function About() {
         </div>
       </header>
 
-      <section className="section">
+      <RevealSection stagger>
         <div className="container">
           <div className="split split--wide-left">
             <div>
@@ -94,25 +95,25 @@ export default function About() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section section--raised" id="team" tabIndex={-1}>
+      <RevealSection stagger className="section section--raised" id="team" tabIndex={-1}>
         <div className="container">
           <SectionHeading eyebrow={team.eyebrow} title={team.title} intro={team.intro} />
 
-          <div className="team-grid">
+          <div className="team-grid reveal-child">
             {team.members.map((member) => (
               <TeamCard key={member.id} member={member} />
             ))}
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section section--dark section--grid" id="collaboration" tabIndex={-1}>
+      <RevealSection stagger className="section section--dark section--grid" id="collaboration" tabIndex={-1}>
         <div className="container">
           <SectionHeading eyebrow={collaboration.eyebrow} title={collaboration.title} intro={collaboration.intro} />
 
-          <div className="collab">
+          <div className="collab reveal-child">
             <div className="collab__lanes">
               {collaboration.lanes.map((lane) => (
                 <div className="collab-lane" key={lane.role}>
@@ -148,16 +149,16 @@ export default function About() {
             </p>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section section--sunk">
+      <RevealSection stagger className="section section--sunk">
         <div className="container">
           <SectionHeading
             eyebrow="Working principles"
             title="What “professional” means here"
             intro="These are the promises that hold up when a project gets difficult."
           />
-          <div className="grid grid--4">
+          <div className="grid grid--4 reveal-child">
             {principles.map((item) => (
               <div className="feature" key={item.title}>
                 <h3>{item.title}</h3>
@@ -166,9 +167,9 @@ export default function About() {
             ))}
           </div>
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section">
+      <RevealSection className="section">
         <div className="container">
           <div className="split">
             <div>
@@ -203,7 +204,7 @@ export default function About() {
             </ul>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       <CTASection
         eyebrow="Work together"
