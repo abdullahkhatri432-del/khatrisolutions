@@ -1,9 +1,37 @@
+import { useEffect, useRef, useState } from 'react'
+
 /**
  * A stylised preview — shows video if available, otherwise design preview.
+ *
+ * The walkthrough video is large, so it is only attached once the card is near
+ * the viewport. Cards further down the page cost nothing until they are seen.
  */
 export default function ProjectPreview({ project, large = false, className = '', badge = 'Design preview' }) {
   const preview = project.preview || {}
   const hasVideo = project.videoUrl && project.videoUrl.startsWith('/videos/')
+  const videoRef = useRef(null)
+  const [loadVideo, setLoadVideo] = useState(false)
+
+  useEffect(() => {
+    if (!hasVideo || loadVideo) return undefined
+    const el = videoRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setLoadVideo(true)
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setLoadVideo(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px 0px' },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasVideo, loadVideo])
 
   const artSlug = (project.slug || '').replace(/-/g, '')
   const artClass = `preview--${artSlug}`
@@ -18,16 +46,14 @@ export default function ProjectPreview({ project, large = false, className = '',
       <div aria-hidden="true">
         {hasVideo ? (
           <video
+            ref={videoRef}
             className="preview__video"
-            src={project.videoUrl}
+            src={loadVideo ? project.videoUrl : undefined}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
-            width="100%"
-            height="100%"
-            poster=""
+            preload="none"
           />
         ) : (
           <>
