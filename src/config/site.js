@@ -442,6 +442,7 @@ export const projects = [
     stack: ['Vite', 'React', 'TypeScript', 'Firebase', 'Firestore', 'Tailwind CSS'],
     demoUrl: 'https://speedersmania.vercel.app',
     videoUrl: '/videos/speedersmania.mp4',
+    posterUrl: '/videos/speedersmania-poster.jpg',
     repoUrl: null,
     caseStudy: {
       overview:

@@ -49,6 +49,7 @@ export default function ProjectPreview({ project, large = false, className = '',
             ref={videoRef}
             className="preview__video"
             src={loadVideo ? project.videoUrl : undefined}
+            poster={project.posterUrl || undefined}
             autoPlay
             muted
             loop
