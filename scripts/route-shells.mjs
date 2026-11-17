@@ -255,6 +255,7 @@ const verificationPageHtml = (meta) => `
 <html lang="en-IN">
 <head>
 ${headTags(meta)}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body>
   <div class="container" style="max-width: 720px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1a1a1a;">
