@@ -21,7 +21,7 @@ export const blogPosts = [
     sections: [
       {
         heading: 'The short answer',
-        body: 'A credible one-page website for a small business in India starts around ₹3,999. A multi-page business website (Home, About, Services, Contact) typically starts around ₹7,999 to ₹15,000. An online store starts around ₹19,999. Custom applications and automation work are quoted after requirements are understood, because the scope varies too much to quote blindly.',
+        body: 'A credible one-page website for a small business in India starts around ₹3,999. A multi-page business website (Home, About, Services, Contact) typically starts around ₹7,999 to ₹15,000. An online store starts around ₹19,999. Custom applications and automation work are quoted after requirements are understood, because the scope varies too much to quote blindly. Our [current price list](/pricing) shows what each tier includes and, just as importantly, what it leaves out.',
       },
       {
         heading: 'Why quotes swing so wildly',
@@ -37,7 +37,7 @@ export const blogPosts = [
       },
       {
         heading: 'How to check a quote is real',
-        body: 'Three questions separate a real quote from a bait price: "Which pages exactly are included?" "How many rounds of changes are in the price?" and "Who holds the domain and hosting account?" If the answers are written down, you are looking at a professional scope. If the answers are "we will figure it out", the price is not a price.',
+        body: 'Three questions separate a real quote from a bait price: "Which pages exactly are included?" "How many rounds of changes are in the price?" and "Who holds the domain and hosting account?" If the answers are written down, you are looking at a professional scope. If the answers are "we will figure it out", the price is not a price. You can [ask us those three questions before paying anything](/contact) and we will answer them in writing.',
       },
     ],
     faq: [
@@ -63,7 +63,7 @@ export const blogPosts = [
     sections: [
       {
         heading: 'Typical timelines, stated plainly',
-        body: 'A one-page Starter Website usually takes 4–7 days. A business website with up to five pages takes 7–14 days. A larger site with up to ten pages takes 2–3 weeks. An e-commerce store takes 3–5 weeks depending on catalogue size. All of these clocks start after the content and scope are confirmed — not when the invoice is paid.',
+        body: 'A one-page [Starter Website](/pricing) usually takes 4–7 days. A business website with up to five pages takes 7–14 days. A larger site with up to ten pages takes 2–3 weeks. An [e-commerce store](/services/ecommerce) takes 3–5 weeks depending on catalogue size. All of these clocks start after the content and scope are confirmed — not when the invoice is paid.',
       },
       {
         heading: 'Where the time actually goes',
@@ -105,7 +105,7 @@ export const blogPosts = [
       },
       {
         heading: 'The home page, section by section',
-        body: 'A strong home page for a local business usually has: a headline that says what you do for whom, a short supporting line, one primary action (call, WhatsApp, or enquiry form), a compact list of services, one or two concrete examples of the work, and contact details with hours. That is it. Anything beyond that on the home page is usually padding that pushes the important content below the fold.',
+        body: 'A strong home page for a local business usually has: a headline that says what you do for whom, a short supporting line, one primary action (call, WhatsApp, or enquiry form), a compact list of services, one or two [concrete examples of the work](/portfolio), and contact details with hours. That is it. Anything beyond that on the home page is usually padding that pushes the important content below the fold.',
       },
       {
         heading: 'How many pages is enough?',
@@ -117,7 +117,7 @@ export const blogPosts = [
       },
       {
         heading: 'The basics that are not optional',
-        body: 'Fast loading on a mid-range phone, a working contact path (form or WhatsApp — both if possible), correct business details (phone, email, hours, location), and on-page SEO: unique page titles, meta descriptions, a sitemap and structured data. None of these are glamorous, and all of them are what separate a website that brings customers from one that merely exists.',
+        body: 'Fast loading on a mid-range phone, a working contact path (form or WhatsApp — both if possible), correct business details (phone, email, hours, location), and [on-page SEO](/services/website-development): unique page titles, meta descriptions, a sitemap and structured data. None of these are glamorous, and all of them are what separate a website that brings customers from one that merely exists.',
       },
     ],
     faq: [
@@ -151,11 +151,11 @@ export const blogPosts = [
       },
       {
         heading: 'Red flags worth walking away on',
-        body: 'A quote that arrives before a single question was asked. A portfolio full of polished sites with no way to see the builder. A price that is dramatically below the market with no explanation of the scope. Pressure to pay a large deposit immediately. And the classic: "you do not need a domain, we will host it" — a site you cannot take with you is not your site.',
+        body: 'A quote that arrives before a single question was asked. A portfolio full of polished sites with no way to see the builder. A price that is dramatically below the market with no explanation of the scope — compare it against [published starting prices](/pricing). Pressure to pay a large deposit immediately. And the classic: "you do not need a domain, we will host it" — a site you cannot take with you is not your site.',
       },
       {
         heading: 'What a small or new studio should look like',
-        body: 'A new independent studio can be a genuinely good buy if it is honest about being new: the portfolio shows real work (even demos clearly labelled as demos), the process is written down, the prices are published, and the person doing the work talks to you directly. The risk with a new studio is not that the work is bad — it is that the process is not proven yet. The written scope is the fix for that.',
+        body: 'A new independent studio can be a genuinely good buy if it is honest about being new: the portfolio shows [real work](/portfolio) (even demos clearly labelled as demos), the process is written down, the prices are published, and the person doing the work talks to you directly. The risk with a new studio is not that the work is bad — it is that the process is not proven yet. The written scope is the fix for that.',
       },
       {
         heading: 'What to check after handover',

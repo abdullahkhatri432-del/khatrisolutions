@@ -14,6 +14,41 @@ const readingTime = (post) => {
   return Math.max(2, Math.round(text.split(/\s+/).length / 200))
 }
 
+/**
+ * Post bodies stay plain strings so they are easy to edit. Inline links use
+ * [label](/path): internal paths render as router links, anything else opens in
+ * a new tab. Keeping this tiny avoids pulling in a markdown dependency.
+ */
+const INLINE_LINK = /\[([^\]]+)\]\(([^)]+)\)/g
+
+function renderInlineLinks(text) {
+  const nodes = []
+  let cursor = 0
+  let match
+
+  INLINE_LINK.lastIndex = 0
+  while ((match = INLINE_LINK.exec(text)) !== null) {
+    if (match.index > cursor) nodes.push(text.slice(cursor, match.index))
+    const [, label, href] = match
+    const key = `${match.index}-${href}`
+    nodes.push(
+      href.startsWith('/') ? (
+        <Link key={key} to={href}>
+          {label}
+        </Link>
+      ) : (
+        <a key={key} href={href} target="_blank" rel="noopener noreferrer">
+          {label}
+        </a>
+      ),
+    )
+    cursor = match.index + match[0].length
+  }
+
+  if (cursor < text.length) nodes.push(text.slice(cursor))
+  return nodes
+}
+
 export default function BlogPost() {
   const { slug } = useParams()
   const post = getBlogPost(slug)
@@ -88,7 +123,7 @@ export default function BlogPost() {
             {post.sections.map((section) => (
               <section key={section.heading}>
                 <h2>{section.heading}</h2>
-                <p>{section.body}</p>
+                <p>{renderInlineLinks(section.body)}</p>
               </section>
             ))}
           </div>
