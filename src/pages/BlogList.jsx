@@ -75,7 +75,7 @@ export default function BlogList() {
           </div>
 
           <div className="section-head__row" style={{ marginTop: '3rem' }}>
-            <SectionHeading eyebrow="Questions" title="The things clients ask" align="center" />
+            <SectionHeading eyebrow="Questions" title="The things clients ask" />
             <Button to="/contact" variant="outline" size="sm">
               Ask something else
             </Button>
