@@ -31,6 +31,10 @@ export default function Home() {
   const whyRef = useScrollReveal()
   const faqRef = useScrollReveal()
 
+  // The hero showcases one project. Everything in the frame — the category
+  // label, the preview and the two links — comes from this one source.
+  const featured = projects.find((project) => project.slug === 'speedersmania') || projects[0]
+
   return (
     <>
       <section ref={heroRef} className="hero reveal">
@@ -68,19 +72,26 @@ export default function Home() {
             <div className="hero__visual">
               <p className="hero__visual-head">
                 <span>Selected demo</span>
-                <span>01 / Healthcare</span>
+                <span>01 / {featured.category}</span>
               </p>
               <div className="hero__frame">
-                <ProjectPreview project={projects.find((project) => project.slug === 'speedersmania') || projects[0]} large />
+                <ProjectPreview project={featured} large />
               </div>
               <div className="hero__caption">
                 <span>Demo build — not a client project</span>
                 <span className="hero__captionlinks">
-                  <Link to="/portfolio/speedersmania" className="link-arrow">
-                    Open live demo
-                    <ArrowUpRight size={14} aria-hidden="true" />
-                  </Link>
-                  <Link to="/portfolio/speedersmania" className="link-arrow">
+                  {featured.demoUrl ? (
+                    <a
+                      href={featured.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-arrow"
+                    >
+                      Open live demo
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  ) : null}
+                  <Link to={`/portfolio/${featured.slug}`} className="link-arrow">
                     Case study
                     <ArrowUpRight size={14} aria-hidden="true" />
                   </Link>
