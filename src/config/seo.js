@@ -68,7 +68,7 @@ export const pageSeo = {
     path: '/about',
     title: 'About Khatri Solutions web studio',
     description:
-      'Meet the independent two-person web studio behind Khatri Solutions: technical development and direct client communication.',
+      'Meet the independent developer behind Khatri Solutions: technical planning, website development and direct client communication.',
   },
   '/reviews': {
     path: '/reviews',

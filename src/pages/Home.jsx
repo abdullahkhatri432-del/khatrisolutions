@@ -259,7 +259,7 @@ export default function Home() {
               </ul>
               <div className="btn-row" style={{ marginTop: '1.75rem' }}>
                 <Button to="/about#team" variant="primary" iconRight={ArrowRight}>
-                  Meet the team
+                  Meet the developer
                 </Button>
                 <Button to="/about" variant="outline">
                   About the studio

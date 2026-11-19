@@ -587,10 +587,10 @@ export const productCountOptions = [
 ]
 
 /**
- * The working team.
+ * The person behind the studio.
  *
- * Two collaborators, described by what they actually do — not by invented
- * job titles, qualifications or years of experience.
+ * Described by what they actually do — not by invented job titles,
+ * qualifications or years of experience.
  *
  * Fill in `name`, `initials`, `photo`, `intro` and `contact` only with real,
  * confirmed details. Anything left empty is rendered as a clearly labelled
@@ -603,10 +603,10 @@ export const productCountOptions = [
  * they are genuinely true.
  */
 export const team = {
-  eyebrow: 'Meet the team',
-  title: 'Two collaborators, one project',
+  eyebrow: 'Who you work with',
+  title: 'One developer, start to finish',
   intro:
-    'Khatri Solutions is run by two people working together: one builds the work, the other manages the conversation around it. You get a single point of contact for communication, and you can see who is responsible for the technical work.',
+    'Khatri Solutions is run by one person. The person who answers your first message is the same person who plans, builds and hands over the work, so nothing is lost between the enquiry and the build.',
   members: [
     {
       id: 'technical-lead',
@@ -626,55 +626,37 @@ export const team = {
       contact: { label: 'GitHub', href: site.contact.github },
       placeholder: false,
     },
-    {
-      id: 'business-development',
-      name: 'Muskan Advani',
-      initials: 'MA',
-      role: 'Business Development & Client Relations',
-      tagline: 'Handles the first conversation and keeps it moving.',
-      intro:
-        'Muskan is the first point of contact for new enquiries. She handles the initial conversation, gathers requirements, coordinates follow-ups, and keeps communication clear between clients and the technical lead.',
-      responsibilities: [
-        'Client outreach and first contact',
-        'Initial consultations and requirement gathering',
-        'Follow-ups and coordination',
-        'Keeping communication clear between client and developer',
-      ],
-      photo: null,
-      contact: { label: 'Contact Khatri Solutions', href: '/contact' },
-      placeholder: false,
-    },
   ],
 }
 
 /**
- * How the two roles divide the work.
+ * How a project runs from first contact to handover.
  * Keep this consistent with `team.members` and `process`.
  */
 export const collaboration = {
-  eyebrow: 'How we work together',
-  title: 'One conversation, two sets of hands',
+  eyebrow: 'How a project runs',
+  title: 'One conversation, start to finish',
   intro:
-    'You should not have to manage two people, repeat your requirements, or guess who to ask. Business development owns the relationship; the technical lead owns the implementation. They hand work to each other at defined points, against the same written scope.',
+    'There is no handoff to a sales team or a junior developer. You speak with the person doing the work, and every stage runs against the same written scope.',
   lanes: [
     {
-      role: 'Business development',
-      summary: 'Your main contact from the first message until handover.',
+      role: 'What the studio handles',
+      summary: 'Everything from the first reply to handover.',
       handles: [
         'First reply and initial consultation',
-        'Understanding the business and its requirements',
-        'Follow-ups, timelines and coordination',
-        'Keeping you updated between milestones',
+        'Turning requirements into a written scope',
+        'Design, development and testing',
+        'Deployment, handover and documentation',
       ],
     },
     {
-      role: 'Technical lead',
-      summary: 'Owns the build, the technical decisions and delivery.',
+      role: 'What you bring',
+      summary: 'The decisions only you can make.',
       handles: [
-        'Turning requirements into a written technical scope',
-        'Design, development and testing',
-        'Deployment, handover and documentation',
-        'Answering technical questions directly',
+        'Your business goals and priorities',
+        'Content, images and brand assets',
+        'Feedback at agreed review points',
+        'Timely answers on scope decisions',
       ],
     },
   ],
@@ -682,23 +664,23 @@ export const collaboration = {
     {
       step: '01',
       title: 'You make contact',
-      body: 'Business development replies, asks the practical questions and confirms what you actually need.',
+      body: 'Khatri Solutions replies, asks the practical questions and confirms what you actually need.',
     },
     {
       step: '02',
       title: 'Requirements become a scope',
-      body: 'Both sides review the requirement. The technical lead turns it into pages, features, price and timeline.',
+      body: 'The requirement becomes a written scope: pages, features, price and timeline.',
     },
     {
       step: '03',
       title: 'Build and update',
-      body: 'The technical lead builds the work while business development keeps you informed and collects your feedback.',
+      body: 'The work is built, and you are kept informed at agreed points with a link you can test.',
     },
     {
       step: '04',
       title: 'Review and handover',
-      body: 'You test the work, changes inside the scope are made, and the technical lead hands over access and documentation.',
+      body: 'You test the work, changes inside the scope are made, and you receive access and documentation.',
     },
   ],
-  note: 'Khatri Solutions is an independent collaboration between two freelancers, not a registered company or a large agency team.',
+  note: 'Khatri Solutions is an independent studio, not a registered company or a large agency team.',
 }

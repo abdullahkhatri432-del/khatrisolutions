@@ -263,6 +263,9 @@ main {
   .split--wide-left {
     grid-template-columns: 1.15fr 0.85fr;
   }
+  .split--start {
+    align-items: start;
+  }
 }
 
 /* ---------- Misc primitives ---------- */

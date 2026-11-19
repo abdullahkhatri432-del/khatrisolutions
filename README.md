@@ -28,7 +28,7 @@ Node 18+ recommended (built and tested on Node 24).
 | `/portfolio` | Combined project portfolio and interactive demos |
 | `/portfolio/:slug` | Reusable case-study template |
 | `/pricing` | Six INR starting-price packages, scope notes and custom quotes |
-| `/about` | Mission, studio overview, team profiles, how the two roles work together |
+| `/about` | Mission, studio overview, developer profile, how a project runs |
 | `/reviews` | Published reviews, empty state, moderated review form |
 | `/contact` | Three-step conditional inquiry form + direct contact options |
 | `/privacy` | Privacy notice matching what the site actually does |
@@ -59,7 +59,7 @@ descriptions, which live in [`src/config/seo.js`](src/config/seo.js):
   `VITE_FORM_ENDPOINT` or taken from the default in `site.js`. `site.formProvider` is the name shown
   in the privacy notice.
 - **`site.founder`** — name and initials used by the team configuration.
-- **`team`** — the two collaborators and their responsibilities. See “Edit the team” below.
+- **`team`** — the developer profile and responsibilities. See “Edit the team” below.
 - **`collaboration`** — the “How we work together” copy, role split and four stages.
 - **`packages`**, **`pricingNote`**, **`pricingNotes`** — the six packages, intended customer,
   inclusions, scope notes, shared external-cost note and fine print.
@@ -110,15 +110,15 @@ The About page renders `team.members` in order. Each member supports:
 
 ```js
 {
-  id: 'business-development',     // stable key, not shown
+  id: 'technical-lead',           // stable key, not shown
   name: 'Real name',              // leave '' while unconfirmed
   initials: 'RN',                 // used for the monogram, leave '' if no name
-  role: 'Business Development & Client Relations',
+  role: 'Web Development & Technical Lead',
   tagline: 'One short line about the role.',
   intro: 'A genuine introduction, or null while pending.',
   responsibilities: ['...'],
   photo: null,                    // import an image or use a URL
-  contact: { label: 'LinkedIn', href: 'https://…' }, // or null
+  contact: { label: 'GitHub', href: 'https://…' }, // or null
   placeholder: false,             // true while details are unconfirmed
   placeholderNote: '...',         // shown instead of the intro when pending
 }
@@ -133,9 +133,10 @@ Rules for this section:
   “Name to be added” and a “Profile pending” label instead of pretending the details exist.
 - `placeholder` is also inferred from an empty `name`, so an empty name cannot leak as a real person.
 - A photo is optional: with `photo: null` the card shows initials (or a neutral icon while pending).
-- “Team” in the copy means two collaborating freelancers. Do not add legal titles (CEO, Director)
-  or claim company registration unless it is genuinely true. The note under `collaboration.note`
-  states this explicitly and should stay accurate.
+- The studio is one independent developer. Do not add a second person, a client-relations role,
+  or a “two-person studio” claim unless it is genuinely true. Do not add legal titles (CEO,
+  Director) or claim company registration. The note under `collaboration.note` states this
+  explicitly and should stay accurate.
 
 ### Add a project
 

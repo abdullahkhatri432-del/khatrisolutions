@@ -34,8 +34,8 @@ export default function About() {
             A new studio with an <span className="accent">old-fashioned rule</span>
           </h1>
           <p className="lede">
-            Say what you will do, do what you said, and price it clearly. Khatri Solutions is an independent web studio run by two
-            collaborators, helping small businesses establish a professional online presence.
+            Say what you will do, do what you said, and price it clearly. Khatri Solutions is an independent web studio
+            helping small businesses establish a professional online presence.
           </p>
         </div>
       </header>
@@ -70,13 +70,13 @@ export default function About() {
                 <p className="studio-card__eyebrow">Studio at a glance</p>
                 <h2>Small by design, direct by default</h2>
                 <p>
-                  No account managers, no handoff to a junior team, no invented history. Two collaborators work on Khatri Solutions
-                  projects, and the next section shows exactly who does what.
+                  No account managers, no handoff to a junior team, no invented history. One developer works on every Khatri
+                  Solutions project, and the next section shows what that covers.
                 </p>
                 <ul className="studio-card__facts">
                   <li>
                     <Users size={15} aria-hidden="true" />
-                    <span>Two collaborators: development and client relations</span>
+                    <span>One developer: planning, build and handover</span>
                   </li>
                   <li>
                     <MapPin size={15} aria-hidden="true" />
@@ -99,12 +99,14 @@ export default function About() {
 
       <RevealSection stagger className="section section--raised" id="team" tabIndex={-1}>
         <div className="container">
-          <SectionHeading eyebrow={team.eyebrow} title={team.title} intro={team.intro} />
+          <div className="split split--wide-left split--start">
+            <SectionHeading eyebrow={team.eyebrow} title={team.title} intro={team.intro} />
 
-          <div className="team-grid reveal-child">
-            {team.members.map((member) => (
-              <TeamCard key={member.id} member={member} />
-            ))}
+            <div className="team-grid">
+              {team.members.map((member) => (
+                <TeamCard key={member.id} member={member} />
+              ))}
+            </div>
           </div>
         </div>
       </RevealSection>
@@ -209,7 +211,7 @@ export default function About() {
       <CTASection
         eyebrow="Work together"
         title="Bring the requirement. We will bring the honest answer."
-        body="Tell us the business, the goal and the budget. One of the two people above will read it and reply."
+        body="Tell us the business, the goal and the budget. The developer above will read it and reply."
         primaryLabel="Discuss your project"
         secondaryLabel="See starting prices"
       />
