@@ -8,11 +8,16 @@ React + Vite + plain CSS (no Tailwind), React Router for real pages, Lucide icon
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # output in dist/
-npm run preview  # preview the production build
+npm run build    # prerender every route into dist/
+npm run preview  # serve dist/ the way the host does
 ```
 
 Node 18+ recommended (built and tested on Node 24).
+
+> `npm run preview` runs a small static server (`scripts/preview.mjs`) rather than `vite preview`.
+> `vite preview` answers every unmatched path with the root `index.html`, so a deep link shows the
+> home page and prerendered routes look broken. The script resolves `/pricing` to
+> `dist/pricing/index.html` and returns `404.html` with a real 404 status, matching Vercel.
 
 ## Pages
 
@@ -228,8 +233,13 @@ No GitHub links are rendered while `site.contact.github` is empty and every proj
 - The build writes real `<title>`/`<meta>`/`<link rel="canonical">` tags into every route shell
   (`dist/<route>/index.html`), which is what crawlers and chat-app link previews read before any
   JavaScript runs. The 404 shell is `noindex, nofollow`.
-- `dist/sitemap.xml` (all 24 routes) and `dist/robots.txt` are generated at build time from the same
-  route list, so they cannot fall out of sync with the pages.
+- The build then prerenders each route: `src/entry-server.jsx` renders the route tree with
+  `StaticRouter`, `scripts/prerender.mjs` injects that markup into the shell, and `src/main.jsx`
+  hydrates it in the browser. Crawlers get the real page in the HTML instead of an empty `#root`,
+  and the first paint no longer waits for JavaScript. Demo routes stay client-rendered because
+  their bodies load through `React.lazy`, which cannot resolve during `renderToString`.
+- `dist/sitemap.xml` (every indexable route) and `dist/robots.txt` are generated at build time from
+  the same route list, so they cannot fall out of sync with the pages.
 - `public/og-image.png` — 1200×630 social card (source layout in `og-image.svg`), referenced
   absolutely in every page's `og:image`.
 - Each indexable route also publishes factual JSON-LD for the studio, website, breadcrumbs and
