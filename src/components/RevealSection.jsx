@@ -15,11 +15,11 @@ import useScrollReveal from '../hooks/useScrollReveal'
  *   - delay:    initial delay before the reveal starts (default 0)
  *   - tag:      HTML tag to render (default 'section')
  */
-export default function RevealSection({ children, stagger = false, delay = 0, tag: Tag = 'section', className = '' }) {
+export default function RevealSection({ children, stagger = false, delay = 0, tag: Tag = 'section', className = '', ...rest }) {
   const ref = useScrollReveal({ delay })
 
   return (
-    <Tag ref={ref} className={`reveal ${stagger ? 'reveal--stagger' : ''} ${className}`.trim()}>
+    <Tag ref={ref} {...rest} className={`reveal ${stagger ? 'reveal--stagger' : ''} ${className}`.trim()}>
       {stagger && React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(child, { className: `reveal-child ${child.props.className || ''}`.trim() })
