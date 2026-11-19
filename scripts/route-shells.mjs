@@ -17,7 +17,6 @@ export function routeEntries() {
     { ...homeSeo },
     ...Object.entries(pageSeo).map(([route, meta]) => ({ path: route, ...meta })),
     ...projects.map((project) => ({ ...caseStudyMeta(project) })),
-    ...Object.values(serviceDetails).map((service) => ({ ...serviceMeta(service) })),
     ...demoSites.map((demo) => ({ ...demoMeta(demo) })),
     ...blogPosts.map((post) => ({ ...blogPostMeta(post) })),
   ]
@@ -97,6 +96,36 @@ function headTags(meta) {
     ...(schema ? [`    <script type="application/ld+json" data-seo-schema>${serializeJsonLd(schema)}</script>`] : []),
   ].join('\n')
 }
+
+const ROOT_MOUNT = '<div id="root"></div>'
+
+/**
+ * Put prerendered markup inside #root. React hydrates this on load, so the
+ * first paint and the crawlable HTML are the real page, not an empty div.
+ */
+function withAppHtml(html, appHtml) {
+  if (!appHtml) return html
+  if (!html.includes(ROOT_MOUNT)) return html
+  return html.replace(ROOT_MOUNT, `<div id="root">${appHtml}</div>`)
+}
+
+/** Render a route, or fall back to the empty shell if rendering fails. */
+function renderRoute(render, routePath) {
+  if (!render) return ''
+  try {
+    return render(routePath)
+  } catch (error) {
+    console.warn(`Prerender skipped for ${routePath}: ${error.message}`)
+    return ''
+  }
+}
+
+/**
+ * Demo sites load their body through React.lazy, which cannot resolve during
+ * renderToString. Prerendering them would ship a "Loading demo…" fallback and
+ * make React redo the Suspense boundary on load, so they stay client-rendered.
+ */
+const isPrerenderable = (routePath) => !routePath.startsWith('/demos/')
 
 /** Replace the marked head block in the app shell with route-specific tags. */
 function withHead(shell, meta) {
@@ -316,7 +345,7 @@ ${headTags(meta)}
 </html>
 `
 
-export async function writeRouteShells(dist = path.resolve('dist')) {
+export async function writeRouteShells(dist = path.resolve('dist'), render) {
   const entries = await readdir(dist)
   if (!entries.includes('index.html')) {
     throw new Error('dist/index.html is missing — run the build first.')
@@ -330,7 +359,10 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
     // /verify/business is a standalone static page written below, not a React shell.
     if (meta.path === '/verify/business') continue
 
-    const html = withHead(shell, meta)
+    const html = withAppHtml(
+      withHead(shell, meta),
+      isPrerenderable(meta.path) ? renderRoute(render, meta.path) : '',
+    )
     if (meta.path === '/') {
       await writeFile(shellPath, html, 'utf8')
       continue
@@ -343,6 +375,8 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
 
   // Unknown paths get this file, so a mistyped URL shows the branded
   // "page not found" screen instead of a blank body. The host still answers 404.
+  // It stays client-rendered: unknown slugs under real route patterns render
+  // their own not-found copy, which would not match a prerendered 404 page.
   const notFound = withHead(shell, {
     path: '/',
     title: fullTitle('Page not found'),
@@ -368,6 +402,6 @@ export async function writeRouteShells(dist = path.resolve('dist')) {
   }
 
   console.log(
-    `Route shells written: ${routes.length} (+404, sitemap.xml, robots.txt, llms.txt, feed.xml, verify/business)`,
+    `Route shells written: ${routes.length}${render ? ' (prerendered)' : ''} (+404, sitemap.xml, robots.txt, llms.txt, feed.xml, verify/business)`,
   )
 }

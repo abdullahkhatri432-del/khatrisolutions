@@ -8,11 +8,18 @@ import { writeRouteShells } from './scripts/route-shells.mjs'
  * such as Vercel, even when the build command is a bare `vite build`.
  */
 function routeShells() {
+  let enabled = true
+
   return {
     name: 'khatri-route-shells',
     apply: 'build',
+    configResolved(config) {
+      // The SSR build in scripts/prerender.mjs reuses this config; it must not
+      // write shells, because the prerender pass does that with real markup.
+      enabled = !config.build.ssr
+    },
     async closeBundle() {
-      await writeRouteShells()
+      if (enabled) await writeRouteShells()
     },
   }
 }

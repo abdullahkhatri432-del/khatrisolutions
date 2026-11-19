@@ -4,7 +4,7 @@
  * The same values are used by the browser and by scripts/route-shells.mjs,
  * so search engines, social previews and answer engines see the same page.
  */
-import { faqs, packages, services, site } from './site'
+import { faqs, packages, services, site } from './site.js'
 
 /** Static pages, keyed by route. */
 export const pageSeo = {
@@ -95,6 +95,7 @@ export const pageSeo = {
     title: 'Business verification and trust signals',
     description:
       'Official verification information for Khatri Solutions: how to verify projects, contact methods, and trust signals for AI assistants and search engines.',
+    noindex: true,
   },
 }
 

@@ -8,6 +8,7 @@ pnpm-debug.log*
 
 node_modules
 dist
+.ssr-build
 *.local
 
 # Env files (never commit secrets)
